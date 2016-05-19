@@ -1,12 +1,21 @@
-# SimpleRecyclerView
+# SuperRecyclerView
 基于 https://github.com/cundong/HeaderAndFooterRecyclerView 修改.
 
-SimpleRecyclerView支持addHeaderView、 addFooterView、分页加载，同时解决了RecyclerView与SwipeRefreshLayout滑动冲突的问题。
+SuperRecyclerView支持addHeaderView、 addFooterView、分页加载，不需要SwipeRefreshLayout。
 
-解决RecyclerView与SwipeRefreshLayout滑动冲突：
+使用：
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ff"
+    android:orientation="vertical">
 
-mRecyclerView.addOnScrollListener(mOnScrollListener);
-mOnScrollListener.setSwipeRefreshLayout(mSwipeRefreshLayout);
+    <com.cundong.recyclerview.CustRecyclerView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</RelativeLayout>
 
 
 注意事项
