@@ -240,13 +240,9 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_REFRESH_HEADER) {
-            mCurrentPosition++;
             return new ViewHolder(mHeaderViews.get(0));
-        } else if (isContentHeader(mCurrentPosition)) {
-            if (viewType == sHeaderTypes.get(mCurrentPosition - 1)) {
-                mCurrentPosition++;
-                return new ViewHolder(mHeaderViews.get(headerPosition++));
-            }
+        } else if (viewType == (HEADER_INIT_INDEX+ getHeaderViewsCount())) {
+            return new ViewHolder(mHeaderViews.get(headerPosition++));
         } else if (viewType == TYPE_FOOTER_VIEW) {
             return new ViewHolder(mFooterViews.get(0));
         }
