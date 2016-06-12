@@ -3,6 +3,8 @@
 
 SuperRecyclerView支持addHeaderView、 addFooterView、分页加载，不需要SwipeRefreshLayout。
 
+RecyclerView与SwipeRefreshLayout组合版本： https://github.com/jdsjlzx/SimpleRecyclerView
+
 使用：
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
