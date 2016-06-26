@@ -47,3 +47,7 @@ Demo
 分页加载失败时的GridLayout布局RecyclerView
 <br>
 ![](https://raw.githubusercontent.com/cundong/HeaderAndFooterRecyclerView/master/art/art5.png)
+
+
+RecyclerView点击事件与长按事件，可以参考：
+http://blog.csdn.net/jdsjlzx/article/details/51754888
