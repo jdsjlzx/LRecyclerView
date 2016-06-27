@@ -49,5 +49,18 @@ Demo
 ![](https://raw.githubusercontent.com/cundong/HeaderAndFooterRecyclerView/master/art/art5.png)
 
 
-RecyclerView点击事件与长按事件，可以参考：
-http://blog.csdn.net/jdsjlzx/article/details/51754888
+设置RecyclerView点击事件与长按事件
+mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //onItemClick
+            }
+
+            @Override
+            public void onItemLongClick(View view, final int position) {
+                //onItemLongClick
+            }
+        }));
+        
+        
+        
