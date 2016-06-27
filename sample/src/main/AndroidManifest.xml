@@ -20,7 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LinearLayoutActivity" />
         <activity android:name=".EndlessLinearLayoutActivity" />
+        <activity android:name=".EndlessGridLayoutActivity" />
+        <activity android:name=".EndlessStaggeredGridLayoutActivity" />
+
     </application>
 
 </manifest>

@@ -1,7 +1,6 @@
 package com.cundong.recyclerview.sample;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,86 +9,89 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cundong.recyclerview.CustRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.cundong.recyclerview.RecyclerItemClickListener;
+import com.cundong.recyclerview.RecyclerViewUtils;
+import com.cundong.recyclerview.sample.weight.SampleFooter;
+import com.cundong.recyclerview.sample.weight.SampleHeader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cundong on 2015/11/10.
- * <p/>
- * Sample入口
+ * Created by cundong on 2015/10/29.
+ *
+ * 带HeaderView、FooterView的LinearLayout RecyclerView
  */
-public class MainActivity extends AppCompatActivity {
-
-    private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class, EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class};
-    private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity", "EndlessStaggeredGridLayoutActivity"};
+public class LinearLayoutActivity extends AppCompatActivity {
 
     private CustRecyclerView mRecyclerView = null;
 
     private DataAdapter mDataAdapter = null;
-    private ArrayList<ListItem> mDataList = null;
 
     private HeaderAndFooterRecyclerViewAdapter mHeaderAndFooterRecyclerViewAdapter = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_activity);
 
         mRecyclerView = (CustRecyclerView) findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mDataList = new ArrayList<>();
-        for (int i = 0; i < TITLE.length; i++) {
-
-            ListItem item = new ListItem();
-            item.title = TITLE[i];
-            item.activity = ACTIVITY[i];
-            mDataList.add(item);
+        //init data
+        ArrayList<String> dataList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            dataList.add("item" + i);
         }
 
         mDataAdapter = new DataAdapter(this);
-        mDataAdapter.setData(mDataList);
+        mDataAdapter.setData(dataList);
+
         mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(this, mDataAdapter);
         mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //add a HeaderView
+        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+
+        //add a FooterView
+        RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ListItem listItem = mDataAdapter.getDataList().get(position);
-                startActivity(new Intent(MainActivity.this, listItem.activity));
+                String text = mDataAdapter.getDataList().get(position);
+                Toast.makeText(LinearLayoutActivity.this, text, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onItemLongClick(View view, final int position) {
-                ListItem listItem = mDataAdapter.getDataList().get(position);
-                startActivity(new Intent(MainActivity.this, listItem.activity));
+                String text = mDataAdapter.getDataList().get(position);
+                Toast.makeText(LinearLayoutActivity.this, "onItemLongClick - " + text, Toast.LENGTH_SHORT).show();
             }
         }));
-
-    }
-
-    private static class ListItem {
-        public String title;
-        public Class<?> activity;
     }
 
     private class DataAdapter extends RecyclerView.Adapter {
 
         private LayoutInflater mLayoutInflater;
-        private ArrayList<ListItem> mDataList = new ArrayList<>();
+        private ArrayList<String> mDataList = new ArrayList<>();
 
         public DataAdapter(Context context) {
             mLayoutInflater = LayoutInflater.from(context);
         }
 
-        public void setData(ArrayList<ListItem> list) {
+        public void setData(ArrayList<String> list) {
             this.mDataList = list;
             notifyDataSetChanged();
+        }
+
+        public List<String> getDataList() {
+            return mDataList;
         }
 
         @Override
@@ -100,19 +102,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-            ListItem listItem = mDataList.get(position);
+            String item = mDataList.get(position);
 
             ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.textView.setText(listItem.title);
+            viewHolder.textView.setText(item);
         }
 
         @Override
         public int getItemCount() {
             return mDataList.size();
-        }
-
-        public List<ListItem> getDataList() {
-            return mDataList;
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
@@ -122,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             public ViewHolder(View itemView) {
                 super(itemView);
                 textView = (TextView) itemView.findViewById(R.id.info_text);
+
             }
         }
     }

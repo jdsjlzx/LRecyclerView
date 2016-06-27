@@ -235,7 +235,6 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         return getFooterViewsCount() > 0 && position == lastPosition;
     }
 
-    private int mCurrentPosition;
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
