@@ -55,12 +55,9 @@ mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecycl
             public void onItemClick(View view, int position) {
                 //onItemClick
             }
-
             @Override
             public void onItemLongClick(View view, final int position) {
                 //onItemLongClick
             }
         }));
-        
-        
-        
+
