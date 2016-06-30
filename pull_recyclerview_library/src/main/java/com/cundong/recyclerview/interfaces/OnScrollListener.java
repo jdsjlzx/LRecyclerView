@@ -1,4 +1,4 @@
-package com.cundong.recyclerview;
+package com.cundong.recyclerview.interfaces;
 
 
 /**

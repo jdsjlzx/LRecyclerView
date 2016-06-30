@@ -1,4 +1,4 @@
-package com.cundong.recyclerview.sample;
+package com.lzx.demo;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,15 +14,14 @@ import android.widget.Toast;
 import com.cundong.recyclerview.CustRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.cundong.recyclerview.RecyclerItemClickListener;
-import com.cundong.recyclerview.RecyclerViewUtils;
-import com.cundong.recyclerview.sample.weight.SampleFooter;
-import com.cundong.recyclerview.sample.weight.SampleHeader;
+import com.cundong.recyclerview.util.RecyclerViewUtils;
+import com.lzx.demo.weight.SampleFooter;
+import com.lzx.demo.weight.SampleHeader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cundong on 2015/10/29.
  *
  * 带HeaderView、FooterView的LinearLayout RecyclerView
  */

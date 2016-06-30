@@ -1,4 +1,4 @@
-package com.cundong.recyclerview.sample.utils;
+package com.lzx.demo.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -6,8 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * Created by cundong on 2015/10/9.
- * <p/>
  * 网络使用工具类
  */
 public class NetworkUtils {

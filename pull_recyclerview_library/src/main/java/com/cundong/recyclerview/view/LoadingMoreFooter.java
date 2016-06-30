@@ -1,4 +1,4 @@
-package com.cundong.recyclerview;
+package com.cundong.recyclerview.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cundong.recyclerview.ProgressStyle;
+import com.cundong.recyclerview.R;
 import com.cundong.recyclerview.progressindicator.AVLoadingIndicatorView;
 
 

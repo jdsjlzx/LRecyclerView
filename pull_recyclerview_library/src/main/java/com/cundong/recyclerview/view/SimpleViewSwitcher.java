@@ -1,4 +1,4 @@
-package com.cundong.recyclerview;
+package com.cundong.recyclerview.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

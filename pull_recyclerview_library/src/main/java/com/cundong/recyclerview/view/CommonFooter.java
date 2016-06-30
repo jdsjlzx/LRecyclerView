@@ -1,8 +1,10 @@
-package com.cundong.recyclerview;
+package com.cundong.recyclerview.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+
+import com.cundong.recyclerview.R;
 
 /**
  * Created by cundong on 2015/10/9.

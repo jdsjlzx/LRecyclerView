@@ -1,4 +1,4 @@
-package com.cundong.recyclerview.sample;
+package com.lzx.demo;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,21 +17,19 @@ import android.widget.Toast;
 import com.cundong.recyclerview.CustRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.cundong.recyclerview.HeaderSpanSizeLookup;
+import com.cundong.recyclerview.view.LoadingFooter;
 import com.cundong.recyclerview.RecyclerItemClickListener;
 import com.cundong.recyclerview.RecyclerOnScrollListener;
-import com.cundong.recyclerview.RecyclerViewUtils;
-import com.cundong.recyclerview.sample.utils.NetworkUtils;
-import com.cundong.recyclerview.sample.utils.RecyclerViewStateUtils;
-import com.cundong.recyclerview.sample.weight.LoadingFooter;
-import com.cundong.recyclerview.sample.weight.SampleHeader;
+import com.cundong.recyclerview.util.RecyclerViewStateUtils;
+import com.cundong.recyclerview.util.RecyclerViewUtils;
+import com.lzx.demo.utils.NetworkUtils;
+import com.lzx.demo.weight.SampleHeader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cundong on 2015/10/29.
- *
  * 带HeaderView的分页加载GridLayout RecyclerView
  */
 public class EndlessGridLayoutActivity extends AppCompatActivity {

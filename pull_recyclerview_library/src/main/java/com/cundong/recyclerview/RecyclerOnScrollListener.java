@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.cundong.recyclerview.interfaces.OnScrollListener;
+
 /**
  * <p/>
  * 继承自RecyclerView.OnScrollListener，可以监听到是否滑动到页面最低部

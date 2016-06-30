@@ -1,8 +1,4 @@
-package com.cundong.recyclerview;
-
-/**
- * Created by jianghejie on 15/11/22.
- */
+package com.cundong.recyclerview.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -11,11 +7,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
+import com.cundong.recyclerview.interfaces.BaseRefreshHeader;
 
-public class JellyView extends View  implements BaseRefreshHeader{
+
+public class JellyView extends View  implements BaseRefreshHeader {
     Path path;
 
     Paint paint;
@@ -97,7 +94,6 @@ public class JellyView extends View  implements BaseRefreshHeader{
     @Override
     public void onMove(float delta) {
         jellyHeight = jellyHeight + (int)delta;
-        Log.i("jellyHeight", "delta = " + delta);
         this.invalidate();
     }
 

@@ -1,14 +1,13 @@
-package com.cundong.recyclerview.sample.weight;
+package com.lzx.demo.weight;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.cundong.recyclerview.sample.R;
+import com.lzx.demo.R;
+
 
 /**
- * Created by cundong on 2015/10/9.
- * <p/>
  * RecyclerView的FooterView，简单的展示一个TextView
  */
 public class SampleFooter extends RelativeLayout {

@@ -1,4 +1,4 @@
-package com.cundong.recyclerview.sample;
+package com.lzx.demo;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cundong on 2015/11/10.
- * <p/>
  * Sample入口
  */
 public class MainActivity extends AppCompatActivity {

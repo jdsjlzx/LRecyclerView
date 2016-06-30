@@ -1,8 +1,11 @@
-package com.cundong.recyclerview;
+package com.cundong.recyclerview.util;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
+import com.cundong.recyclerview.view.LoadingFooter;
 
 /**
  * Created by cundong on 2015/11/9.
