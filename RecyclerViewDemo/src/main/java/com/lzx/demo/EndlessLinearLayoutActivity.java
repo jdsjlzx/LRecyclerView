@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,12 +16,13 @@ import android.widget.Toast;
 
 import com.cundong.recyclerview.CustRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
-import com.cundong.recyclerview.view.LoadingFooter;
 import com.cundong.recyclerview.ProgressStyle;
 import com.cundong.recyclerview.RecyclerItemClickListener;
 import com.cundong.recyclerview.RecyclerOnScrollListener;
 import com.cundong.recyclerview.util.RecyclerViewStateUtils;
 import com.cundong.recyclerview.util.RecyclerViewUtils;
+import com.cundong.recyclerview.view.LoadingFooter;
+import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.utils.NetworkUtils;
 import com.lzx.demo.weight.SampleHeader;
 
@@ -33,7 +33,7 @@ import java.util.ArrayList;
  * 带HeaderView的分页加载LinearLayout RecyclerView
  */
 public class EndlessLinearLayoutActivity extends AppCompatActivity {
-    private final String TAG = "lzx";
+    private static final String TAG = "lzx";
 
     /**服务器端一共多少条数据*/
     private static final int TOTAL_COUNTER = 34;
@@ -44,7 +44,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
     /**已经获取到多少条数据了*/
     private static int mCurrentCounter = 0;
 
-    private static CustRecyclerView mRecyclerView = null;
+    private CustRecyclerView mRecyclerView = null;
 
     private DataAdapter mDataAdapter = null;
 
@@ -73,7 +73,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         mCurrentCounter = dataList.size();
 
         mDataAdapter = new DataAdapter(this);
-        mDataAdapter.addItems(dataList);
+        mDataAdapter.addAll(dataList);
 
         mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(this, mDataAdapter);
         mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
@@ -118,7 +118,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
     private void addItems(ArrayList<ItemModel> list) {
 
-        mDataAdapter.addItems(list);
+        mDataAdapter.addAll(list);
         mCurrentCounter += list.size();
     }
 
@@ -158,8 +158,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             if (activity == null || activity.isFinishing()) {
                 return;
             }
-
             switch (msg.what) {
+
                 case -1:
                     if(activity.isRefresh){
                         activity.mDataAdapter.clear();
@@ -184,11 +184,10 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
 
                     activity.addItems(newList);
-                    Log.d(TAG, " activity.mDataAdapter.getItemCount() " + activity.mDataAdapter.getItemCount());
 
                     if(activity.isRefresh){
                         activity.isRefresh = false;
-                        mRecyclerView.refreshComplete();
+                        activity.mRecyclerView.refreshComplete();
                         activity.notifyDataSetChanged();
                     }else {
                         RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
@@ -199,7 +198,15 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                    if(activity.isRefresh){
+                        activity.isRefresh = false;
+                        activity.mRecyclerView.refreshComplete();
+                        activity.notifyDataSetChanged();
+                    }else {
+                        RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                    }
+                    break;
+                default:
                     break;
             }
         }
@@ -240,83 +247,15 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         }.start();
     }
 
-    private class DataAdapter extends RecyclerView.Adapter {
+    private class DataAdapter extends ListBaseAdapter<ItemModel>{
 
         private LayoutInflater mLayoutInflater;
-        private SortedList<ItemModel> mSortedList;
 
         public DataAdapter(Context context) {
             mLayoutInflater = LayoutInflater.from(context);
-            mSortedList = new SortedList<ItemModel>(ItemModel.class, new SortedList.Callback<ItemModel>() {
-                @Override
-                public int compare(ItemModel o1, ItemModel o2) {
-                    if (o1.id < o2.id) {
-                        return -1;
-                    } else if (o1.id > o2.id) {
-                        return 1;
-                    }
-                    return 0;
-                }
-
-                @Override
-                public void onInserted(int position, int count) {
-                    notifyItemRangeInserted(position,count);
-                }
-
-                @Override
-                public void onRemoved(int position, int count) {
-                    notifyItemRangeRemoved(position, count);
-
-                }
-
-                @Override
-                public void onMoved(int fromPosition, int toPosition) {
-                    notifyItemMoved(fromPosition, toPosition);
-                }
-
-                @Override
-                public void onChanged(int position, int count) {
-
-                    notifyItemRangeChanged(position, count);
-                }
-
-                @Override
-                public boolean areContentsTheSame(ItemModel oldItem, ItemModel newItem) {
-                    return oldItem.title.equals(newItem.title);
-                }
-
-                @Override
-                public boolean areItemsTheSame(ItemModel item1, ItemModel item2) {
-                    return item1.id == item2.id;
-                }
-            });
+            mContext = context;
         }
 
-        public void addItems(ArrayList<ItemModel> list) {
-            mSortedList.beginBatchedUpdates();
-
-            for(ItemModel itemModel : list) {
-                mSortedList.add(itemModel);
-            }
-
-            mSortedList.endBatchedUpdates();
-        }
-
-        public void deleteItems(ArrayList<ItemModel> items) {
-            mSortedList.beginBatchedUpdates();
-            for (ItemModel item : items) {
-                mSortedList.remove(item);
-            }
-            mSortedList.endBatchedUpdates();
-        }
-
-        public void clear(){
-            mSortedList.clear();
-        }
-
-        public SortedList<ItemModel> getDataList() {
-            return mSortedList;
-        }
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(mLayoutInflater.inflate(R.layout.sample_item_text, parent, false));
@@ -324,16 +263,12 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ItemModel item = mSortedList.get(position);
+            ItemModel item = mDataList.get(position);
 
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.textView.setText(item.title);
         }
 
-        @Override
-        public int getItemCount() {
-            return mSortedList.size();
-        }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -345,4 +280,5 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             }
         }
     }
+
 }
