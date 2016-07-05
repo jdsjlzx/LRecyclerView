@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.cundong.recyclerview.view.ArrowRefreshHeader;
+
 import java.util.ArrayList;
 
 /**

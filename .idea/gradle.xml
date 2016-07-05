@@ -8,8 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/RecyclerViewDemo" />
             <option value="$PROJECT_DIR$/pull_recyclerview_library" />
-            <option value="$PROJECT_DIR$/sample" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

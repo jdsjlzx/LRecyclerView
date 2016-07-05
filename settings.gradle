@@ -1,1 +1,1 @@
-include ':sample', ':pull_recyclerview_library'
+include ':pull_recyclerview_library', ':RecyclerViewDemo'
