@@ -175,16 +175,6 @@ private View.OnClickListener mFooterClick = new View.OnClickListener() {
 
 点击事件和长按事件处理
 ---------
-在Hongyang前辈的博客中有下描述：
-> Click and LongClick
-
-> 不过一个挺郁闷的地方就是，系统没有提供ClickListener和LongClickListener。 
-不过我们也可以自己去添加，只是会多了些代码而已。 
-实现的方式比较多，你可以通过mRecyclerView.addOnItemTouchListener去监听然后去判断手势， 当然你也可以通过adapter中自己去提供回调，这里我们选择后者，前者的方式，大家有兴趣自己去实现。
-
-出自：http://blog.csdn.net/lmj623565791/article/details/45059587
-
-Hongyang大神选择了后者，SuperRecyclerView选择了前者。
 
 先看下怎么使用：
 
@@ -205,6 +195,48 @@ mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecycl
 ```
 
 原理就是监听RecyclerView.OnItemTouchListener事件，判断手势区别是点击还是长按。由于代码过多就不贴出来了。
+
+####冲突解决
+
+如果item里面有按钮也有单独的点击事件，利用上面的方式就好出现冲突，此时不要再使用mRecyclerView.addOnItemTouchListener接口，这里给出另一种实现方法。
+
+代码如下：
+
+```
+@Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final ProductViewHolder viewHolder = (ProductViewHolder) holder;
+        viewHolder.title.setText("产品");
+        viewHolder.buyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // button click event
+            }
+        });
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // item click event
+            }
+        });
+
+    }
+```
+
+**viewHolder.itemView是RecyclerView中本身就具有的，不用额外定义。**
+
+源码如下：
+
+```
+public static abstract class ViewHolder {
+        public final View itemView;
+        int mPosition = NO_POSITION;
+        int mOldPosition = NO_POSITION;
+        long mItemId = NO_ID;
+        int mItemViewType = INVALID_TYPE;
+        int mPreLayoutPosition = NO_POSITION;
+```
 
 分享
 --
