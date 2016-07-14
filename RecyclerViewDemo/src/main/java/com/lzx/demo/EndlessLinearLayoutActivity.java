@@ -17,8 +17,8 @@ import android.widget.Toast;
 import com.cundong.recyclerview.CustRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.cundong.recyclerview.ProgressStyle;
-import com.cundong.recyclerview.RecyclerItemClickListener;
 import com.cundong.recyclerview.RecyclerOnScrollListener;
+import com.cundong.recyclerview.interfaces.OnItemClickLitener;
 import com.cundong.recyclerview.util.RecyclerViewStateUtils;
 import com.cundong.recyclerview.util.RecyclerViewUtils;
 import com.cundong.recyclerview.view.LoadingFooter;
@@ -52,6 +52,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
     private HeaderAndFooterRecyclerViewAdapter mHeaderAndFooterRecyclerViewAdapter = null;
 
     private boolean isRefresh = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +85,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+
 
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
@@ -97,7 +100,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         });
         mRecyclerView.setRefreshing(true);
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        mHeaderAndFooterRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
@@ -105,11 +108,11 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onItemLongClick(View view, final int position) {
+            public void onItemLongClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
                 Toast.makeText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title, Toast.LENGTH_SHORT).show();
             }
-        }));
+        });
     }
 
     private void notifyDataSetChanged() {

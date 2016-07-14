@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="left"
+            android:paddingLeft="@dimen/dp_10"
             android:textColor="@color/color_00"
             android:textSize="@dimen/dp_14" />
     </android.support.v7.widget.CardView>

@@ -17,17 +17,17 @@ import android.widget.Toast;
 import com.cundong.recyclerview.CustRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.cundong.recyclerview.HeaderSpanSizeLookup;
-import com.cundong.recyclerview.RecyclerItemClickListener;
 import com.cundong.recyclerview.RecyclerOnScrollListener;
+import com.cundong.recyclerview.interfaces.OnItemClickLitener;
 import com.cundong.recyclerview.util.RecyclerViewStateUtils;
 import com.cundong.recyclerview.util.RecyclerViewUtils;
 import com.cundong.recyclerview.view.LoadingFooter;
+import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.utils.NetworkUtils;
 import com.lzx.demo.weight.SampleHeader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 带HeaderView的分页加载GridLayout RecyclerView
@@ -41,7 +41,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
     private static final int REQUEST_COUNT = 10;
 
     /**已经获取到多少条数据了*/
-    private int mCurrentCounter = 0;
+    private static int mCurrentCounter = 0;
 
     private CustRecyclerView mRecyclerView = null;
 
@@ -49,30 +49,22 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
     private PreviewHandler mHandler = new PreviewHandler(this);
     private HeaderAndFooterRecyclerViewAdapter mHeaderAndFooterRecyclerViewAdapter = null;
+    private boolean isRefresh = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.sample_ll_activity);
 
         mRecyclerView = (CustRecyclerView) findViewById(R.id.list);
 
-        //init data
-        ArrayList<String> dataList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            dataList.add("item" + i);
-        }
-
-        mCurrentCounter = dataList.size();
-
         mDataAdapter = new DataAdapter(this);
-        mDataAdapter.addAll(dataList);
 
         mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(this, mDataAdapter);
         mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
 
         //setLayoutManager
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        GridLayoutManager manager = new GridLayoutManager(this, 3);
         manager.setSpanSizeLookup(new HeaderSpanSizeLookup((HeaderAndFooterRecyclerViewAdapter) mRecyclerView.getAdapter(), manager.getSpanCount()));
         mRecyclerView.setLayoutManager(manager);
 
@@ -80,26 +72,37 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        mRecyclerView.setLoadingListener(new CustRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                isRefresh = true;
+                requestData();
+            }
+
+        });
+        mRecyclerView.setRefreshing(true);
+
+        mHeaderAndFooterRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position);
+                String text = mDataAdapter.getDataList().get(position).title;
                 Toast.makeText(EndlessGridLayoutActivity.this, text, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onItemLongClick(View view, final int position) {
-                String text = mDataAdapter.getDataList().get(position);
+            public void onItemLongClick(View view, int position) {
+                String text = mDataAdapter.getDataList().get(position).title;
                 Toast.makeText(EndlessGridLayoutActivity.this, "onItemLongClick - " + text, Toast.LENGTH_SHORT).show();
             }
-        }));
+        });
+
     }
 
     private void notifyDataSetChanged() {
         mHeaderAndFooterRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private void addItems(ArrayList<String> list) {
+    private void addItems(ArrayList<ItemModel> list) {
         mDataAdapter.addAll(list);
         mCurrentCounter += list.size();
     }
@@ -142,26 +145,48 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
             switch (msg.what) {
                 case -1:
+                    if(activity.isRefresh){
+                        activity.mDataAdapter.clear();
+                        mCurrentCounter = 0;
+                    }
+
                     int currentSize = activity.mDataAdapter.getItemCount();
 
                     //模拟组装10个数据
-                    ArrayList<String> newList = new ArrayList<>();
+                    ArrayList<ItemModel> newList = new ArrayList<>();
                     for (int i = 0; i < 10; i++) {
                         if (newList.size() + currentSize >= TOTAL_COUNTER) {
                             break;
                         }
+                        ItemModel item = new ItemModel();
+                        item.id = currentSize + i;
+                        item.title = "item" + (item.id);
 
-                        newList.add("item" + (currentSize + i));
+                        newList.add(item);
                     }
 
+
                     activity.addItems(newList);
-                    RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+
+                    if(activity.isRefresh){
+                        activity.isRefresh = false;
+                        activity.mRecyclerView.refreshComplete();
+                        activity.notifyDataSetChanged();
+                    }else {
+                        RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+                    }
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                    if(activity.isRefresh){
+                        activity.isRefresh = false;
+                        activity.mRecyclerView.refreshComplete();
+                        activity.notifyDataSetChanged();
+                    }else {
+                        RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                    }
                     break;
             }
         }
@@ -202,24 +227,12 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         }.start();
     }
 
-    private class DataAdapter extends RecyclerView.Adapter {
+    private class DataAdapter  extends ListBaseAdapter<ItemModel> {
 
         private LayoutInflater mLayoutInflater;
-        private ArrayList<String> mDataList = new ArrayList<>();
 
         public DataAdapter(Context context) {
             mLayoutInflater = LayoutInflater.from(context);
-        }
-
-        private void addAll(ArrayList<String> list) {
-            int lastIndex = this.mDataList.size();
-            if (this.mDataList.addAll(list)) {
-                notifyItemRangeInserted(lastIndex, list.size());
-            }
-        }
-
-        public List<String> getDataList() {
-            return mDataList;
         }
 
         @Override
@@ -230,10 +243,10 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-            String item = mDataList.get(position);
+            ItemModel itemModel = mDataList.get(position);
 
             ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.textView.setText(item);
+            viewHolder.textView.setText(itemModel.title);
         }
 
         @Override

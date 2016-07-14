@@ -11,9 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cundong.recyclerview.CustRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
-import com.cundong.recyclerview.RecyclerItemClickListener;
+import com.cundong.recyclerview.util.RecyclerViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class, EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class};
     private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity", "EndlessStaggeredGridLayoutActivity"};
 
-    private CustRecyclerView mRecyclerView = null;
+    private RecyclerView mRecyclerView = null;
 
     private DataAdapter mDataAdapter = null;
     private ArrayList<ListItem> mDataList = null;
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (CustRecyclerView) findViewById(R.id.list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mDataList = new ArrayList<>();
@@ -49,22 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDataAdapter = new DataAdapter(this);
         mDataAdapter.setData(mDataList);
-        mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(this, mDataAdapter);
-        mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
-
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                ListItem listItem = mDataAdapter.getDataList().get(position);
-                startActivity(new Intent(MainActivity.this, listItem.activity));
-            }
-
-            @Override
-            public void onItemLongClick(View view, final int position) {
-                ListItem listItem = mDataAdapter.getDataList().get(position);
-                startActivity(new Intent(MainActivity.this, listItem.activity));
-            }
-        }));
+        mRecyclerView.setAdapter(mDataAdapter);
 
     }
 
@@ -117,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
             public ViewHolder(View itemView) {
                 super(itemView);
                 textView = (TextView) itemView.findViewById(R.id.info_text);
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ListItem listItem = mDataList.get(RecyclerViewUtils.getAdapterPosition(mRecyclerView, ViewHolder.this));
+                        startActivity(new Intent(MainActivity.this, listItem.activity));
+                    }
+                });
             }
         }
     }

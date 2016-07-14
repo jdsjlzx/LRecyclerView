@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.cundong.recyclerview.CustRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
-import com.cundong.recyclerview.RecyclerItemClickListener;
+import com.cundong.recyclerview.interfaces.OnItemClickLitener;
 import com.cundong.recyclerview.util.RecyclerViewUtils;
 import com.lzx.demo.weight.SampleFooter;
 import com.lzx.demo.weight.SampleHeader;
@@ -36,7 +36,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.sample_ll_activity);
 
         mRecyclerView = (CustRecyclerView) findViewById(R.id.list);
 
@@ -56,11 +56,14 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
         //add a HeaderView
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+        TextView textView = new TextView(this);
+        textView.setText("Header 2");
+        RecyclerViewUtils.setHeaderView(mRecyclerView, textView);
 
         //add a FooterView
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        mHeaderAndFooterRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
                 String text = mDataAdapter.getDataList().get(position);
@@ -68,11 +71,12 @@ public class LinearLayoutActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onItemLongClick(View view, final int position) {
+            public void onItemLongClick(View view, int position) {
                 String text = mDataAdapter.getDataList().get(position);
                 Toast.makeText(LinearLayoutActivity.this, "onItemLongClick - " + text, Toast.LENGTH_SHORT).show();
             }
-        }));
+        });
+
     }
 
     private class DataAdapter extends RecyclerView.Adapter {
@@ -119,7 +123,6 @@ public class LinearLayoutActivity extends AppCompatActivity {
             public ViewHolder(View itemView) {
                 super(itemView);
                 textView = (TextView) itemView.findViewById(R.id.info_text);
-
             }
         }
     }

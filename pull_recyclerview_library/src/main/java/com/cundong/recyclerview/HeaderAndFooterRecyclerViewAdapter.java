@@ -1,33 +1,30 @@
 package com.cundong.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cundong.recyclerview.interfaces.OnItemClickLitener;
 import com.cundong.recyclerview.view.ArrowRefreshHeader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cundong on 2015/10/9.
- * <p/>
  * RecyclerView.Adapter with Header and Footer
+ * 
  */
 public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TYPE_REFRESH_HEADER = -5;
+    private static final int TYPE_REFRESH_HEADER = 10000;
     private static final int TYPE_NORMAL = 0;
-    private static final int TYPE_FOOTER_VIEW = -3;
-    private static final int HEADER_INIT_INDEX = 10000;
-    private static List<Integer> sHeaderTypes = new ArrayList<>();
+    private static final int TYPE_FOOTER_VIEW = 10001;
+    private static final int HEADER_INIT_INDEX = 10002;
+    private static List<Integer> mHeaderTypes = new ArrayList<>();
 
-    private int headerPosition = 1;
     private boolean pullRefreshEnabled = true;
-    private boolean isHaveHeader = false;
     private int mRefreshProgressStyle = ProgressStyle.SysProgress;
     private ArrowRefreshHeader mRefreshHeader;
     /**
@@ -39,6 +36,8 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     private ArrayList<View> mFooterViews = new ArrayList<>();
 
     private Context mContext;
+    private OnItemClickLitener mOnItemClickLitener;
+
     private RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
 
         @Override
@@ -78,15 +77,16 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
     public HeaderAndFooterRecyclerViewAdapter(Context context, RecyclerView.Adapter innerAdapter) {
         mContext = context;
-        setRefreshHeader(mContext);
+        setRefreshHeader();
         setAdapter(innerAdapter);
     }
 
-    public void setRefreshHeader(Context context){
-        ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(context);
-        mHeaderViews.add(0, refreshHeader);
-        mRefreshHeader = refreshHeader;
-        mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
+    public void setRefreshHeader(){
+        if (pullRefreshEnabled) {
+            ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(mContext);
+            mRefreshHeader = refreshHeader;
+            mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
+        }
     }
 
     public void setRefreshHeader(ArrowRefreshHeader refreshHeader){
@@ -132,16 +132,9 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         if (view == null) {
             throw new RuntimeException("header is null");
         }
-        if (pullRefreshEnabled && !(mHeaderViews.get(0) instanceof ArrowRefreshHeader)) {
-            ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(mContext);
-            mHeaderViews.add(0, refreshHeader);
-            mRefreshHeader = refreshHeader;
-            mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
-        }
+
+        mHeaderTypes.add(HEADER_INIT_INDEX + mHeaderViews.size());
         mHeaderViews.add(view);
-        sHeaderTypes.add(HEADER_INIT_INDEX + mHeaderViews.size());
-        this.isHaveHeader = true;
-        this.notifyDataSetChanged();
     }
 
     public void addFooterView(View footer) {
@@ -155,7 +148,28 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     }
 
     /**
-     * 返回第一个FoView
+     * 根据header的ViewType判断是哪个header
+     * @param itemType
+     * @return
+     */
+    private View getHeaderViewByType(int itemType) {
+        if(!isHeaderType(itemType)) {
+            return null;
+        }
+        return mHeaderViews.get(itemType - HEADER_INIT_INDEX);
+    }
+
+    /**
+     * 判断一个type是否为HeaderType
+     * @param itemViewType
+     * @return
+     */
+    private boolean isHeaderType(int itemViewType) {
+        return  mHeaderViews.size() > 0 &&  mHeaderTypes.contains(itemViewType);
+    }
+
+    /**
+     * 返回第一个FootView
      * @return
      */
     public View getFooterView() {
@@ -192,43 +206,12 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         return mFooterViews.size();
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        if (manager instanceof GridLayoutManager) {
-            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
-            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    return (isHeader(position) || isFooter(position))
-                            ? gridManager.getSpanCount() : 1;
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
-        if (lp != null
-                && lp instanceof StaggeredGridLayoutManager.LayoutParams
-                && (isHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition()))) {
-            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
-            p.setFullSpan(true);
-        }
-    }
-
     public boolean isHeader(int position) {
-        return position >= 0 && position < mHeaderViews.size();
-    }
-
-    public boolean isContentHeader(int position) {
-        return position >= 1 && position < mHeaderViews.size();
+        return position >= 1 && position < mHeaderViews.size() + 1;
     }
 
     public boolean isRefreshHeader(int position) {
+        Log.e("lzx","isRefreshHeader  + " + position);
         return position == 0;
     }
 
@@ -241,9 +224,9 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_REFRESH_HEADER) {
-            return new ViewHolder(mHeaderViews.get(0));
-        } else if (viewType == (HEADER_INIT_INDEX+ getHeaderViewsCount())) {
-            return new ViewHolder(mHeaderViews.get(headerPosition++));
+            return new ViewHolder(mRefreshHeader);
+        } else if (isHeaderType(viewType)) {
+            return new ViewHolder(getHeaderViewByType(viewType));
         } else if (viewType == TYPE_FOOTER_VIEW) {
             return new ViewHolder(mFooterViews.get(0));
         }
@@ -251,16 +234,38 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (isHeader(position)) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (isHeader(position) || isRefreshHeader(position)) {
             return;
         }
-        int adjPosition = position - getHeaderViewsCount();
+        final int adjPosition = position - (getHeaderViewsCount() + 1);
         int adapterCount;
         if (mInnerAdapter != null) {
             adapterCount = mInnerAdapter.getItemCount();
             if (adjPosition < adapterCount) {
                 mInnerAdapter.onBindViewHolder(holder, adjPosition);
+
+                if (mOnItemClickLitener != null) {
+                    holder.itemView.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            mOnItemClickLitener.onItemClick(holder.itemView, adjPosition);
+                        }
+                    });
+
+                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener()
+                    {
+                        @Override
+                        public boolean onLongClick(View v)
+                        {
+                            mOnItemClickLitener.onItemLongClick(holder.itemView, adjPosition);
+                            return false;
+                        }
+                    });
+                }
+
                 return;
             }
         }
@@ -269,26 +274,25 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     @Override
     public int getItemCount() {
         if (mInnerAdapter != null) {
-            return getHeaderViewsCount() + getFooterViewsCount() + mInnerAdapter.getItemCount();
+            return getHeaderViewsCount() + getFooterViewsCount() + mInnerAdapter.getItemCount() + 1;
         } else {
-            return getHeaderViewsCount() + getFooterViewsCount();
+            return getHeaderViewsCount() + getFooterViewsCount() + 1;
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-
+        int adjPosition = position - (getHeaderViewsCount() + 1);
         if (isRefreshHeader(position)) {
             return TYPE_REFRESH_HEADER;
         }
         if (isHeader(position)) {
             position = position - 1;
-            return sHeaderTypes.get(position);
+            return mHeaderTypes.get(position);
         }
         if (isFooter(position)) {
             return TYPE_FOOTER_VIEW;
         }
-        int adjPosition = position - getHeaderViewsCount();
         int adapterCount;
         if (mInnerAdapter != null) {
             adapterCount = mInnerAdapter.getItemCount();
@@ -315,5 +319,10 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         public ViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener)
+    {
+        this.mOnItemClickLitener = mOnItemClickLitener;
     }
 }

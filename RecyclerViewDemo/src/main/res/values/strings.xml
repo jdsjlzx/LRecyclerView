@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RecyclerView</string>
+    <string name="app_name">SuperRecyclerView</string>
 
     <string name="header_text">The Header</string>
     <string name="footer_text">The Footer</string>
