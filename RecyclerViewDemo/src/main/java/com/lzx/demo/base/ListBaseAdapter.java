@@ -13,6 +13,7 @@ import java.util.List;
 public class ListBaseAdapter<T extends Entity> extends RecyclerView.Adapter {
     protected Context mContext;
     protected int mScreenWidth;
+
     public void setScreenWidth(int width) {
         mScreenWidth = width;
     }
@@ -37,6 +38,7 @@ public class ListBaseAdapter<T extends Entity> extends RecyclerView.Adapter {
     public List<T> getDataList() {
         return mDataList;
     }
+
     public void setDataList(Collection<T> list) {
         this.mDataList.clear();
         this.mDataList.addAll(list);
