@@ -176,10 +176,12 @@ private View.OnClickListener mFooterClick = new View.OnClickListener() {
 点击事件和长按事件处理
 ---------
 
+经过实践总结，在adapter中实现点击事件会好点。
+
 先看下怎么使用：
 
 ```
-mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+mHeaderAndFooterRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
@@ -187,46 +189,16 @@ mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, mRecycl
             }
 
             @Override
-            public void onItemLongClick(View view, final int position) {
+            public void onItemLongClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
                 Toast.makeText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title, Toast.LENGTH_SHORT).show();
             }
-        }));
-```
-
-原理就是监听RecyclerView.OnItemTouchListener事件，判断手势区别是点击还是长按。由于代码过多就不贴出来了。
-
-####冲突解决
-
-如果item里面有按钮也有单独的点击事件，利用上面的方式就好出现冲突，此时不要再使用mRecyclerView.addOnItemTouchListener接口，这里给出另一种实现方法。
-
-代码如下：
-
-```
-@Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final ProductViewHolder viewHolder = (ProductViewHolder) holder;
-        viewHolder.title.setText("产品");
-        viewHolder.buyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // button click event
-            }
         });
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // item click event
-            }
-        });
-
-    }
 ```
 
-**viewHolder.itemView是RecyclerView中本身就具有的，不用额外定义。**
+原理就是实现viewHolder.itemView的点击和长按事件。由于代码过多就不贴出来了。
 
-源码如下：
+viewHolder源码如下：
 
 ```
 public static abstract class ViewHolder {
@@ -236,6 +208,12 @@ public static abstract class ViewHolder {
         long mItemId = NO_ID;
         int mItemViewType = INVALID_TYPE;
         int mPreLayoutPosition = NO_POSITION;
+```
+
+###设置空白View（setEmptyView）
+
+```
+mRecyclerView.setEmptyView(view);
 ```
 
 分享
