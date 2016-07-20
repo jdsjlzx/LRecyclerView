@@ -96,7 +96,6 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         this.notifyDataSetChanged();
     }
 
-
     public ArrowRefreshHeader getRefreshHeader(){
         return mRefreshHeader;
     }

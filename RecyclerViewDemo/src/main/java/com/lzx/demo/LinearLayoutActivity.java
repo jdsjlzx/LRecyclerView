@@ -63,6 +63,8 @@ public class LinearLayoutActivity extends AppCompatActivity {
         //add a FooterView
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
+        mRecyclerView.setPullRefreshEnabled(false);
+
         mHeaderAndFooterRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {

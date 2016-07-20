@@ -87,7 +87,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
-
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
         mRecyclerView.setLoadingListener(new CustRecyclerView.LoadingListener() {

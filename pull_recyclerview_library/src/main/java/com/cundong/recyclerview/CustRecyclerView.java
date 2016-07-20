@@ -184,6 +184,11 @@ public class CustRecyclerView extends RecyclerView{
         mRefreshHeader.refreshComplete();
     }
 
+    public void setPullRefreshEnabled(boolean enabled) {
+        pullRefreshEnabled = enabled;
+    }
+
+
     public void setRefreshProgressStyle(int style) {
         if (mRefreshHeader != null) {
             mRefreshHeader.setProgressStyle(style);
