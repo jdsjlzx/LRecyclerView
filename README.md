@@ -17,7 +17,7 @@ SuperRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页
 5. 网络错误加载失败点击Footer重新请求数据；
 6. 可以动态为FooterView赋予不同状态（加载中、加载失败、滑到最底等）。
 
-项目地址：https://github.com/jdsjlzx/SuperRecyclerView
+<br>注意：EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果。</b>
 
 感谢
 --
