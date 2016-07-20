@@ -334,7 +334,8 @@ SuperRecyclerView使用方便简单，无论你添加多少Header和Footer，你
 
 EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参考。
 
-代码混淆：
+代码混淆
+--
 ```
 #pull_recyclerview_library
 -dontwarn com.cundong.recyclerview.**
@@ -343,4 +344,7 @@ EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参
 
 如果你想了解更多混淆配置，参考：http://blog.csdn.net/jdsjlzx/article/details/51861460
 
-
+注意事项
+--
+1. 如果添加了footerview，不要再使用addOnScrollListener方法，如有需要，自定义实现即可。
+mRecyclerView.addOnScrollListener(mOnScrollListener); 不要与RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));同时使用。
