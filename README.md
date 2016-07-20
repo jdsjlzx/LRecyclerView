@@ -149,6 +149,20 @@ public interface LoadingListener {
 
 下拉刷新只要在onRefresh()方法中处理即可。
 
+开启和禁止下拉刷新功能
+--------
+```
+mRecyclerView.setPullRefreshEnabled(true);
+```
+
+or
+```
+mRecyclerView.setPullRefreshEnabled(false);
+```
+
+默认是开启。
+
+
 加载网络异常处理
 --------
 加载数据时如果网络异常或者断网，SuperRecyclerView为你提供了重新加载的机制。
