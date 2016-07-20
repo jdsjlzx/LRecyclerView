@@ -346,5 +346,8 @@ EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参
 
 注意事项
 --
-1. 如果添加了footerview，不要再使用addOnScrollListener方法，如有需要，自定义实现即可。
-mRecyclerView.addOnScrollListener(mOnScrollListener); 不要与RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));同时使用。
+1. 如果添加了footerview，不要再使用addOnScrollListener方法，如有需要，自定义实现即可。如下面代码不要同时使用：
+```
+mRecyclerView.addOnScrollListener(mOnScrollListener); 
+RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
+```
