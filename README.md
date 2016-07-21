@@ -21,9 +21,6 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 
 感谢
 --
-
-> 如果我比别人看得远些，那是因为我站在巨人们的肩上。  （牛顿）
-
 本开源控件是基于 [HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView) 开源项目而来，在原基础上进行了扩充。在此感谢cundong作者（github地址：https://github.com/cundong）。
 
 效果图
