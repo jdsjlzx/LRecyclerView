@@ -55,20 +55,6 @@ public class CustRecyclerView extends RecyclerView{
         @Override
         public void onChanged() {
             Adapter<?> adapter = getAdapter();
-            /*if (adapter != null && mEmptyView != null) {
-                int emptyCount = 0;
-                if (pullRefreshEnabled) {
-                    emptyCount++;
-                }
-                if (adapter.getItemCount() == emptyCount) {
-                    mEmptyView.setVisibility(View.VISIBLE);
-                    CustRecyclerView.this.setVisibility(View.GONE);
-                } else {
-                    mEmptyView.setVisibility(View.GONE);
-                    CustRecyclerView.this.setVisibility(View.VISIBLE);
-                }
-            }*/
-
 
             if(adapter instanceof HeaderAndFooterRecyclerViewAdapter){
                 HeaderAndFooterRecyclerViewAdapter headerAndFooterAdapter = (HeaderAndFooterRecyclerViewAdapter) adapter;
@@ -153,8 +139,12 @@ public class CustRecyclerView extends RecyclerView{
 
     private boolean isOnTop() {
         ArrayList<View> mHeaderViews = mWrapAdapter.getHeaderViews();
-        return !(mHeaderViews == null || mHeaderViews.isEmpty()) && mHeaderViews.get(0).getParent() != null;
-
+        //return !(mHeaderViews == null || mHeaderViews.isEmpty()) && mHeaderViews.get(0).getParent() != null;
+        if (mRefreshHeader.getParent() != null) {
+            return true;
+        } else {
+            return false;
+        }
 //        LayoutManager layoutManager = getLayoutManager();
 //        int firstVisibleItemPosition;
 //        if (layoutManager instanceof GridLayoutManager) {

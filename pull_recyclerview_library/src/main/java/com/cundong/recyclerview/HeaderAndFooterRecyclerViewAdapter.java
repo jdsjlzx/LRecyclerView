@@ -2,7 +2,6 @@ package com.cundong.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -84,8 +83,9 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     public void setRefreshHeader(){
         if (pullRefreshEnabled) {
             ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(mContext);
+            refreshHeader.setProgressStyle(mRefreshProgressStyle);
             mRefreshHeader = refreshHeader;
-            mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
+
         }
     }
 
@@ -210,7 +210,6 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     }
 
     public boolean isRefreshHeader(int position) {
-        Log.e("lzx","isRefreshHeader  + " + position);
         return position == 0;
     }
 

@@ -85,7 +85,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
