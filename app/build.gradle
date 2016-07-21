@@ -32,5 +32,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:cardview-v7:24.0.0'
-    compile project(':pull_recyclerview_library')
+    compile project(':LRecyclerview_library')
 }
