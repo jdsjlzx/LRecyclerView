@@ -38,7 +38,7 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 -----------------------
 
 ```
- mDataAdapter = new DataAdapter(this);
+		mDataAdapter = new DataAdapter(this);
         mDataAdapter.setData(dataList);
 
         mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(this, mDataAdapter);
@@ -120,7 +120,7 @@ mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
 mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 ```
 
-AVLoadingIndicatorView库有多少效果，SuperRecyclerView就支持多少下拉刷新效果，当然你也可以自定义下拉效果。
+AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷新效果，当然你也可以自定义下拉效果。
 
 效果图：
 
@@ -165,7 +165,7 @@ mRecyclerView.setPullRefreshEnabled(false);
 
 加载网络异常处理
 --------
-加载数据时如果网络异常或者断网，SuperRecyclerView为你提供了重新加载的机制。
+加载数据时如果网络异常或者断网，LRecyclerView为你提供了重新加载的机制。
 
 效果图：
 
@@ -232,7 +232,7 @@ mRecyclerView.setEmptyView(view);
 
 分享
 --
-介绍完了SuperRecyclerView，似乎还少些什么，对了，那就是adapter了。
+介绍完了LRecyclerView，似乎还少些什么，对了，那就是adapter了。
 
 为了方便大家使用，分享个封装过的adapter。
 
