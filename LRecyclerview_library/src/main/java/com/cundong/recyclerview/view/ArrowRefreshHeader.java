@@ -38,6 +38,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	private static final int ROTATE_ANIM_DURATION = 180;
 
 	public int mMeasuredHeight;
+    private static Context mContext;
 
 	public ArrowRefreshHeader(Context context) {
 		super(context);
@@ -54,6 +55,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	}
 
 	private void initView() {
+        mContext = getContext();
 		// 初始情况，设置下拉刷新view高度为0
 		mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(
 				R.layout.listview_header, null);
@@ -238,30 +240,29 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     }
 
     public static String friendlyTime(Date time) {
-        //获取time距离当前的秒数
         int ct = (int)((System.currentTimeMillis() - time.getTime())/1000);
 
         if(ct == 0) {
-            return "刚刚";
+            return mContext.getResources().getString(R.string.text_just);
         }
 
         if(ct > 0 && ct < 60) {
-            return ct + "秒前";
+            return ct + mContext.getResources().getString(R.string.text_seconds_ago);
         }
 
         if(ct >= 60 && ct < 3600) {
-            return Math.max(ct / 60,1) + "分钟前";
+            return Math.max(ct / 60,1) + mContext.getResources().getString(R.string.text_minute_ago);
         }
         if(ct >= 3600 && ct < 86400)
-            return ct / 3600 + "小时前";
+            return ct / 3600 + mContext.getResources().getString(R.string.text_hour_ago);
         if(ct >= 86400 && ct < 2592000){ //86400 * 30
             int day = ct / 86400 ;
-            return day + "天前";
+            return day + mContext.getResources().getString(R.string.text_day_ago);
         }
         if(ct >= 2592000 && ct < 31104000) { //86400 * 30
-            return ct / 2592000 + "月前";
+            return ct / 2592000 + mContext.getResources().getString(R.string.text_month_ago);
         }
-        return ct / 31104000 + "年前";
+        return ct / 31104000 + mContext.getResources().getString(R.string.text_year_ago);
     }
 
 }
