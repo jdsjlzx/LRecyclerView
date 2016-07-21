@@ -1,9 +1,9 @@
-# SuperRecyclerView
+# LRecyclerView
 
 简介
 --
 
-SuperRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加载数据的RecyclerView。
+LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加载数据的RecyclerView。
 
 **它对 RecyclerView 控件进行了拓展，给RecyclerView增加HeaderView、FooterView，并且不需要对你的Adapter做任何修改。**
 
@@ -330,7 +330,7 @@ private class DataAdapter extends ListBaseAdapter<ItemModel>{
 ListBaseAdapter虽然功能不强大，但是使用很方便。
 
 
-SuperRecyclerView使用方便简单，无论你添加多少Header和Footer，你都不用担心position的问题，除了方便还是方便。
+LRecyclerView使用方便简单，无论你添加多少Header和Footer，你都不用担心position的问题，除了方便还是方便。
 
 EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参考。
 
