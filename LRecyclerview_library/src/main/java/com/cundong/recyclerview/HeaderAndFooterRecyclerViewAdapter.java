@@ -1,7 +1,9 @@
 package com.cundong.recyclerview;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -322,5 +324,55 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener)
     {
         this.mOnItemClickLitener = mOnItemClickLitener;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return (isHeader(position) || isFooter(position) || isRefreshHeader(position))
+                            ? gridManager.getSpanCount() : 1;
+                }
+            });
+        }
+        mInnerAdapter.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        mInnerAdapter.onDetachedFromRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+        if (lp != null
+                && lp instanceof StaggeredGridLayoutManager.LayoutParams
+                && (isHeader(holder.getLayoutPosition()) ||isRefreshHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition()))) {
+            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+            p.setFullSpan(true);
+        }
+        mInnerAdapter.onViewAttachedToWindow(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        mInnerAdapter.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        mInnerAdapter.onViewRecycled(holder);
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(RecyclerView.ViewHolder holder) {
+        return mInnerAdapter.onFailedToRecycleView(holder);
     }
 }

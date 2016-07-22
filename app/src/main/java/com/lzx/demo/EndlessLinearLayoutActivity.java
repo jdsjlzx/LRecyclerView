@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cundong.recyclerview.CustRecyclerView;
+import com.cundong.recyclerview.LRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.cundong.recyclerview.ProgressStyle;
 import com.cundong.recyclerview.RecyclerOnScrollListener;
@@ -44,7 +44,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
     /**已经获取到多少条数据了*/
     private static int mCurrentCounter = 0;
 
-    private CustRecyclerView mRecyclerView = null;
+    private LRecyclerView mRecyclerView = null;
 
     private DataAdapter mDataAdapter = null;
 
@@ -58,7 +58,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_ll_activity);
 
-        mRecyclerView = (CustRecyclerView) findViewById(R.id.list);
+        mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
         //init data
         ArrayList<ItemModel> dataList = new ArrayList<>();
@@ -88,7 +88,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
-        mRecyclerView.setLoadingListener(new CustRecyclerView.LoadingListener() {
+        mRecyclerView.setLoadingListener(new LRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 isRefresh = true;

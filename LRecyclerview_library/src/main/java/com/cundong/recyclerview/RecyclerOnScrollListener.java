@@ -202,12 +202,5 @@ public class RecyclerOnScrollListener extends RecyclerView.OnScrollListener impl
         GridLayout
     }
 
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return mSwipeRefreshLayout;
-    }
-
-    public void setSwipeRefreshLayout(SwipeRefreshLayout mSwipeRefreshLayout) {
-        this.mSwipeRefreshLayout = mSwipeRefreshLayout;
-    }
 
 }

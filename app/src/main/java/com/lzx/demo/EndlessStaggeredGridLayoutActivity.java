@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -15,10 +16,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cundong.recyclerview.CustRecyclerView;
-import com.cundong.recyclerview.ExStaggeredGridLayoutManager;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
-import com.cundong.recyclerview.HeaderSpanSizeLookup;
+import com.cundong.recyclerview.LRecyclerView;
 import com.cundong.recyclerview.RecyclerOnScrollListener;
 import com.cundong.recyclerview.interfaces.OnItemClickLitener;
 import com.cundong.recyclerview.util.RecyclerViewStateUtils;
@@ -45,7 +44,7 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
     /**已经获取到多少条数据了*/
     private static int mCurrentCounter = 0;
 
-    private CustRecyclerView mRecyclerView = null;
+    private LRecyclerView mRecyclerView = null;
 
     private DataAdapter mDataAdapter = null;
 
@@ -58,7 +57,7 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_ll_activity);
 
-        mRecyclerView = (CustRecyclerView) findViewById(R.id.list);
+        mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
         mDataAdapter = new DataAdapter(this);
 
@@ -66,15 +65,15 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
 
         //setLayoutManager
-        ExStaggeredGridLayoutManager manager = new ExStaggeredGridLayoutManager (2, StaggeredGridLayoutManager.VERTICAL);
-        manager.setSpanSizeLookup(new HeaderSpanSizeLookup((HeaderAndFooterRecyclerViewAdapter) mRecyclerView.getAdapter(), manager.getSpanCount()));
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager (2, StaggeredGridLayoutManager.VERTICAL);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
-        mRecyclerView.setLoadingListener(new CustRecyclerView.LoadingListener() {
+        mRecyclerView.setLoadingListener(new LRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 isRefresh = true;

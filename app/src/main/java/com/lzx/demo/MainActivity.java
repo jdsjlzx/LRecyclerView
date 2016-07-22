@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.cundong.recyclerview.util.RecyclerViewUtils;
 
 import java.util.ArrayList;
@@ -19,15 +18,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class, EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class};
-    private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity", "EndlessStaggeredGridLayoutActivity"};
+    private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class, EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class,EmptyActivity.class};
+    private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity", "EndlessStaggeredGridLayoutActivity","EmptyActivity"};
 
     private RecyclerView mRecyclerView = null;
 
     private DataAdapter mDataAdapter = null;
     private ArrayList<ListItem> mDataList = null;
-
-    private HeaderAndFooterRecyclerViewAdapter mHeaderAndFooterRecyclerViewAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

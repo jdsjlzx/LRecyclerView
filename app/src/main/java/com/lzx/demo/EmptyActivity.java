@@ -9,23 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cundong.recyclerview.LRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
-import com.cundong.recyclerview.interfaces.OnItemClickLitener;
-import com.cundong.recyclerview.util.RecyclerViewUtils;
-import com.lzx.demo.weight.SampleFooter;
-import com.lzx.demo.weight.SampleHeader;
+import com.cundong.recyclerview.LRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
- * 带HeaderView、FooterView的LinearLayout RecyclerView
+ * No data RecyclerView
  */
-public class LinearLayoutActivity extends AppCompatActivity {
+public class EmptyActivity extends AppCompatActivity {
 
     private LRecyclerView mRecyclerView = null;
 
@@ -33,19 +28,19 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
     private HeaderAndFooterRecyclerViewAdapter mHeaderAndFooterRecyclerViewAdapter = null;
 
+    private View mEmptyView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sample_ll_activity);
+        setContentView(R.layout.activity_emptyview);
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
-        //init data
-        ArrayList<String> dataList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            dataList.add("item" + i);
-        }
+        mEmptyView = findViewById(R.id.empty_view);
+        mRecyclerView.setEmptyView(mEmptyView);
 
+        ArrayList<String> dataList = new ArrayList<>();
         mDataAdapter = new DataAdapter(this);
         mDataAdapter.setData(dataList);
 
@@ -53,29 +48,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        //add a HeaderView
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
-
-        //add a FooterView
-        RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
-
         mRecyclerView.setPullRefreshEnabled(false);
-
-        mHeaderAndFooterRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position);
-                Toast.makeText(LinearLayoutActivity.this, text, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position);
-                Toast.makeText(LinearLayoutActivity.this, "onItemLongClick - " + text, Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 

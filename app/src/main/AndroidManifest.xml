@@ -24,6 +24,7 @@
         <activity android:name=".EndlessLinearLayoutActivity" />
         <activity android:name=".EndlessGridLayoutActivity" />
         <activity android:name=".EndlessStaggeredGridLayoutActivity" />
+        <activity android:name=".EmptyActivity" />
 
     </application>
 

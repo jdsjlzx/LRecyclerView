@@ -1,0 +1,16 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.cundong.recyclerview.LRecyclerView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/layout_empty"
+        android:visibility="gone"/>
+</RelativeLayout>

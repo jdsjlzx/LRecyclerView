@@ -8,12 +8,10 @@ import android.view.View;
 
 import com.cundong.recyclerview.view.ArrowRefreshHeader;
 
-import java.util.ArrayList;
-
 /**
  * Created by lizhixian on 16/1/4.
  */
-public class CustRecyclerView extends RecyclerView{
+public class LRecyclerView extends RecyclerView{
 
     private boolean pullRefreshEnabled = true;
     private LoadingListener mLoadingListener;
@@ -25,15 +23,15 @@ public class CustRecyclerView extends RecyclerView{
 
     private HeaderAndFooterRecyclerViewAdapter mWrapAdapter;
 
-    public CustRecyclerView(Context context) {
+    public LRecyclerView(Context context) {
         super(context);
     }
 
-    public CustRecyclerView(Context context, AttributeSet attrs) {
+    public LRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CustRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public LRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -62,20 +60,20 @@ public class CustRecyclerView extends RecyclerView{
                     int count = headerAndFooterAdapter.getInnerAdapter().getItemCount();
                     if(count == 0) {
                         mEmptyView.setVisibility(View.VISIBLE);
-                        CustRecyclerView.this.setVisibility(View.GONE);
+                        LRecyclerView.this.setVisibility(View.GONE);
                     } else {
                         mEmptyView.setVisibility(View.GONE);
-                        CustRecyclerView.this.setVisibility(View.VISIBLE);
+                        LRecyclerView.this.setVisibility(View.VISIBLE);
                     }
                 }
             }else {
                 if(adapter != null && mEmptyView != null) {
                     if(adapter.getItemCount() == 0) {
                         mEmptyView.setVisibility(View.VISIBLE);
-                        CustRecyclerView.this.setVisibility(View.GONE);
+                        LRecyclerView.this.setVisibility(View.GONE);
                     } else {
                         mEmptyView.setVisibility(View.GONE);
-                        CustRecyclerView.this.setVisibility(View.VISIBLE);
+                        LRecyclerView.this.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -138,28 +136,12 @@ public class CustRecyclerView extends RecyclerView{
     }
 
     private boolean isOnTop() {
-        ArrayList<View> mHeaderViews = mWrapAdapter.getHeaderViews();
-        //return !(mHeaderViews == null || mHeaderViews.isEmpty()) && mHeaderViews.get(0).getParent() != null;
         if (mRefreshHeader.getParent() != null) {
             return true;
         } else {
             return false;
         }
-//        LayoutManager layoutManager = getLayoutManager();
-//        int firstVisibleItemPosition;
-//        if (layoutManager instanceof GridLayoutManager) {
-//            firstVisibleItemPosition = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
-//        } else if ( layoutManager instanceof StaggeredGridLayoutManager ) {
-//            int[] into = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-//            ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(into);
-//            firstVisibleItemPosition = findMin(into);
-//        } else {
-//            firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
-//        }
-//        if ( firstVisibleItemPosition <= 1 ) {
-//             return true;
-//        }
-//        return false;
+
     }
 
     /**
