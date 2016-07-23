@@ -50,47 +50,55 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
 
-添加滚动监听事件
---------
+下拉刷新和加载更多
+---------
+
+为了大家使用方便，将需要用的方法统一封装到接口LScrollListener中。
 
 ```
-mRecyclerView.addOnScrollListener(mOnScrollListener);
-
-RecyclerOnScrollListener mOnScrollListener = new RecyclerOnScrollListener() {
-
-        @Override
-        public void onBottom() {
-
-            LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-            if(state == LoadingFooter.State.Loading) {
-                Log.d(TAG, "the state is Loading, just wait..");
-                return;
+mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
+            @Override
+            public void onRefresh() {
+                
             }
 
-            if (mCurrentCounter < TOTAL_COUNTER) {
-                // loading more
-                RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-                requestData();
-            } else {
-                //the end
-                RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
+            @Override
+            public void onScrollUp() {
             }
-        }
-    };
+
+            @Override
+            public void onScrollDown() {
+            }
+
+            @Override
+            public void onBottom() {
+                
+            }
+
+            @Override
+            public void onScrolled(int distanceX, int distanceY) {
+            }
+
+        });
+        
+
+        
 ```
 
-RecyclerOnScrollListener实现了onScrollUp()、onScrollDown()、onBottom()、onScrolled四个事件，如下所示：
+LScrollListener实现了nRefresh()、onScrollUp()、onScrollDown()、onBottom()、onScrolled五个事件，如下所示：
 
 ```
-public abstract void onScrollUp();//scroll down to up
+void onRefresh();//pull down to refresh
 
-public abstract void onScrollDown();//scroll from up to down
+void onScrollUp();//scroll down to up
 
-public abstract void onBottom();//load next page
+void onScrollDown();//scroll from up to down
 
-public abstract void onScrolled(int distanceX, int distanceY);// moving state,you can get the move distance
+void onBottom();//load next page
+
+void onScrolled(int distanceX, int distanceY);// moving state,you can get the move distance
 ```
-
+ - onRefresh()——RecyclerView下拉刷新事件；
  - onScrollUp()——RecyclerView向上滑动的监听事件；
  - onScrollDown()——RecyclerView向下滑动的监听事件；
  - onBottom()——RecyclerView滑动到底部的监听事件；
@@ -99,7 +107,7 @@ public abstract void onScrolled(int distanceX, int distanceY);// moving state,yo
 加载更多（加载下页数据）
 ------------
 
-从上面的RecyclerOnScrollListener类的介绍中就可以看出，实现加载更多只要在onBottom()接口中处理即可。
+从上面的LScrollListener介绍中就可以看出，实现加载更多只要在onBottom()接口中处理即可。
 
 ![这里写图片描述](http://static.oschina.net/uploads/img/201511/09175034_0mZ0.png)
 
@@ -126,25 +134,7 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 
 下拉刷新逻辑处理：
 
-```
-mRecyclerView.setLoadingListener(new CustRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                requestData();
-            }
-
-        });
-```
-这里自定义了一个接口LoadingListener，如下所示：
-```
-public interface LoadingListener {
-
-        void onRefresh();
-
-    }
-```
-
-下拉刷新只要在onRefresh()方法中处理即可。
+从上面的LScrollListener介绍中就可以看出，实现下拉刷新只要在onRefresh()接口中处理即可。
 
 开启和禁止下拉刷新功能
 --------
