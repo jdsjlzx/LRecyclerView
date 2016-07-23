@@ -324,7 +324,7 @@ EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参
 代码混淆
 --
 ```
-#pull_recyclerview_library
+#LRecyclerview_library
 -dontwarn com.cundong.recyclerview.**
 -keep class com.cundong.recyclerview.**{*;}
 ```
@@ -333,8 +333,8 @@ EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参
 
 注意事项
 --
-1. 如果添加了footerview，不要再使用addOnScrollListener方法，如有需要，自定义实现即可。如下面代码不要同时使用：
+1. 如果添加了footerview，不要再使用setLScrollListener方法，如有需要，自定义实现即可。如下面代码不要同时使用：
 ```
-mRecyclerView.addOnScrollListener(mOnScrollListener); 
+mRecyclerView.setLScrollListener(LScrollListener); 
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
