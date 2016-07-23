@@ -20,7 +20,7 @@ import java.util.List;
  *
  * No data RecyclerView
  */
-public class EmptyActivity extends AppCompatActivity {
+public class EmptyViewActivity extends AppCompatActivity {
 
     private LRecyclerView mRecyclerView = null;
 

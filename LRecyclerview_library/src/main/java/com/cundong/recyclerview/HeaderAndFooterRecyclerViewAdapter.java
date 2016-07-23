@@ -49,32 +49,25 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
-            super.onItemRangeChanged(positionStart, itemCount);
-            notifyItemRangeChanged(positionStart + getHeaderViewsCount(), itemCount);
+            notifyItemRangeChanged(positionStart + getHeaderViewsCount() + 1, itemCount);
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            super.onItemRangeInserted(positionStart, itemCount);
-            notifyItemRangeInserted(positionStart + getHeaderViewsCount(), itemCount);
+            notifyItemRangeInserted(positionStart + getHeaderViewsCount() + 1, itemCount);
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-            super.onItemRangeRemoved(positionStart, itemCount);
-            notifyItemRangeRemoved(positionStart + getHeaderViewsCount(), itemCount);
+            notifyItemRangeRemoved(positionStart + getHeaderViewsCount() + 1, itemCount);
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            super.onItemRangeMoved(fromPosition, toPosition, itemCount);
             int headerViewsCountCount = getHeaderViewsCount();
-            notifyItemRangeChanged(fromPosition + headerViewsCountCount, toPosition + headerViewsCountCount + itemCount);
+            notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1+ itemCount);
         }
     };
-
-    public HeaderAndFooterRecyclerViewAdapter() {
-    }
 
     public HeaderAndFooterRecyclerViewAdapter(Context context, RecyclerView.Adapter innerAdapter) {
         mContext = context;
@@ -89,13 +82,6 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
             mRefreshHeader = refreshHeader;
 
         }
-    }
-
-    public void setRefreshHeader(ArrowRefreshHeader refreshHeader){
-        mHeaderViews.add(0, refreshHeader);
-        mRefreshHeader = refreshHeader;
-        mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
-        this.notifyDataSetChanged();
     }
 
     public ArrowRefreshHeader getRefreshHeader(){

@@ -7,23 +7,22 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cundong.recyclerview.LRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.cundong.recyclerview.HeaderSpanSizeLookup;
-import com.cundong.recyclerview.RecyclerOnScrollListener;
+import com.cundong.recyclerview.LRecyclerView;
 import com.cundong.recyclerview.interfaces.OnItemClickLitener;
 import com.cundong.recyclerview.util.RecyclerViewStateUtils;
 import com.cundong.recyclerview.util.RecyclerViewUtils;
 import com.cundong.recyclerview.view.LoadingFooter;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.utils.NetworkUtils;
+import com.lzx.demo.utils.TLog;
 import com.lzx.demo.weight.SampleHeader;
 
 import java.lang.ref.WeakReference;
@@ -70,13 +69,41 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
-        mRecyclerView.addOnScrollListener(mOnScrollListener);
-
-        mRecyclerView.setLoadingListener(new LRecyclerView.LoadingListener() {
+        mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
             @Override
             public void onRefresh() {
                 isRefresh = true;
                 requestData();
+            }
+
+            @Override
+            public void onScrollUp() {
+            }
+
+            @Override
+            public void onScrollDown() {
+            }
+
+            @Override
+            public void onBottom() {
+                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
+                if(state == LoadingFooter.State.Loading) {
+                    TLog.log("the state is Loading, just wait..");
+                    return;
+                }
+
+                if (mCurrentCounter < TOTAL_COUNTER) {
+                    // loading more
+                    RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
+                    requestData();
+                } else {
+                    //the end
+                    RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
+                }
+            }
+
+            @Override
+            public void onScrolled(int distanceX, int distanceY) {
             }
 
         });
@@ -106,27 +133,6 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mDataAdapter.addAll(list);
         mCurrentCounter += list.size();
     }
-
-    private RecyclerOnScrollListener mOnScrollListener = new RecyclerOnScrollListener() {
-
-        @Override
-        public void onBottom() {
-            LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-            if(state == LoadingFooter.State.Loading) {
-                Log.d("@Cundong", "the state is Loading, just wait..");
-                return;
-            }
-
-            if (mCurrentCounter < TOTAL_COUNTER) {
-                // loading more
-                RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-                requestData();
-            } else {
-                //the end
-                RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
-            }
-        }
-    };
 
     private static class PreviewHandler extends Handler {
 

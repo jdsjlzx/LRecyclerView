@@ -8,12 +8,12 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="fill_parent"
-        android:layout_height="200dip"
+        android:layout_height="80dip"
         android:layout_gravity="center"
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@color/cardview_light_background"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="4dp"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="0dp"
         card_view:cardUseCompatPadding="true">
 
         <TextView

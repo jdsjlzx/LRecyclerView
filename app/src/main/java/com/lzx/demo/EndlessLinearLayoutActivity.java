@@ -14,10 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cundong.recyclerview.LRecyclerView;
 import com.cundong.recyclerview.HeaderAndFooterRecyclerViewAdapter;
+import com.cundong.recyclerview.LRecyclerView;
 import com.cundong.recyclerview.ProgressStyle;
-import com.cundong.recyclerview.RecyclerOnScrollListener;
 import com.cundong.recyclerview.interfaces.OnItemClickLitener;
 import com.cundong.recyclerview.util.RecyclerViewStateUtils;
 import com.cundong.recyclerview.util.RecyclerViewUtils;
@@ -86,13 +85,41 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
-        mRecyclerView.addOnScrollListener(mOnScrollListener);
-
-        mRecyclerView.setLoadingListener(new LRecyclerView.LoadingListener() {
+        mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
             @Override
             public void onRefresh() {
                 isRefresh = true;
                 requestData();
+            }
+
+            @Override
+            public void onScrollUp() {
+            }
+
+            @Override
+            public void onScrollDown() {
+            }
+
+            @Override
+            public void onBottom() {
+                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
+                if(state == LoadingFooter.State.Loading) {
+                    Log.d(TAG, "the state is Loading, just wait..");
+                    return;
+                }
+
+                if (mCurrentCounter < TOTAL_COUNTER) {
+                    // loading more
+                    RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
+                    requestData();
+                } else {
+                    //the end
+                    RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
+                }
+            }
+
+            @Override
+            public void onScrolled(int distanceX, int distanceY) {
             }
 
         });
@@ -111,6 +138,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                 Toast.makeText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title, Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void notifyDataSetChanged() {
@@ -121,29 +150,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
         mDataAdapter.addAll(list);
         mCurrentCounter += list.size();
+
     }
-
-    private RecyclerOnScrollListener mOnScrollListener = new RecyclerOnScrollListener() {
-
-        @Override
-        public void onBottom() {
-
-            LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-            if(state == LoadingFooter.State.Loading) {
-                Log.d(TAG, "the state is Loading, just wait..");
-                return;
-            }
-
-            if (mCurrentCounter < TOTAL_COUNTER) {
-                // loading more
-                RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-                requestData();
-            } else {
-                //the end
-                RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
-            }
-        }
-    };
 
     private static class PreviewHandler extends Handler {
 
@@ -206,6 +214,13 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                     }else {
                         RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
                     }
+                    break;
+                case -4:
+                    int index = activity.mDataAdapter.getDataList().size();
+                    activity.mDataAdapter.getDataList().remove(0);
+                    activity.mDataAdapter.getDataList().remove(1);
+                    activity.mDataAdapter.notifyItemRangeRemoved(0,2);
+
                     break;
                 default:
                     break;

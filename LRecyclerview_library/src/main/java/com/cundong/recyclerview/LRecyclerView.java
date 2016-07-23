@@ -1,7 +1,10 @@
 package com.cundong.recyclerview;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,10 +14,10 @@ import com.cundong.recyclerview.view.ArrowRefreshHeader;
 /**
  * Created by lizhixian on 16/1/4.
  */
-public class LRecyclerView extends RecyclerView{
+public class LRecyclerView extends RecyclerView {
 
     private boolean pullRefreshEnabled = true;
-    private LoadingListener mLoadingListener;
+    private LScrollListener mLScrollListener;
     private ArrowRefreshHeader mRefreshHeader;
     private View mEmptyView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
@@ -22,6 +25,54 @@ public class LRecyclerView extends RecyclerView{
     private static final float DRAG_RATE = 3;
 
     private HeaderAndFooterRecyclerViewAdapter mWrapAdapter;
+
+    //scroll variables begin
+    /**
+     * 当前RecyclerView类型
+     */
+    protected LayoutManagerType layoutManagerType;
+
+    /**
+     * 最后一个的位置
+     */
+    private int[] lastPositions;
+
+    /**
+     * 最后一个可见的item的位置
+     */
+    private int lastVisibleItemPosition;
+
+    /**
+     * 当前滑动的状态
+     */
+    private int currentScrollState = 0;
+
+    /**
+     * 触发在上下滑动监听器的容差距离
+     */
+    private static final int HIDE_THRESHOLD = 20;
+
+    /**
+     * 滑动的距离
+     */
+    private int mDistance = 0;
+
+    /**
+     * 是否需要监听控制
+     */
+    private boolean mIsScrollDown = true;
+
+    /**
+     * Y轴移动的实际距离（最顶部为0）
+     */
+    private int mScrolledYDistance = 0;
+
+    /**
+     * X轴移动的实际距离（最左侧为0）
+     */
+    private int mScrolledXDistance = 0;
+    //scroll variables end
+
 
     public LRecyclerView(Context context) {
         super(context);
@@ -38,12 +89,12 @@ public class LRecyclerView extends RecyclerView{
     @Override
     public void setAdapter(Adapter adapter) {
         Adapter oldAdapter = getAdapter();
-        if(oldAdapter != null && mDataObserver != null){
+        if (oldAdapter != null && mDataObserver != null) {
             oldAdapter.unregisterAdapterDataObserver(mDataObserver);
         }
         super.setAdapter(adapter);
 
-        mWrapAdapter = (HeaderAndFooterRecyclerViewAdapter)getAdapter();
+        mWrapAdapter = (HeaderAndFooterRecyclerViewAdapter) getAdapter();
         mRefreshHeader = mWrapAdapter.getRefreshHeader();
         adapter.registerAdapterDataObserver(mDataObserver);
         mDataObserver.onChanged();
@@ -54,11 +105,11 @@ public class LRecyclerView extends RecyclerView{
         public void onChanged() {
             Adapter<?> adapter = getAdapter();
 
-            if(adapter instanceof HeaderAndFooterRecyclerViewAdapter){
+            if (adapter instanceof HeaderAndFooterRecyclerViewAdapter) {
                 HeaderAndFooterRecyclerViewAdapter headerAndFooterAdapter = (HeaderAndFooterRecyclerViewAdapter) adapter;
-                if(headerAndFooterAdapter.getInnerAdapter() != null && mEmptyView != null) {
+                if (headerAndFooterAdapter.getInnerAdapter() != null && mEmptyView != null) {
                     int count = headerAndFooterAdapter.getInnerAdapter().getItemCount();
-                    if(count == 0) {
+                    if (count == 0) {
                         mEmptyView.setVisibility(View.VISIBLE);
                         LRecyclerView.this.setVisibility(View.GONE);
                     } else {
@@ -66,9 +117,9 @@ public class LRecyclerView extends RecyclerView{
                         LRecyclerView.this.setVisibility(View.VISIBLE);
                     }
                 }
-            }else {
-                if(adapter != null && mEmptyView != null) {
-                    if(adapter.getItemCount() == 0) {
+            } else {
+                if (adapter != null && mEmptyView != null) {
+                    if (adapter.getItemCount() == 0) {
                         mEmptyView.setVisibility(View.VISIBLE);
                         LRecyclerView.this.setVisibility(View.GONE);
                     } else {
@@ -105,8 +156,8 @@ public class LRecyclerView extends RecyclerView{
                 mLastY = -1; // reset
                 if (isOnTop() && pullRefreshEnabled) {
                     if (mRefreshHeader.releaseAction()) {
-                        if (mLoadingListener != null) {
-                            mLoadingListener.onRefresh();
+                        if (mLScrollListener != null) {
+                            mLScrollListener.onRefresh();
                         }
                     }
                 }
@@ -146,7 +197,8 @@ public class LRecyclerView extends RecyclerView{
 
     /**
      * set view when no content item
-     * @param emptyView  visiable view when items is empty
+     *
+     * @param emptyView visiable view when items is empty
      */
     public void setEmptyView(View emptyView) {
         this.mEmptyView = emptyView;
@@ -173,21 +225,132 @@ public class LRecyclerView extends RecyclerView{
         }
     }
 
-    public void setLoadingListener(LoadingListener listener) {
-        mLoadingListener = listener;
+    public void setLScrollListener(LScrollListener listener) {
+        mLScrollListener = listener;
     }
 
-    public interface LoadingListener {
+    public interface LScrollListener {
 
-        void onRefresh();
+        void onRefresh();//pull down to refresh
 
+        void onScrollUp();//scroll down to up
+
+        void onScrollDown();//scroll from up to down
+
+        void onBottom();//load next page
+
+        void onScrolled(int distanceX, int distanceY);// moving state,you can get the move distance
     }
 
     public void setRefreshing(boolean refreshing) {
-        if (refreshing && pullRefreshEnabled && mLoadingListener != null) {
+        if (refreshing && pullRefreshEnabled && mLScrollListener != null) {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
             mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
-            mLoadingListener.onRefresh();
+            mLScrollListener.onRefresh();
         }
+    }
+
+    @Override
+    public void onScrolled(int dx, int dy) {
+        super.onScrolled(dx, dy);
+        if (null != mLScrollListener) {
+            int firstVisibleItemPosition = 0;
+            RecyclerView.LayoutManager layoutManager = getLayoutManager();
+
+            if (layoutManagerType == null) {
+                if (layoutManager instanceof LinearLayoutManager) {
+                    layoutManagerType = LayoutManagerType.LinearLayout;
+                } else if (layoutManager instanceof GridLayoutManager) {
+                    layoutManagerType = LayoutManagerType.GridLayout;
+                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                    layoutManagerType = LayoutManagerType.StaggeredGridLayout;
+                } else {
+                    throw new RuntimeException(
+                            "Unsupported LayoutManager used. Valid ones are LinearLayoutManager, GridLayoutManager and StaggeredGridLayoutManager");
+                }
+            }
+
+            switch (layoutManagerType) {
+                case LinearLayout:
+                    firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                    lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                    break;
+                case GridLayout:
+                    firstVisibleItemPosition = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                    lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                    break;
+                case StaggeredGridLayout:
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+                    if (lastPositions == null) {
+                        lastPositions = new int[staggeredGridLayoutManager.getSpanCount()];
+                    }
+                    staggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
+                    lastVisibleItemPosition = findMax(lastPositions);
+                    staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions(lastPositions);
+                    firstVisibleItemPosition = findMax(lastPositions);
+                    break;
+            }
+
+            // 根据类型来计算出第一个可见的item的位置，由此判断是否触发到底部的监听器
+            // 计算并判断当前是向上滑动还是向下滑动
+            calculateScrollUpOrDown(firstVisibleItemPosition, dy);
+            // 移动距离超过一定的范围，我们监听就没有啥实际的意义了
+            mScrolledXDistance += dx;
+            mScrolledYDistance += dy;
+            mScrolledXDistance = (mScrolledXDistance < 0) ? 0 : mScrolledXDistance;
+            mScrolledYDistance = (mScrolledYDistance < 0) ? 0 : mScrolledYDistance;
+            if (mIsScrollDown && (dy == 0)) {
+                mScrolledYDistance = 0;
+            }
+            //Be careful in here
+            mLScrollListener.onScrolled(mScrolledXDistance, mScrolledYDistance);
+        }
+
+    }
+
+    @Override
+    public void onScrollStateChanged(int state) {
+        super.onScrollStateChanged(state);
+        currentScrollState = state;
+        RecyclerView.LayoutManager layoutManager = getLayoutManager();
+        int visibleItemCount = layoutManager.getChildCount();
+        int totalItemCount = layoutManager.getItemCount();
+        if (visibleItemCount > 0
+                && currentScrollState == RecyclerView.SCROLL_STATE_IDLE
+                && lastVisibleItemPosition >= totalItemCount - 1
+                && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+            mLScrollListener.onBottom();
+        }
+    }
+
+    /**
+     * 计算当前是向上滑动还是向下滑动
+     */
+    private void calculateScrollUpOrDown(int firstVisibleItemPosition, int dy) {
+        if (firstVisibleItemPosition == 0) {
+            if (!mIsScrollDown) {
+                mLScrollListener.onScrollDown();
+                mIsScrollDown = true;
+            }
+        } else {
+            if (mDistance > HIDE_THRESHOLD && mIsScrollDown) {
+                mLScrollListener.onScrollUp();
+                mIsScrollDown = false;
+                mDistance = 0;
+            } else if (mDistance < -HIDE_THRESHOLD && !mIsScrollDown) {
+                mLScrollListener.onScrollDown();
+                mIsScrollDown = true;
+                mDistance = 0;
+            }
+        }
+        if ((mIsScrollDown && dy > 0) || (!mIsScrollDown && dy < 0)) {
+            mDistance += dy;
+        }
+    }
+
+    public enum LayoutManagerType {
+        LinearLayout,
+        StaggeredGridLayout,
+        GridLayout
     }
 }
