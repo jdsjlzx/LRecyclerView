@@ -64,9 +64,11 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
 
         //setLayoutManager
-        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager (2, StaggeredGridLayoutManager.VERTICAL);
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(manager);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager (2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        //防止item位置互换
+        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
