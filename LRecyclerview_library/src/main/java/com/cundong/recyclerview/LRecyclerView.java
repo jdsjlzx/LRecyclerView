@@ -312,15 +312,18 @@ public class LRecyclerView extends RecyclerView {
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
         currentScrollState = state;
-        RecyclerView.LayoutManager layoutManager = getLayoutManager();
-        int visibleItemCount = layoutManager.getChildCount();
-        int totalItemCount = layoutManager.getItemCount();
-        if (visibleItemCount > 0
-                && currentScrollState == RecyclerView.SCROLL_STATE_IDLE
-                && lastVisibleItemPosition >= totalItemCount - 1
-                && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
-            mLScrollListener.onBottom();
+        if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE && mLScrollListener != null) {
+            RecyclerView.LayoutManager layoutManager = getLayoutManager();
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            if (visibleItemCount > 0
+                    && lastVisibleItemPosition >= totalItemCount - 1
+                    && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+                mLScrollListener.onBottom();
+            }
+
         }
+
     }
 
     /**
@@ -329,17 +332,17 @@ public class LRecyclerView extends RecyclerView {
     private void calculateScrollUpOrDown(int firstVisibleItemPosition, int dy) {
         if (firstVisibleItemPosition == 0) {
             if (!mIsScrollDown) {
-                mLScrollListener.onScrollDown();
                 mIsScrollDown = true;
+                mLScrollListener.onScrollDown();
             }
         } else {
             if (mDistance > HIDE_THRESHOLD && mIsScrollDown) {
-                mLScrollListener.onScrollUp();
                 mIsScrollDown = false;
+                mLScrollListener.onScrollUp();
                 mDistance = 0;
             } else if (mDistance < -HIDE_THRESHOLD && !mIsScrollDown) {
-                mLScrollListener.onScrollDown();
                 mIsScrollDown = true;
+                mLScrollListener.onScrollDown();
                 mDistance = 0;
             }
         }
