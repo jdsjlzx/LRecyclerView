@@ -28,6 +28,24 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 
 ![这里写图片描述](https://raw.githubusercontent.com/cundong/HeaderAndFooterRecyclerView/master/art/art1.png)
 
+Gradle
+--
+Step 1. 在你的根build.gradle文件中增加JitPack仓库依赖。
+
+```
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+```	
+
+Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
+```
+compile 'com.github.jdsjlzx:LRecyclerView:1.0.0'
+```
+
 使用
 --
 
