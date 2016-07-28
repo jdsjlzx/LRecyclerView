@@ -35,19 +35,19 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 -----------------------
 
 ```
-		mDataAdapter = new DataAdapter(this);
-        mDataAdapter.setData(dataList);
+mDataAdapter = new DataAdapter(this);
+mDataAdapter.setData(dataList);
 
-        mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(this, mDataAdapter);
-        mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
+mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(this, mDataAdapter);
+mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //add a HeaderView
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+//add a HeaderView
+RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
-        //add a FooterView
-        RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
+//add a FooterView
+RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
 
 下拉刷新和加载更多
