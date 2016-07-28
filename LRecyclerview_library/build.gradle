@@ -30,6 +30,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.github.jdsjlzx:LRecyclerView:-SNAPSHOT'
+    compile 'com.github.jdsjlzx:LRecyclerView:755dee05ad'
+    compile 'com.github.jdsjlzx:LRecyclerView:3f650c21b0'
+    compile 'com.github.jdsjlzx:LRecyclerView:731cb4448d'
+    compile 'com.github.jdsjlzx:LRecyclerView:aa4930ed03'
 }
 
 
