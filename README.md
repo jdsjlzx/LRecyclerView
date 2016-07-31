@@ -56,8 +56,8 @@ compile 'com.github.jdsjlzx:LRecyclerView:1.0.0'
 mDataAdapter = new DataAdapter(this);
 mDataAdapter.setData(dataList);
 
-mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(this, mDataAdapter);
-mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
+mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
