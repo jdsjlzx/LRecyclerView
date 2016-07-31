@@ -342,9 +342,12 @@ EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参
 分组
 --
 效果图：
+
 ![这里写图片描述](https://github.com/jdsjlzx/LRecyclerView/blob/master/art/art6.gif)
 
 功能还在完善中....
+
+
 
 
 代码混淆
