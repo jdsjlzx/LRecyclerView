@@ -6,4 +6,6 @@
 
     <color name="color_ff">#F0F0F0</color>
     <color name="color_00">#8A000000</color>
+
+    <color name="default_header_color">#445566</color>
 </resources>

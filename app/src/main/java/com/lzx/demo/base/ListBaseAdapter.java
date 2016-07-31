@@ -4,19 +4,12 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.lzx.demo.bean.Entity;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class ListBaseAdapter<T extends Entity> extends RecyclerView.Adapter {
     protected Context mContext;
-    protected int mScreenWidth;
-
-    public void setScreenWidth(int width) {
-        mScreenWidth = width;
-    }
 
     protected ArrayList<T> mDataList = new ArrayList<>();
 
@@ -52,8 +45,15 @@ public class ListBaseAdapter<T extends Entity> extends RecyclerView.Adapter {
         }
     }
 
+    public void delete(int position) {
+        mDataList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public void clear() {
         mDataList.clear();
         notifyDataSetChanged();
     }
+
+
 }

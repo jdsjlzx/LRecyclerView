@@ -17,4 +17,6 @@
     <dimen name="sp_14">14sp</dimen>
     <dimen name="sp_16">16sp</dimen>
 
+    <dimen name="default_divider_height">1dp</dimen>
+    <dimen name="default_divider_padding">4dp</dimen>
 </resources>

@@ -20,12 +20,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LinearLayoutActivity" />
-        <activity android:name=".EndlessLinearLayoutActivity" />
-        <activity android:name=".EndlessGridLayoutActivity" />
-        <activity android:name=".EndlessStaggeredGridLayoutActivity" />
-        <activity android:name=".EmptyViewActivity" />
-
+        <activity android:name=".ui.LinearLayoutActivity" />
+        <activity android:name=".ui.EndlessLinearLayoutActivity" />
+        <activity android:name=".ui.EndlessGridLayoutActivity" />
+        <activity android:name=".ui.EndlessStaggeredGridLayoutActivity" />
+        <activity android:name=".ui.EmptyViewActivity" />
+        <activity android:name=".ui.SectionLayoutActivity" />
     </application>
 
 </manifest>

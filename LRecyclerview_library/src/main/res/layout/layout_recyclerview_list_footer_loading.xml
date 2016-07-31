@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="horizontal">
 
-    <com.cundong.recyclerview.progressindicator.AVLoadingIndicatorView
+    <com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView
         android:id="@+id/loading_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

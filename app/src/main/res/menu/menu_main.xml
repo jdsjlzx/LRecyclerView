@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.oushangfeng.pinneddemo.MainActivity">
+    <item
+        android:id="@+id/linnear_layout"
+        android:orderInCategory="100"
+        android:title="线性布局"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/grid_layout"
+        android:orderInCategory="100"
+        android:title="网格布局"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/staggered_grid_layout"
+        android:orderInCategory="100"
+        android:title="瀑布流布局"
+        app:showAsAction="never"/>
+
+</menu>
