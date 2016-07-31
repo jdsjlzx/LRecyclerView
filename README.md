@@ -200,7 +200,7 @@ private View.OnClickListener mFooterClick = new View.OnClickListener() {
 先看下怎么使用：
 
 ```
-mHeaderAndFooterRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
+mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
@@ -354,8 +354,8 @@ EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参
 --
 ```
 #LRecyclerview_library
--dontwarn com.cundong.recyclerview.**
--keep class com.cundong.recyclerview.**{*;}
+-dontwarn com.github.jdsjlzx.**
+-keep class com.github.jdsjlzx.**{*;}
 ```
 
 如果你想了解更多混淆配置，参考：http://blog.csdn.net/jdsjlzx/article/details/51861460
