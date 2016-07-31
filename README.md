@@ -43,7 +43,7 @@ allprojects {
 
 Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
 ```
-compile 'com.github.jdsjlzx:LRecyclerView:1.0.0'
+compile 'com.github.jdsjlzx:LRecyclerView:1.0.1'
 ```
 
 使用
