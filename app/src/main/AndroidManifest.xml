@@ -25,7 +25,9 @@
         <activity android:name=".ui.EndlessGridLayoutActivity" />
         <activity android:name=".ui.EndlessStaggeredGridLayoutActivity" />
         <activity android:name=".ui.EmptyViewActivity" />
+        <activity android:name=".ui.SectionCollectionActivity" />
         <activity android:name=".ui.SectionLayoutActivity" />
+        <activity android:name=".ui.SectionAnimalActivity" />
     </application>
 
 </manifest>

@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jdsjlzx.ItemDecoration.StickyHeaderDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickLitener;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.lzx.demo.ItemDecoration.StickyHeaderDecoration;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.StickyTestAdapter;
 

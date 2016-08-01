@@ -23,8 +23,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jdsjlzx.ItemDecoration.DoubleHeaderDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.lzx.demo.ItemDecoration.DoubleHeaderDecoration;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.DoubleHeaderTestAdapter;
 

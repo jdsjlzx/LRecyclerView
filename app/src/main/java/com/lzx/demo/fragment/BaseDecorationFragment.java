@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.lzx.demo.ItemDecoration.DividerDecoration;
 import com.lzx.demo.R;
 
 public abstract class BaseDecorationFragment extends Fragment {

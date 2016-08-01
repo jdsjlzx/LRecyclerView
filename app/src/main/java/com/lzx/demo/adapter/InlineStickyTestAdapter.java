@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.jdsjlzx.ItemDecoration.StickyHeaderAdapter;
+import com.lzx.demo.ItemDecoration.StickyHeaderAdapter;
 import com.lzx.demo.R;
 
 public class InlineStickyTestAdapter

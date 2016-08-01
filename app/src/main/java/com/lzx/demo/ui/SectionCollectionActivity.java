@@ -1,4 +1,4 @@
-package com.lzx.demo;
+package com.lzx.demo.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,20 +15,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.util.RecyclerViewUtils;
-import com.lzx.demo.ui.EmptyViewActivity;
-import com.lzx.demo.ui.EndlessGridLayoutActivity;
-import com.lzx.demo.ui.EndlessLinearLayoutActivity;
-import com.lzx.demo.ui.EndlessStaggeredGridLayoutActivity;
-import com.lzx.demo.ui.LinearLayoutActivity;
-import com.lzx.demo.ui.SectionCollectionActivity;
+import com.lzx.demo.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class SectionCollectionActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class, EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class,EmptyViewActivity.class, SectionCollectionActivity.class};
-    private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity", "EndlessStaggeredGridLayoutActivity","EmptyViewActivity","SectionCollectionActivity"};
+    private static final Class<?>[] ACTIVITY = {SectionLayoutActivity.class, SectionAnimalActivity.class};
+    private static final String[] TITLE = {"SectionLayoutActivity", "SectionAnimalActivity"};
+
 
     private RecyclerView mRecyclerView = null;
 
@@ -111,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        ListItem listItem = mDataList.get(RecyclerViewUtils.getAdapterPosition(mRecyclerView, ViewHolder.this));
-                        startActivity(new Intent(MainActivity.this, listItem.activity));
+                        ListItem listItem = mDataList.get(RecyclerViewUtils.getAdapterPosition(mRecyclerView, SectionCollectionActivity.DataAdapter.ViewHolder.this));
+                        startActivity(new Intent(SectionCollectionActivity.this, listItem.activity));
                     }
                 });
             }

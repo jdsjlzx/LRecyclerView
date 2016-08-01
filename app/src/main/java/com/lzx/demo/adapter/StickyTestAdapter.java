@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jdsjlzx.ItemDecoration.StickyHeaderAdapter;
+import com.lzx.demo.ItemDecoration.StickyHeaderAdapter;
 import com.lzx.demo.R;
 
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jdsjlzx.ItemDecoration;
+package com.lzx.demo.ItemDecoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;

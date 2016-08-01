@@ -276,7 +276,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(mLayoutInflater.inflate(R.layout.sample_item_text, parent, false));
+            return new ViewHolder(mLayoutInflater.inflate(R.layout.list_item_text, parent, false));
         }
 
         @Override

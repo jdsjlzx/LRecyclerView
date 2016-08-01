@@ -65,7 +65,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         //setLayoutManager
-        GridLayoutManager manager = new GridLayoutManager(this, 3);
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
         manager.setSpanSizeLookup(new HeaderSpanSizeLookup((LRecyclerViewAdapter) mRecyclerView.getAdapter(), manager.getSpanCount()));
         mRecyclerView.setLayoutManager(manager);
 

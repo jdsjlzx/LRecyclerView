@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.jdsjlzx.ItemDecoration.DoubleHeaderAdapter;
+import com.lzx.demo.ItemDecoration.DoubleHeaderAdapter;
 import com.lzx.demo.R;
 
 public class DoubleHeaderTestAdapter extends RecyclerView.Adapter<DoubleHeaderTestAdapter.ViewHolder> implements

@@ -3,8 +3,8 @@ package com.lzx.demo.fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
-import com.github.jdsjlzx.ItemDecoration.StickyHeaderDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.lzx.demo.ItemDecoration.StickyHeaderDecoration;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.InlineStickyTestAdapter;
 
