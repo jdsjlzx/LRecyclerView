@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -49,7 +50,7 @@ public class JellyView extends View  implements BaseRefreshHeader {
         }
         path = new Path();
         paint = new Paint();
-        paint.setColor(getContext().getResources().getColor(android.R.color.holo_blue_bright));
+        paint.setColor(ContextCompat.getColor(getContext(), android.R.color.holo_blue_bright));
         paint.setAntiAlias(true);
     }
 

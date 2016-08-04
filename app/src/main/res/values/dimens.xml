@@ -19,4 +19,7 @@
 
     <dimen name="default_divider_height">1dp</dimen>
     <dimen name="default_divider_padding">4dp</dimen>
+
+    <dimen name="item_height">60dp</dimen>
+    <dimen name="item_margin">10dp</dimen>
 </resources>
