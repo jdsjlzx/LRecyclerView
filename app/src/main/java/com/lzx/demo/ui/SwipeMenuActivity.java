@@ -23,8 +23,8 @@ import java.util.List;
 
 public class SwipeMenuActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {AllMenuActivity.class, ViewTypeMenuActivity.class,DragMenuListActivity.class,GridDragMenuActivity.class,SwipeDeleteListActivity.class};
-    private static final String[] TITLE = {"AllMenuActivity","ViewTypeMenuActivity","DragMenuListActivity","GridDragMenuActivity","SwipeDeleteListActivity"};
+    private static final Class<?>[] ACTIVITY = {AllMenuActivity.class, ViewTypeMenuActivity.class,DragMenuListActivity.class,GridDragMenuActivity.class,SwipeDeleteListActivity.class,DragSwipeFlagsActivity.class, DefineActivity.class};
+    private String[] TITLE ;
 
     private RecyclerView mRecyclerView = null;
 
@@ -38,7 +38,10 @@ public class SwipeMenuActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("SwipeMenu汇总");
+
+        TITLE = getResources().getStringArray(R.array.swipe_main_item);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -131,6 +134,8 @@ public class SwipeMenuActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/jdsjlzx/LRecyclerView"));
             this.startActivity(intent);
             return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

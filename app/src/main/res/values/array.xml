@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="swipe_main_item">
+        <item>左右两侧都有</item>
+        <item>根据ViewType显示菜单</item>
+        <item>长按拖拽Item(List)，与Menu结合</item>
+        <item>长按拖拽Item(Grid)</item>
+        <item>滑动直接删除Item</item>
+        <item>指定某个Item不能拖拽或者不能滑动删除</item>
+        <item>用SwipeMenuLayout实现你自己的侧滑</item>
+    </string-array>
+
+</resources>

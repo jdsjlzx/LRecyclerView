@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -28,8 +30,11 @@ public class SectionAnimalActivity extends AppCompatActivity implements Sectioni
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView)findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -137,5 +142,13 @@ public class SectionAnimalActivity extends AppCompatActivity implements Sectioni
             Toast.makeText(getApplicationContext(), list.get(sectionedRecyclerViewAdapter.getIndexForPosition(recyclerView.getChildPosition(v))).name, Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
     }
 }

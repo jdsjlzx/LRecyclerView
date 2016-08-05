@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SwipeMenuActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -35,6 +35,9 @@
         <activity android:name=".ui.DragMenuListActivity" />
         <activity android:name=".ui.GridDragMenuActivity" />
         <activity android:name=".ui.SwipeDeleteListActivity" />
+        <activity android:name=".ui.DragSwipeFlagsActivity" />
+        <activity android:name=".ui.DefineActivity" />
+        <activity android:name=".ui.SwipeMenuActivity" />
     </application>
 
 </manifest>
