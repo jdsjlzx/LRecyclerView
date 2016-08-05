@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.Closeable;
 import com.github.jdsjlzx.interfaces.OnItemClickLitener;
@@ -21,11 +22,12 @@ import com.lzx.demo.ItemDecoration.ListViewDecoration;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.MenuAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.util.AppToast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ListDragMenuActivity extends AppCompatActivity {
+public class DragMenuListActivity extends AppCompatActivity {
     private Activity mContext;
 
     private LRecyclerView mRecyclerView = null;
@@ -38,6 +40,11 @@ public class ListDragMenuActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_ll_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mContext = this;
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
@@ -65,6 +72,7 @@ public class ListDragMenuActivity extends AppCompatActivity {
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+
         mRecyclerView.setPullRefreshEnabled(false);
 
         mRecyclerView.setLongPressDragEnabled(true);// 开启拖拽，就这么简单一句话。
@@ -73,8 +81,8 @@ public class ListDragMenuActivity extends AppCompatActivity {
         mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position).title;
-                Toast.makeText(ListDragMenuActivity.this, text, Toast.LENGTH_SHORT).show();
+                String text = "Click position = " + position;
+                AppToast.showShortText(DragMenuListActivity.this, text);
             }
 
             @Override
@@ -84,7 +92,6 @@ public class ListDragMenuActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     /**
@@ -93,9 +100,12 @@ public class ListDragMenuActivity extends AppCompatActivity {
     private OnItemMoveListener onItemMoveListener = new OnItemMoveListener() {
         @Override
         public boolean onItemMove(int fromPosition, int toPosition) {
+            final int adjFromPosition = fromPosition - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
+            final int adjToPosition = toPosition - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
             // 当Item被拖拽的时候。
-            Collections.swap(mDataAdapter.getDataList(), fromPosition, toPosition);
-            mDataAdapter.notifyItemMoved(fromPosition, toPosition);
+            Collections.swap(mDataAdapter.getDataList(), adjFromPosition, adjToPosition);
+            //Be carefull in here!
+            mLRecyclerViewAdapter.notifyItemMoved(fromPosition, toPosition);
             return true;// 返回true表示处理了，返回false表示你没有处理。
         }
 
@@ -148,11 +158,18 @@ public class ListDragMenuActivity extends AppCompatActivity {
             closeable.smoothCloseMenu();// 关闭被点击的菜单。
 
             if (direction == LRecyclerView.RIGHT_DIRECTION) {
-                Toast.makeText(mContext, "list第" + adapterPosition + "; 右侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+                AppToast.showShortText(DragMenuListActivity.this, "list第" + adapterPosition + "; 右侧菜单第" + menuPosition);
             } else if (direction == LRecyclerView.LEFT_DIRECTION) {
-                Toast.makeText(mContext, "list第" + adapterPosition + "; 左侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+                AppToast.showShortText(DragMenuListActivity.this, "list第" + adapterPosition + "; 左侧菜单第" + menuPosition);
             }
         }
     };
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
+    }
 }

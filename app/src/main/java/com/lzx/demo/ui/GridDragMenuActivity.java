@@ -1,36 +1,35 @@
 package com.lzx.demo.ui;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.Closeable;
 import com.github.jdsjlzx.interfaces.OnItemClickLitener;
 import com.github.jdsjlzx.interfaces.OnSwipeMenuItemClickListener;
 import com.github.jdsjlzx.interfaces.SwipeMenuCreator;
+import com.github.jdsjlzx.recyclerview.HeaderSpanSizeLookup;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.swipe.SwipeMenu;
 import com.github.jdsjlzx.swipe.SwipeMenuItem;
-import com.github.jdsjlzx.util.RecyclerViewUtils;
+import com.github.jdsjlzx.swipe.touch.OnItemMoveListener;
 import com.lzx.demo.ItemDecoration.ListViewDecoration;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.MenuAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
-import com.lzx.demo.weight.SampleFooter;
-import com.lzx.demo.weight.SampleHeader;
+import com.lzx.demo.util.TLog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class AllMenuActivity extends AppCompatActivity {
+public class GridDragMenuActivity extends AppCompatActivity {
     private Activity mContext;
 
     private LRecyclerView mRecyclerView = null;
@@ -62,35 +61,32 @@ public class AllMenuActivity extends AppCompatActivity {
         mDataAdapter = new MenuAdapter();
         mDataAdapter.setDataList(dataList);
 
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        manager.setSpanSizeLookup(new HeaderSpanSizeLookup((LRecyclerViewAdapter) mRecyclerView.getAdapter(), manager.getSpanCount()));
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setHasFixedSize(true);// 如果Item够简单，高度是确定的，打开FixSize将提高性能。
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());// 设置Item默认动画，加也行，不加也行。
+        mRecyclerView.addItemDecoration(new ListViewDecoration());// 添加分割线。
+
         // 为SwipeRecyclerView的Item创建菜单就两句话，不错就是这么简单：
         // 设置菜单创建器。
         mRecyclerView.setSwipeMenuCreator(swipeMenuCreator);
         // 设置菜单Item点击监听。
         mRecyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
 
-        mRecyclerView.openLeftMenu(0);
-        mRecyclerView.openRightMenu(0);
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
-        mRecyclerView.setHasFixedSize(true);// 如果Item够简单，高度是确定的，打开FixSize将提高性能。
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());// 设置Item默认动画，加也行，不加也行。
-        mRecyclerView.addItemDecoration(new ListViewDecoration());// 添加分割线。
-
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+
         mRecyclerView.setPullRefreshEnabled(false);
 
-
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
-
-        //add a FooterView
-        RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
+        mRecyclerView.setLongPressDragEnabled(true);// 开启拖拽，就这么简单一句话。
+        mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
 
         mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position).title;
-                AppToast.showShortText(AllMenuActivity.this, text);
+                String text = "Click position = " + position;
+                AppToast.showShortText(GridDragMenuActivity.this, text);
             }
 
             @Override
@@ -100,61 +96,55 @@ public class AllMenuActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     /**
-     * 菜单创建器。在Item要创建菜单的时候调用。
+     * 当Item移动的时候。
+     */
+    private OnItemMoveListener onItemMoveListener = new OnItemMoveListener() {
+        @Override
+        public boolean onItemMove(int fromPosition, int toPosition) {
+            TLog.error("onItemMove fromPosition = " + fromPosition + "  toPosition = " + toPosition);
+            final int adjFromPosition = fromPosition - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
+            final int adjToPosition = toPosition - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
+            TLog.error("onItemMove adjFromPosition = " + adjFromPosition + "  adjToPosition = " + adjToPosition);
+            // 当Item被拖拽的时候。
+            Collections.swap(mDataAdapter.getDataList(), adjFromPosition, adjToPosition);
+            //Be carefull in here!
+            mLRecyclerViewAdapter.notifyItemMoved(fromPosition, toPosition);
+            return true;// 返回true表示处理了，返回false表示你没有处理。
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+            // 当Item被滑动删除掉的时候，在这里是无效的，因为这里没有启用这个功能。
+            // 使用Menu时就不用使用这个侧滑删除啦，两个是冲突的。
+        }
+    };
+
+    /**
+     * 菜单创建器
      */
     private SwipeMenuCreator swipeMenuCreator = new SwipeMenuCreator() {
         @Override
         public void onCreateMenu(SwipeMenu swipeLeftMenu, SwipeMenu swipeRightMenu, int viewType) {
             int size = getResources().getDimensionPixelSize(R.dimen.item_height);
 
-            // 添加左侧的，如果不添加，则左侧不会出现菜单。
-            {
-                SwipeMenuItem addItem = new SwipeMenuItem(mContext)
-                        .setBackgroundDrawable(R.drawable.selector_green)// 点击的背景。
-                        .setImage(R.mipmap.ic_action_add) // 图标。
-                        .setWidth(size) // 宽度。
-                        .setHeight(size); // 高度。
-                swipeLeftMenu.addMenuItem(addItem); // 添加一个按钮到左侧菜单。
+            SwipeMenuItem deleteItem = new SwipeMenuItem(mContext)
+                    .setBackgroundDrawable(R.drawable.selector_red)
+                    .setImage(R.mipmap.ic_action_delete)
+                    .setWidth(size)
+                    .setHeight(size);
 
-                SwipeMenuItem closeItem = new SwipeMenuItem(mContext)
-                        .setBackgroundDrawable(R.drawable.selector_red)
-                        .setImage(R.mipmap.ic_action_close)
-                        .setWidth(size)
-                        .setHeight(size);
+            swipeRightMenu.addMenuItem(deleteItem);// 添加一个按钮到右侧菜单。
 
-                swipeLeftMenu.addMenuItem(closeItem); // 添加一个按钮到左侧菜单。
-            }
+            SwipeMenuItem wechatItem = new SwipeMenuItem(mContext)
+                    .setBackgroundDrawable(R.drawable.selector_green)
+                    .setImage(R.mipmap.ic_action_wechat)
+                    .setWidth(size)
+                    .setHeight(size);
 
-            // 添加右侧的，如果不添加，则右侧不会出现菜单。
-            {
-                SwipeMenuItem deleteItem = new SwipeMenuItem(mContext)
-                        .setBackgroundDrawable(R.drawable.selector_red)
-                        .setImage(R.mipmap.ic_action_delete)
-                        .setText("删除") // 文字，还可以设置文字颜色，大小等。。
-                        .setTextColor(Color.WHITE)
-                        .setWidth(size)
-                        .setHeight(size);
-                swipeRightMenu.addMenuItem(deleteItem);// 添加一个按钮到右侧侧菜单。
-
-                SwipeMenuItem closeItem = new SwipeMenuItem(mContext)
-                        .setBackgroundDrawable(R.drawable.selector_purple)
-                        .setImage(R.mipmap.ic_action_close)
-                        .setWidth(size)
-                        .setHeight(size);
-                swipeRightMenu.addMenuItem(closeItem); // 添加一个按钮到右侧菜单。
-
-                SwipeMenuItem addItem = new SwipeMenuItem(mContext)
-                        .setBackgroundDrawable(R.drawable.selector_green)
-                        .setText("添加")
-                        .setTextColor(Color.WHITE)
-                        .setWidth(size)
-                        .setHeight(size);
-                swipeRightMenu.addMenuItem(addItem); // 添加一个按钮到右侧菜单。
-            }
+            swipeRightMenu.addMenuItem(wechatItem);// 添加一个按钮到右侧菜单。
         }
     };
 
@@ -174,9 +164,9 @@ public class AllMenuActivity extends AppCompatActivity {
             closeable.smoothCloseMenu();// 关闭被点击的菜单。
 
             if (direction == LRecyclerView.RIGHT_DIRECTION) {
-                Toast.makeText(mContext, "list第" + adapterPosition + "; 右侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+                AppToast.showShortText(GridDragMenuActivity.this, "list第" + adapterPosition + "; 右侧菜单第" + menuPosition);
             } else if (direction == LRecyclerView.LEFT_DIRECTION) {
-                Toast.makeText(mContext, "list第" + adapterPosition + "; 左侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+                AppToast.showShortText(GridDragMenuActivity.this, "list第" + adapterPosition + "; 左侧菜单第" + menuPosition);
             }
         }
     };
@@ -188,5 +178,4 @@ public class AllMenuActivity extends AppCompatActivity {
         }
         return true;
     }
-
 }

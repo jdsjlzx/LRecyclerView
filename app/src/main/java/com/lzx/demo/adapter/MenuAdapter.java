@@ -43,9 +43,13 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
         }
     }
 
-    public void delete(int position) {
+    public void remove(int position) {
         mDataList.remove(position);
         notifyItemRemoved(position);
+        if(position != mDataList.size()){ // 如果移除的是最后一个，忽略
+            notifyItemRangeChanged(position, mDataList.size() - position);
+        }
+
     }
 
     public void clear() {

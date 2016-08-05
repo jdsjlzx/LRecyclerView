@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import com.lzx.demo.R;
 import com.lzx.demo.adapter.MenuAdapter;
 import com.lzx.demo.adapter.MenuViewTypeAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.util.AppToast;
 import com.lzx.demo.weight.SampleFooter;
 import com.lzx.demo.weight.SampleHeader;
 
@@ -40,6 +43,11 @@ public class ViewTypeMenuActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_ll_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mContext = this;
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
@@ -148,11 +156,18 @@ public class ViewTypeMenuActivity extends AppCompatActivity {
             closeable.smoothCloseMenu();// 关闭被点击的菜单。
 
             if (direction == LRecyclerView.RIGHT_DIRECTION) {
-                Toast.makeText(mContext, "list第" + adapterPosition + "; 右侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+                AppToast.showShortText(ViewTypeMenuActivity.this, "list第" + adapterPosition + "; 右侧菜单第" + menuPosition);
             } else if (direction == LRecyclerView.LEFT_DIRECTION) {
-                Toast.makeText(mContext, "list第" + adapterPosition + "; 左侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+                AppToast.showShortText(ViewTypeMenuActivity.this, "list第" + adapterPosition + "; 左侧菜单第" + menuPosition);
             }
         }
     };
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
+    }
 }

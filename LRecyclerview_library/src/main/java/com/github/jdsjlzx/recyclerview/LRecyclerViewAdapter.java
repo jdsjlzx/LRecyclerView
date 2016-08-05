@@ -4,10 +4,14 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jdsjlzx.interfaces.OnItemClickLitener;
+import com.github.jdsjlzx.swipe.SwipeMenuAdapter;
+import com.github.jdsjlzx.swipe.SwipeMenuLayout;
+import com.github.jdsjlzx.swipe.SwipeMenuView;
 import com.github.jdsjlzx.view.ArrowRefreshHeader;
 
 import java.util.ArrayList;
@@ -229,12 +233,14 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         int adapterCount;
         if (mInnerAdapter != null) {
             adapterCount = mInnerAdapter.getItemCount();
+            Log.e("lzx","onBindViewHolder adjPosition = " + adjPosition);
+            Log.e("lzx","onBindViewHolder adapterCount = " + adapterCount);
+
             if (adjPosition < adapterCount) {
                 mInnerAdapter.onBindViewHolder(holder, adjPosition);
 
                 if (mOnItemClickLitener != null) {
-                    holder.itemView.setOnClickListener(new View.OnClickListener()
-                    {
+                    holder.itemView.setOnClickListener(new View.OnClickListener()  {
                         @Override
                         public void onClick(View v)
                         {
@@ -242,8 +248,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                         }
                     });
 
-                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener()
-                    {
+                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v)
                         {
@@ -251,6 +256,21 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                             return false;
                         }
                     });
+                }
+
+                if (mInnerAdapter instanceof SwipeMenuAdapter) {
+                    View itemView = holder.itemView;
+                    if (itemView instanceof SwipeMenuLayout) {
+                        SwipeMenuLayout swipeMenuLayout = (SwipeMenuLayout) itemView;
+                        int childCount = swipeMenuLayout.getChildCount();
+                        for (int i = 0; i < childCount; i++) {
+                            View childView = swipeMenuLayout.getChildAt(i);
+                            if (childView instanceof SwipeMenuView) {
+                                ((SwipeMenuView) childView).bindAdapterPosition(adjPosition);
+                            }
+                        }
+                    }
+
                 }
 
                 return;

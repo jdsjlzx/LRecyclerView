@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -131,6 +132,8 @@ public class LRecyclerView extends RecyclerView {
             oldAdapter.unregisterAdapterDataObserver(mDataObserver);
         }
         super.setAdapter(adapter);
+        adapter.registerAdapterDataObserver(mDataObserver);
+        mDataObserver.onChanged();
 
         mWrapAdapter = (LRecyclerViewAdapter) getAdapter();
         mRefreshHeader = mWrapAdapter.getRefreshHeader();
@@ -142,8 +145,7 @@ public class LRecyclerView extends RecyclerView {
             menuAdapter.setSwipeMenuItemClickListener(mDefaultMenuItemClickListener);
         }
 
-        adapter.registerAdapterDataObserver(mDataObserver);
-        mDataObserver.onChanged();
+
     }
 
     private class DataObserver extends RecyclerView.AdapterDataObserver {
@@ -529,6 +531,8 @@ public class LRecyclerView extends RecyclerView {
     private OnSwipeMenuItemClickListener mDefaultMenuItemClickListener = new OnSwipeMenuItemClickListener() {
         @Override
         public void onItemClick(Closeable closeable, int adapterPosition, int menuPosition, int direction) {
+            Log.e("lzx","mDefaultMenuItemClickListener  onItemClick = " + adapterPosition);
+            System.out.println("mDefaultMenuItemClickListener  onItemClick = " + adapterPosition);
             if (mSwipeMenuItemClickListener != null) {
                 mSwipeMenuItemClickListener.onItemClick(closeable, adapterPosition, menuPosition, direction);
             }

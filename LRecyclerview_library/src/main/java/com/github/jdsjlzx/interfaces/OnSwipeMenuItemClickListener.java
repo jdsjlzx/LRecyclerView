@@ -8,7 +8,7 @@ public interface OnSwipeMenuItemClickListener {
      * @param closeable       closeable.
      * @param adapterPosition adapterPosition.
      * @param menuPosition    menuPosition.
-     * @param direction       can be {@link SwipeMenuRecyclerView#LEFT_DIRECTION}, {@link SwipeMenuRecyclerView#RIGHT_DIRECTION}.
+     * @param direction       can be {@link com.github.jdsjlzx.recyclerview.LRecyclerView#LEFT_DIRECTION}, {@link com.github.jdsjlzx.recyclerview.LRecyclerView#RIGHT_DIRECTION}.
      */
     void onItemClick(Closeable closeable, int adapterPosition, int menuPosition, int direction);
 

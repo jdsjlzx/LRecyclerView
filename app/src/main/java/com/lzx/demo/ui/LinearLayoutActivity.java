@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnItemClickLitener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -18,6 +17,7 @@ import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.util.AppToast;
 import com.lzx.demo.weight.SampleFooter;
 import com.lzx.demo.weight.SampleHeader;
 
@@ -70,14 +70,14 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position).title;
-                Toast.makeText(LinearLayoutActivity.this, text, Toast.LENGTH_SHORT).show();
+                ItemModel item = mDataAdapter.getDataList().get(position);
+                AppToast.showShortText(LinearLayoutActivity.this, item.title);
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position).title;
-                Toast.makeText(LinearLayoutActivity.this, "onItemLongClick - " + text, Toast.LENGTH_SHORT).show();
+                ItemModel item = mDataAdapter.getDataList().get(position);
+                AppToast.showShortText(LinearLayoutActivity.this, "onItemLongClick - " + item.title);
             }
         });
 

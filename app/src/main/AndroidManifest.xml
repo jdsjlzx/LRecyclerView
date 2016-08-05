@@ -32,7 +32,9 @@
         <activity android:name=".ui.SectionAnimalActivity" />
         <activity android:name=".ui.AllMenuActivity" />
         <activity android:name=".ui.ViewTypeMenuActivity" />
-        <activity android:name=".ui.ListDragMenuActivity" />
+        <activity android:name=".ui.DragMenuListActivity" />
+        <activity android:name=".ui.GridDragMenuActivity" />
+        <activity android:name=".ui.SwipeDeleteListActivity" />
     </application>
 
 </manifest>

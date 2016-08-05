@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnItemClickLitener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -24,6 +23,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.NetworkUtils;
 import com.lzx.demo.weight.SampleHeader;
 
@@ -131,13 +131,13 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
-                Toast.makeText(EndlessLinearLayoutActivity.this, item.title, Toast.LENGTH_SHORT).show();
+                AppToast.showShortText(EndlessLinearLayoutActivity.this, item.title);
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
-                Toast.makeText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title, Toast.LENGTH_SHORT).show();
+                AppToast.showShortText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title);
             }
         });
 

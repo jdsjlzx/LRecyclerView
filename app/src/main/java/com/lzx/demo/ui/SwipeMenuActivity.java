@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +23,8 @@ import java.util.List;
 
 public class SwipeMenuActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {AllMenuActivity.class, ViewTypeMenuActivity.class,ListDragMenuActivity.class};
-    private static final String[] TITLE = {"AllMenuActivity","ViewTypeMenuActivity","ListDragMenuActivity"};
+    private static final Class<?>[] ACTIVITY = {AllMenuActivity.class, ViewTypeMenuActivity.class,DragMenuListActivity.class,GridDragMenuActivity.class,SwipeDeleteListActivity.class};
+    private static final String[] TITLE = {"AllMenuActivity","ViewTypeMenuActivity","DragMenuListActivity","GridDragMenuActivity","SwipeDeleteListActivity"};
 
     private RecyclerView mRecyclerView = null;
 
@@ -34,6 +35,10 @@ public class SwipeMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("SwipeMenu汇总");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

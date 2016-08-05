@@ -79,17 +79,6 @@ public abstract class SwipeMenuAdapter<VH extends RecyclerView.ViewHolder> exten
 
     @Override
     public final void onBindViewHolder(VH holder, int position, List<Object> payloads) {
-        View itemView = holder.itemView;
-        if (itemView instanceof SwipeMenuLayout) {
-            SwipeMenuLayout swipeMenuLayout = (SwipeMenuLayout) itemView;
-            int childCount = swipeMenuLayout.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View childView = swipeMenuLayout.getChildAt(i);
-                if (childView instanceof SwipeMenuView) {
-                    ((SwipeMenuView) childView).bindAdapterPosition(position);
-                }
-            }
-        }
         onCompatBindViewHolder(holder, position, payloads);
     }
 
