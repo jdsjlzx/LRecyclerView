@@ -9,9 +9,10 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/dp_10"
+        android:src="@mipmap/icon"/>
 
     <TextView
         android:id="@+id/tv_title"

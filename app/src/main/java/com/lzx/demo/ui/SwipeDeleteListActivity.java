@@ -18,7 +18,6 @@ import com.lzx.demo.R;
 import com.lzx.demo.adapter.MenuAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
-import com.lzx.demo.util.TLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -105,9 +104,7 @@ public class SwipeDeleteListActivity extends AppCompatActivity {
 
         @Override
         public void onItemDismiss(int position) {
-            TLog.error("onItemDismiss position = " + position);
             final int adjPosition = position - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
-            TLog.error("onItemDismiss adjPosition = " + adjPosition);
             mDataAdapter.remove(adjPosition);
             AppToast.showShortText(SwipeDeleteListActivity.this, "现在的第" + adjPosition + "条被删除。");
         }
