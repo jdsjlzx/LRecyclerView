@@ -103,6 +103,9 @@ public class LRecyclerView extends RecyclerView {
      */
     private static final int INVALID_POSITION = -1;
 
+    private int mDownX;
+    private int mDownY;
+
     protected ViewConfiguration mViewConfig;
     protected SwipeMenuLayout mOldSwipedLayout;
     protected int mOldTouchedPosition = INVALID_POSITION;
@@ -199,6 +202,14 @@ public class LRecyclerView extends RecyclerView {
                         return false;
                     }
                 }
+
+                //add for swipe menu
+                if (mWrapAdapter.getInnerAdapter() instanceof SwipeMenuAdapter) {
+                    if (mOldSwipedLayout != null && mOldSwipedLayout.isMenuOpen()) {
+                        mOldSwipedLayout.smoothCloseMenu();
+                    }
+                }
+
                 break;
             default:
                 mLastY = -1; // reset
@@ -624,36 +635,58 @@ public class LRecyclerView extends RecyclerView {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        boolean isIntercepted = super.onInterceptTouchEvent(ev);
-        int action = ev.getAction();
+    public boolean onInterceptTouchEvent(MotionEvent e) {
+        if (e.getPointerCount() > 1) return true;
+        boolean isIntercepted = super.onInterceptTouchEvent(e);
+        int action = e.getAction();
+        int x = (int) e.getX();
+        int y = (int) e.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                mDownX = x;
+                mDownY = y;
                 isIntercepted = false;
-                int touchingPosition = getChildAdapterPosition(findChildViewUnder((int) ev.getX(), (int) ev.getY()));
-                if (touchingPosition != mOldTouchedPosition && mOldSwipedLayout != null) {
-                    // close menu.
-                    if (mOldSwipedLayout.isMenuOpen()) {
-                        mOldSwipedLayout.smoothCloseMenu();
-                        isIntercepted = true;
-                    }
+
+                int touchingPosition = getChildAdapterPosition(findChildViewUnder(x, y));
+                if (touchingPosition != mOldTouchedPosition && mOldSwipedLayout != null && mOldSwipedLayout.isMenuOpen()) {
+                    mOldSwipedLayout.smoothCloseMenu();
+                    isIntercepted = true;
                 }
-                ViewHolder vh = findViewHolderForAdapterPosition(touchingPosition);
-                if (vh != null) {
-                    View itemView = getSwipeMenuView(vh.itemView);
-                    if (itemView != null && itemView instanceof SwipeMenuLayout) {
-                        mOldSwipedLayout = (SwipeMenuLayout) itemView;
-                        mOldTouchedPosition = touchingPosition;
-                    }
-                }
-                // reset.
+
                 if (isIntercepted) {
                     mOldSwipedLayout = null;
                     mOldTouchedPosition = INVALID_POSITION;
+                } else {
+                    ViewHolder vh = findViewHolderForAdapterPosition(touchingPosition);
+                    if (vh != null) {
+                        View itemView = getSwipeMenuView(vh.itemView);
+                        if (itemView != null && itemView instanceof SwipeMenuLayout) {
+                            mOldSwipedLayout = (SwipeMenuLayout) itemView;
+                            mOldTouchedPosition = touchingPosition;
+                        }
+                    }
                 }
+                break;
+            // They are sensitive to retain sliding and inertia.
+            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                isIntercepted = handleUnDown(x, y, isIntercepted);
                 break;
         }
         return isIntercepted;
+    }
+
+    private boolean handleUnDown(int x, int y, boolean defaultValue) {
+        int disX = mDownX - x;
+        int disY = mDownY - y;
+        // swipe
+        if (Math.abs(disX) > mViewConfig.getScaledTouchSlop())
+            defaultValue = false;
+        // click
+        if (Math.abs(disY) < mViewConfig.getScaledTouchSlop() && Math.abs(disX) < mViewConfig.getScaledTouchSlop())
+            defaultValue = false;
+        return defaultValue;
     }
     //method for swipe menu end
 }
