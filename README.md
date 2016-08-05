@@ -19,9 +19,6 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 
 <br>注意：EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果。</b>
 
-感谢
---
-本开源控件是基于 [HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView) 开源项目而来，在原基础上进行了扩充。在此感谢cundong作者（github地址：https://github.com/cundong）。
 
 效果图
 ---
@@ -367,3 +364,11 @@ EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参
 mRecyclerView.setLScrollListener(LScrollListener); 
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
+
+
+Thanks
+--
+
+1.[HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView)
+
+2.[SwipeRecyclerView](https://github.com/yanzhenjie/SwipeRecyclerView)
