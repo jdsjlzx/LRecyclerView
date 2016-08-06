@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -233,9 +232,6 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         int adapterCount;
         if (mInnerAdapter != null) {
             adapterCount = mInnerAdapter.getItemCount();
-            Log.e("lzx","onBindViewHolder adjPosition = " + adjPosition);
-            Log.e("lzx","onBindViewHolder adapterCount = " + adapterCount);
-
             if (adjPosition < adapterCount) {
                 mInnerAdapter.onBindViewHolder(holder, adjPosition);
 
