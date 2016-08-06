@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -116,11 +115,11 @@ public class LRecyclerView extends RecyclerView {
     //swipe menu end
 
     public LRecyclerView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public LRecyclerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public LRecyclerView(Context context, AttributeSet attrs, int defStyle) {
@@ -542,8 +541,6 @@ public class LRecyclerView extends RecyclerView {
     private OnSwipeMenuItemClickListener mDefaultMenuItemClickListener = new OnSwipeMenuItemClickListener() {
         @Override
         public void onItemClick(Closeable closeable, int adapterPosition, int menuPosition, int direction) {
-            Log.e("lzx","mDefaultMenuItemClickListener  onItemClick = " + adapterPosition);
-            System.out.println("mDefaultMenuItemClickListener  onItemClick = " + adapterPosition);
             if (mSwipeMenuItemClickListener != null) {
                 mSwipeMenuItemClickListener.onItemClick(closeable, adapterPosition, menuPosition, direction);
             }
