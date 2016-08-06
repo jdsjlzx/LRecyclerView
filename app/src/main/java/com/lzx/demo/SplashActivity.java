@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
         float scale = (float) (Math.sqrt(parentView.getHeight() * parentView.getHeight() + parentView.getWidth() * parentView.getWidth()) / fab.getHeight());
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", scale);
         PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", scale);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(fab, scaleX, scaleY).setDuration(1500);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(fab, scaleX, scaleY).setDuration(1800);
         objectAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
         });
         PropertyValuesHolder holderA = PropertyValuesHolder.ofFloat("alpha", 0, 1);
         PropertyValuesHolder holderYm = PropertyValuesHolder.ofFloat("translationY", 0, 300);
-        ObjectAnimator textAnimator = ObjectAnimator.ofPropertyValuesHolder(textView, holderA, holderYm).setDuration(700);
+        ObjectAnimator textAnimator = ObjectAnimator.ofPropertyValuesHolder(textView, holderA, holderYm).setDuration(1000);
         textAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         textAnimator.setStartDelay(800);
 

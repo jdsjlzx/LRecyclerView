@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -67,9 +68,6 @@ public class AllMenuActivity extends AppCompatActivity {
         mRecyclerView.setSwipeMenuCreator(swipeMenuCreator);
         // 设置菜单Item点击监听。
         mRecyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
-
-        mRecyclerView.openLeftMenu(0);
-        mRecyclerView.openRightMenu(0);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
         mRecyclerView.setHasFixedSize(true);// 如果Item够简单，高度是确定的，打开FixSize将提高性能。
@@ -182,9 +180,17 @@ public class AllMenuActivity extends AppCompatActivity {
     };
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_all_activity, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.menu_open_rv_menu) {
+            mRecyclerView.openRightMenu(2); // 如果设置了headerview,真正的0位置是如果设置了headerview的数量+1
         }
         return true;
     }

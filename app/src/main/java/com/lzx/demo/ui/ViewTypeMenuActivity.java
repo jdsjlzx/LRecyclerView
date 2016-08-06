@@ -72,9 +72,6 @@ public class ViewTypeMenuActivity extends AppCompatActivity {
         // 设置菜单Item点击监听。
         mRecyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
 
-        mRecyclerView.openLeftMenu(0);
-        mRecyclerView.openRightMenu(0);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
         mRecyclerView.setHasFixedSize(true);// 如果Item够简单，高度是确定的，打开FixSize将提高性能。
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());// 设置Item默认动画，加也行，不加也行。
