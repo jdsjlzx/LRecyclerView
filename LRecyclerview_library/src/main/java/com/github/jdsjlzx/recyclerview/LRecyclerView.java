@@ -301,10 +301,19 @@ public class LRecyclerView extends RecyclerView {
         void onScrolled(int distanceX, int distanceY);// moving state,you can get the move distance
     }
 
+    private int mRefreshHeaderHeight;
     public void setRefreshing(boolean refreshing) {
         if (refreshing && pullRefreshEnabled && mLScrollListener != null) {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
-            mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
+            mRefreshHeaderHeight = mRefreshHeader.getMeasuredHeight();
+            mRefreshHeader.onMove(mRefreshHeaderHeight);
+            mLScrollListener.onRefresh();       }
+    }
+
+    public void forceRefresh(boolean isForceToRefresh) {
+        if (isForceToRefresh && pullRefreshEnabled && mLScrollListener != null) {
+            mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
+            mRefreshHeader.onMove(mRefreshHeaderHeight);
             mLScrollListener.onRefresh();
         }
     }
