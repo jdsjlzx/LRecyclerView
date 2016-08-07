@@ -45,6 +45,11 @@ compile 'com.github.jdsjlzx:LRecyclerView:1.0.3'
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
 
+Demo演示
+--
+
+[点我下载](https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/app/app-release.apk)
+
 使用
 --
 
