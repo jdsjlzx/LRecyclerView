@@ -310,8 +310,8 @@ public class LRecyclerView extends RecyclerView {
             mLScrollListener.onRefresh();       }
     }
 
-    public void setForceRefresh(boolean isForceToRefresh) {
-        if (isForceToRefresh && pullRefreshEnabled && mLScrollListener != null) {
+    public void forceToRefresh() {
+        if (pullRefreshEnabled && mLScrollListener != null) {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
             mRefreshHeader.onMove(mRefreshHeaderHeight);
             mLScrollListener.onRefresh();
