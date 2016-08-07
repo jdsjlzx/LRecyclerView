@@ -355,9 +355,9 @@ SwipeMenu
 
 ###SwipeMenuAdapter
 
-为了实现SwipeMenu的功能，此次新增了一个SwipeMenuAdapter类，地址：https://github.com/jdsjlzx/LRecyclerView/blob/master/LRecyclerview_library/src/main/java/com/github/jdsjlzx/swipe/SwipeMenuAdapter.java
+为了实现SwipeMenu的功能，此次新增了一个[SwipeMenuAdapter](https://github.com/jdsjlzx/LRecyclerView/blob/master/LRecyclerview_library/src/main/java/com/github/jdsjlzx/swipe/SwipeMenuAdapter.java)类。
 
-SwipeMenuAdapter与library中已经存在的LRecyclerViewAdapter会不会冲突呢？答案是不会。SwipeMenuAdapter是用户级别的基类adapter，也就是用户需要继承SwipeMenuAdapter去实现自己的adapter，具体使用还向之前那样使用即可。
+SwipeMenuAdapter与library中已经存在的LRecyclerViewAdapter会不会冲突呢？答案是不会。SwipeMenuAdapter是用户级别的基类adapter，也就是用户需要继承SwipeMenuAdapter去实现自己的adapter，具体使用同以前。
 
 SwipeMenuAdapter类的定义：
 ```
