@@ -100,8 +100,8 @@ public class DragMenuListActivity extends AppCompatActivity {
     private OnItemMoveListener onItemMoveListener = new OnItemMoveListener() {
         @Override
         public boolean onItemMove(int fromPosition, int toPosition) {
-            final int adjFromPosition = fromPosition - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
-            final int adjToPosition = toPosition - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
+            final int adjFromPosition = mLRecyclerViewAdapter.getAdapterPosition(true, fromPosition);
+            final int adjToPosition = mLRecyclerViewAdapter.getAdapterPosition(true, toPosition);
             // 当Item被拖拽的时候。
             Collections.swap(mDataAdapter.getDataList(), adjFromPosition, adjToPosition);
             //Be carefull in here!

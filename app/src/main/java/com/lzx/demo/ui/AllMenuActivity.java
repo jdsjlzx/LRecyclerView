@@ -80,8 +80,6 @@ public class AllMenuActivity extends AppCompatActivity {
 
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
-
-        //add a FooterView
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
         mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
@@ -190,7 +188,7 @@ public class AllMenuActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.menu_open_rv_menu) {
-            mRecyclerView.openRightMenu(2); // 如果设置了headerview,真正的0位置是如果设置了headerview的数量+1
+            mRecyclerView.openRightMenu(mLRecyclerViewAdapter.getAdapterPosition(false,0));
         }
         return true;
     }

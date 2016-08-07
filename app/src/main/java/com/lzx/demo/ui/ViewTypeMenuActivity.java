@@ -82,8 +82,6 @@ public class ViewTypeMenuActivity extends AppCompatActivity {
         mRecyclerView.setPullRefreshEnabled(false);
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
-
-        //add a FooterView
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
         mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {

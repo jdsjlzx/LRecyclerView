@@ -375,4 +375,24 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
+    /**
+     *
+     * @param isCallback whether position is from callback interface
+     * @param position
+     * @return
+     */
+    public int getAdapterPosition(boolean isCallback, int position) {
+        if(isCallback) {
+            int adjPosition = position - getHeaderViewsCount() - 1;
+            int adapterCount = mInnerAdapter.getItemCount();
+            if (adjPosition < adapterCount) {
+                return adjPosition;
+            }
+        }else {
+            return  (position + getHeaderViewsCount() + 1);
+        }
+
+        return -1;
+    }
+
 }

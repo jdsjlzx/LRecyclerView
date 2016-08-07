@@ -154,8 +154,8 @@ public class DragSwipeFlagsActivity extends AppCompatActivity {
     private OnItemMoveListener onItemMoveListener = new OnItemMoveListener() {
         @Override
         public boolean onItemMove(int fromPosition, int toPosition) {
-            final int adjFromPosition = fromPosition - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
-            final int adjToPosition = toPosition - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
+            final int adjFromPosition = mLRecyclerViewAdapter.getAdapterPosition(true, fromPosition);
+            final int adjToPosition = mLRecyclerViewAdapter.getAdapterPosition(true, toPosition);
             if (adjToPosition == 0) {// 保证第一个不被挤走。
                 return false;
             }
@@ -168,7 +168,7 @@ public class DragSwipeFlagsActivity extends AppCompatActivity {
 
         @Override
         public void onItemDismiss(int position) {
-            final int adjPosition = position - (mLRecyclerViewAdapter.getHeaderViewsCount() + 1);
+            final int adjPosition = mLRecyclerViewAdapter.getAdapterPosition(true, position);
             mDataAdapter.remove(adjPosition);
             AppToast.showShortText(DragSwipeFlagsActivity.this, "现在的第" + adjPosition + "条被删除。");
         }

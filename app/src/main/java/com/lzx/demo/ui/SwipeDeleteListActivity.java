@@ -72,7 +72,7 @@ public class SwipeDeleteListActivity extends AppCompatActivity {
         mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position).title;
+                String text = "item " + position;
                 AppToast.showShortText(SwipeDeleteListActivity.this, text);
             }
 
