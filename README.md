@@ -174,6 +174,14 @@ mRecyclerView.setPullRefreshEnabled(false);
 默认是开启。
 
 
+强制刷新
+--------
+根据大家的反馈，增加了一个强制刷新的方法，使用如下：
+
+```
+mRecyclerView.forceToRefresh();
+```
+
 加载网络异常处理
 --------
 加载数据时如果网络异常或者断网，LRecyclerView为你提供了重新加载的机制。
