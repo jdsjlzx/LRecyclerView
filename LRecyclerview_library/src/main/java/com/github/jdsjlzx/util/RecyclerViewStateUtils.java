@@ -2,7 +2,6 @@ package com.github.jdsjlzx.util;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -28,7 +27,6 @@ public class RecyclerViewStateUtils {
      * @param errorListener FooterView处于Error状态时的点击事件
      */
     public static void setFooterViewState(Activity instance, RecyclerView recyclerView, int pageSize, LoadingFooter.State state, View.OnClickListener errorListener) {
-        Log.d("lzx","setFooterViewState  " + state.toString());
         if(instance==null || instance.isFinishing()) {
             return;
         }
