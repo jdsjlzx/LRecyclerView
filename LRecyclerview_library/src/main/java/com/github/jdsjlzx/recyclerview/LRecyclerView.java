@@ -39,6 +39,7 @@ public class LRecyclerView extends RecyclerView {
     private static final float DRAG_RATE = 3;
 
     private LRecyclerViewAdapter mWrapAdapter;
+    private boolean isNoMore = false;
 
     //scroll variables begin
     /**
@@ -265,6 +266,11 @@ public class LRecyclerView extends RecyclerView {
 
     public void refreshComplete() {
         mRefreshHeader.refreshComplete();
+        setNoMore(false);
+    }
+
+    public void setNoMore(boolean noMore){
+        isNoMore = noMore;
     }
 
     public void setPullRefreshEnabled(boolean enabled) {
@@ -386,6 +392,8 @@ public class LRecyclerView extends RecyclerView {
             int totalItemCount = layoutManager.getItemCount();
             if (visibleItemCount > 0
                     && lastVisibleItemPosition >= totalItemCount - 1
+                    && totalItemCount > visibleItemCount
+                    && !isNoMore
                     && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
                 mLScrollListener.onBottom();
             }

@@ -27,6 +27,7 @@ import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.NetworkUtils;
+import com.lzx.demo.util.TLog;
 import com.lzx.demo.weight.SampleHeader;
 
 import java.lang.ref.WeakReference;
@@ -110,6 +111,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             @Override
             public void onBottom() {
                 LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
+                TLog.error("onBottom " + state);
                 if(state == LoadingFooter.State.Loading) {
                     Log.d(TAG, "the state is Loading, just wait..");
                     return;
