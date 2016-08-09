@@ -64,6 +64,8 @@ public class RecyclerViewStateUtils {
 
             if (state == LoadingFooter.State.NetWorkError) {
                 footerView.setOnClickListener(errorListener);
+            }else if (state == LoadingFooter.State.TheEnd){
+                ((LRecyclerView)recyclerView).setNoMore(true);
             }
 
             headerAndFooterAdapter.addFooterView(footerView);

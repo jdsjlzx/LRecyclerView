@@ -394,6 +394,7 @@ public class LRecyclerView extends RecyclerView {
                     && lastVisibleItemPosition >= totalItemCount - 1
                     && totalItemCount > visibleItemCount
                     && !isNoMore
+                    && !mIsScrollDown
                     && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
                 mLScrollListener.onBottom();
             }
