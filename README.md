@@ -182,6 +182,15 @@ mRecyclerView.setPullRefreshEnabled(false);
 mRecyclerView.forceToRefresh();
 ```
 
+
+**无论是下拉刷新还是强制刷新，刷新完成后调用下面代码：**
+
+```
+mRecyclerView.refreshComplete();
+mLRecyclerViewAdapter.notifyDataSetChanged();
+```
+
+
 加载网络异常处理
 --------
 加载数据时如果网络异常或者断网，LRecyclerView为你提供了重新加载的机制。
