@@ -74,6 +74,20 @@ RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
 
+添加HeaderView还可以使用下面两种方式：
+
+```
+View header = LayoutInflater.from(this).inflate(R.layout.sample_header,(ViewGroup)findViewById(android.R.id.content), false);
+RecyclerViewUtils.setHeaderView(mRecyclerView, header);
+
+
+CommonHeader headerView = new CommonHeader(getActivity(), R.layout.layout_home_header);
+RecyclerViewUtils.setHeaderView(mRecyclerView, headerView);
+```
+
+上面的方式同样适用于FooterView。
+
+
 下拉刷新和加载更多
 ---------
 
@@ -181,6 +195,15 @@ mRecyclerView.setPullRefreshEnabled(false);
 ```
 mRecyclerView.forceToRefresh();
 ```
+
+
+**无论是下拉刷新还是强制刷新，刷新完成后调用下面代码：**
+
+```
+mRecyclerView.refreshComplete();
+mLRecyclerViewAdapter.notifyDataSetChanged();
+```
+
 
 加载网络异常处理
 --------
@@ -513,7 +536,8 @@ public class MenuViewTypeAdapter extends MenuAdapter {
 
 关键代码：
 ```
-mRecyclerView.setLongPressDragEnabled(true);// 开启拖拽功能        mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
+mRecyclerView.setLongPressDragEnabled(true);// 开启拖拽功能        
+mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
 ```
 
 onItemMoveListener具体如下：
@@ -548,7 +572,7 @@ final int adjFromPosition = mLRecyclerViewAdapter.getAdapterPosition(true, fromP
 final int adjToPosition = mLRecyclerViewAdapter.getAdapterPosition(true, toPosition);
 ```
 
->关于position的位置，为了大家使用方便，特在LRecyclerViewAdapter中提供了一个方法getAdapterPosition(boolean isCallback, int position)。
+<font color="red">关于position的位置，为了大家使用方便，特在LRecyclerViewAdapter中提供了一个方法getAdapterPosition(boolean isCallback, int position)。</font>
 >
 >- isCallback 含义：position是否接口回调中带来的
 > - position 含义：如果不是接口回调，就是用户自己指定的position
