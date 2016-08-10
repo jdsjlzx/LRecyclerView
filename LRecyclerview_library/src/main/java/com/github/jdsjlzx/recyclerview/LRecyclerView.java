@@ -273,6 +273,10 @@ public class LRecyclerView extends RecyclerView {
         isNoMore = noMore;
     }
 
+    public void setRefreshHeader(ArrowRefreshHeader refreshHeader) {
+        mRefreshHeader = refreshHeader;
+    }
+
     public void setPullRefreshEnabled(boolean enabled) {
         pullRefreshEnabled = enabled;
     }

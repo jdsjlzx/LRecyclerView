@@ -64,7 +64,8 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //add a HeaderView
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+        View header = LayoutInflater.from(this).inflate(R.layout.sample_header,(ViewGroup)findViewById(android.R.id.content), false);
+        RecyclerViewUtils.setHeaderView(mRecyclerView, header);
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
         //add a FooterView
