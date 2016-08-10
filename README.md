@@ -74,6 +74,20 @@ RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
 
+添加HeaderView还可以使用下面两种方式：
+
+```
+View header = LayoutInflater.from(this).inflate(R.layout.sample_header,(ViewGroup)findViewById(android.R.id.content), false);
+RecyclerViewUtils.setHeaderView(mRecyclerView, header);
+
+
+CommonHeader headerView = new CommonHeader(getActivity(), R.layout.layout_home_header);
+RecyclerViewUtils.setHeaderView(mRecyclerView, headerView);
+```
+
+上面的方式同样适用于FooterView。
+
+
 下拉刷新和加载更多
 ---------
 
