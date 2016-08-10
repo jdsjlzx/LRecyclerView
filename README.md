@@ -522,7 +522,8 @@ public class MenuViewTypeAdapter extends MenuAdapter {
 
 关键代码：
 ```
-mRecyclerView.setLongPressDragEnabled(true);// 开启拖拽功能        mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
+mRecyclerView.setLongPressDragEnabled(true);// 开启拖拽功能        
+mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
 ```
 
 onItemMoveListener具体如下：
