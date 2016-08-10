@@ -558,7 +558,7 @@ final int adjFromPosition = mLRecyclerViewAdapter.getAdapterPosition(true, fromP
 final int adjToPosition = mLRecyclerViewAdapter.getAdapterPosition(true, toPosition);
 ```
 
-<font color=red>关于position的位置，为了大家使用方便，特在LRecyclerViewAdapter中提供了一个方法getAdapterPosition(boolean isCallback, int position)。</font>
+<font color="red">关于position的位置，为了大家使用方便，特在LRecyclerViewAdapter中提供了一个方法getAdapterPosition(boolean isCallback, int position)。</font>
 >
 >- isCallback 含义：position是否接口回调中带来的
 > - position 含义：如果不是接口回调，就是用户自己指定的position
