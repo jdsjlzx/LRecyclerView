@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,9 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
             @Override
             public void onRefresh() {
+                RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
+                mDataAdapter.clear();
+                mCurrentCounter = 0;
                 isRefresh = true;
                 requestData();
             }
@@ -122,6 +126,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                 } else {
                     //the end
                     RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
+
                 }
             }
 
@@ -305,9 +310,17 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_refresh, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.menu_refresh) {
+            mRecyclerView.forceToRefresh();
         }
         return true;
     }

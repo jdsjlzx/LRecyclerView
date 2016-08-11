@@ -10,12 +10,6 @@ import android.widget.TextView;
 import com.github.jdsjlzx.R;
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
 
-
-/**
- * Created by cundong on 2015/10/9.
- * <p/>
- * ListView/GridView/RecyclerView 分页加载时使用到的FooterView
- */
 public class LoadingFooter extends RelativeLayout {
 
     protected State mState = State.Normal;
@@ -154,7 +148,7 @@ public class LoadingFooter extends RelativeLayout {
         }
     }
 
-    public static enum State {
+    public enum State {
         Normal/**正常*/, TheEnd/**加载到最底了*/, Loading/**加载中..*/, NetWorkError/**网络异常*/
     }
 }

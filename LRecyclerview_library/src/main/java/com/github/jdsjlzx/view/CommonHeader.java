@@ -8,8 +8,6 @@ import com.github.jdsjlzx.R;
 
 
 /**
- * Created by cundong on 2015/10/9.
- * <p/>
  * RecyclerView的HeaderView，简单的展示一个TextView
  */
 public class CommonHeader extends RelativeLayout {

@@ -7,8 +7,6 @@ import android.widget.RelativeLayout;
 import com.github.jdsjlzx.R;
 
 /**
- * Created by cundong on 2015/10/9.
- * <p/>
  * RecyclerView的FooterView，简单的展示一个TextView
  */
 public class CommonFooter extends RelativeLayout {
