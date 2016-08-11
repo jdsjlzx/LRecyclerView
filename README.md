@@ -1,7 +1,4 @@
-# LRecyclerView
-
-简介
---
+# LRecyclerView 
 
 LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加载数据的RecyclerView。
 
@@ -9,26 +6,13 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 
 **它对 RecyclerView 控件进行了拓展，给RecyclerView增加HeaderView、FooterView，并且不需要对你的Adapter做任何修改。**
 
-主要功能
-----
 
-1. 下拉刷新、滑动到底部自动加载下页数据；
-2. 可以方便添加Header和Footer；
-3. 头部下拉样式可以自定义；
-4. 具备item点击和长按事件。
-5. 网络错误加载失败点击Footer重新请求数据；
-6. 可以动态为FooterView赋予不同状态（加载中、加载失败、滑到最底等）。
-
-<br>注意：EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果。</b>
-
-
-效果图
----
-
+##效果图
 ![这里写图片描述](https://raw.githubusercontent.com/cundong/HeaderAndFooterRecyclerView/master/art/art1.png)
 
-Gradle
+##Gradle
 --
+
 Step 1. 在你的根build.gradle文件中增加JitPack仓库依赖。
 
 ```
@@ -47,33 +31,33 @@ compile 'com.github.jdsjlzx:LRecyclerView:1.0.3'
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
 
-Demo演示
---
 
+##项目简述
+1. 下拉刷新、滑动到底部自动加载下页数据； 
+2. 可以方便添加Header和Footer；
+3. 头部下拉样式可以自定义；
+4. 具备item点击和长按事件。
+5. 网络错误加载失败点击Footer重新请求数据；
+6. 可以动态为FooterView赋予不同状态（加载中、加载失败、滑到最底等）；
+7. SwipeMenu系列功能，包括Item侧滑菜单、长按拖拽Item，滑动删除Item等。
+
+<br>注意：EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果。</b>
+
+
+
+##Demo下载
 [点我下载](https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/app/app-release.apk)
 
-使用
---
+##功能介绍
 
-添加HeaderView、FooterView
------------------------
-
+### 添加HeaderView、FooterView
 ```
-mDataAdapter = new DataAdapter(this);
-mDataAdapter.setData(dataList);
-
-mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
-mRecyclerView.setAdapter(mLRecyclerViewAdapter);
-
-mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 //add a HeaderView
 RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
 //add a FooterView
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
-
 添加HeaderView还可以使用下面两种方式：
 
 ```
@@ -87,41 +71,7 @@ RecyclerViewUtils.setHeaderView(mRecyclerView, headerView);
 
 上面的方式同样适用于FooterView。
 
-
-下拉刷新和加载更多
----------
-
-为了大家使用方便，将需要用的方法统一封装到接口LScrollListener中。
-
-```
-mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
-            @Override
-            public void onRefresh() {
-                
-            }
-
-            @Override
-            public void onScrollUp() {
-            }
-
-            @Override
-            public void onScrollDown() {
-            }
-
-            @Override
-            public void onBottom() {
-                
-            }
-
-            @Override
-            public void onScrolled(int distanceX, int distanceY) {
-            }
-
-        });
-        
-
-        
-```
+### LScrollListener-滑动监听事件接口
 
 LScrollListener实现了nRefresh()、onScrollUp()、onScrollDown()、onBottom()、onScrolled五个事件，如下所示：
 
@@ -141,22 +91,41 @@ void onScrolled(int distanceX, int distanceY);// moving state,you can get the mo
  - onScrollDown()——RecyclerView向下滑动的监听事件；
  - onBottom()——RecyclerView滑动到底部的监听事件；
  - onScrollDown()——RecyclerView正在滚动的监听事件；
+ 
+使用：
+```
+mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+            }
 
-加载更多（加载下页数据）
-------------
+            @Override
+            public void onScrollUp() {
+            }
 
-从上面的LScrollListener介绍中就可以看出，实现加载更多只要在onBottom()接口中处理即可。
+            @Override
+            public void onScrollDown() {
+            }
 
-![这里写图片描述](http://static.oschina.net/uploads/img/201511/09175034_0mZ0.png)
+            @Override
+            public void onBottom() {
+                // 加载更多（加载下页数据）
+            }
 
-下拉刷新
-----
+            @Override
+            public void onScrolled(int distanceX, int distanceY) {
+            }
 
-为了达到和Listview的下拉刷新效果，本项目没有借助SwipeRefreshLayout控件，而是在自定义RecyclerView头部实现的刷新效果。
+        });
+ 
+```
 
-这里的下拉刷新效果借鉴了开源库：[AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView)
+###下拉刷新和加载更多
 
-###设置下拉刷新样式：
+详见LScrollListener接口介绍。
+
+####设置下拉刷新样式
 
 ```
 mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader); //设置下拉刷新Progress的样式
@@ -169,13 +138,13 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 
 ![这里写图片描述](http://img.blog.csdn.net/20160701173404897)
 
+####设置加载更多样式
 
-下拉刷新逻辑处理：
+拷贝LRecyclerview_library中的文件文件layout_recyclerview_list_footer_loading.xml到你的工程中，修改后即可。
 
-从上面的LScrollListener介绍中就可以看出，实现下拉刷新只要在onRefresh()接口中处理即可。
 
-开启和禁止下拉刷新功能
---------
+###开启和禁止下拉刷新功能
+
 ```
 mRecyclerView.setPullRefreshEnabled(true);
 ```
@@ -188,14 +157,13 @@ mRecyclerView.setPullRefreshEnabled(false);
 默认是开启。
 
 
-强制刷新
---------
+###强制刷新
+
 根据大家的反馈，增加了一个强制刷新的方法，使用如下：
 
 ```
 mRecyclerView.forceToRefresh();
 ```
-
 
 **无论是下拉刷新还是强制刷新，刷新完成后调用下面代码：**
 
@@ -205,7 +173,7 @@ mLRecyclerViewAdapter.notifyDataSetChanged();
 ```
 
 
-加载网络异常处理
+### 加载网络异常处理
 --------
 加载数据时如果网络异常或者断网，LRecyclerView为你提供了重新加载的机制。
 
@@ -229,10 +197,8 @@ private View.OnClickListener mFooterClick = new View.OnClickListener() {
 
 上面的mFooterClick就是我们点击底部的Footer时的逻辑处理事件，很显然我们还是在这里做重新请求数据操作。
 
-点击事件和长按事件处理
----------
 
-原理就是在adapter中实现点击事件。
+### 点击事件和长按事件处理
 
 先看下怎么使用：
 
@@ -271,125 +237,6 @@ public static abstract class ViewHolder {
 ```
 mRecyclerView.setEmptyView(view);
 ```
-
-分享
---
-介绍完了LRecyclerView，似乎还少些什么，对了，那就是adapter了。
-
-为了方便大家使用，分享个封装过的adapter。
-
-```
-public class ListBaseAdapter<T extends Entity> extends RecyclerView.Adapter {
-    protected Context mContext;
-    protected int mScreenWidth;
-
-    public void setScreenWidth(int width) {
-        mScreenWidth = width;
-    }
-
-    protected ArrayList<T> mDataList = new ArrayList<>();
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return mDataList.size();
-    }
-
-    public List<T> getDataList() {
-        return mDataList;
-    }
-
-    public void setDataList(Collection<T> list) {
-        this.mDataList.clear();
-        this.mDataList.addAll(list);
-        notifyDataSetChanged();
-    }
-
-    public void addAll(Collection<T> list) {
-        int lastIndex = this.mDataList.size();
-        if (this.mDataList.addAll(list)) {
-            notifyItemRangeInserted(lastIndex, list.size());
-        }
-    }
-
-    public void clear() {
-        mDataList.clear();
-        notifyDataSetChanged();
-    }
-}
-
-```
-
-ListBaseAdapter使用了泛型，简单方便，消除了强制类型转换。
-
-使用如下：
-
-```
-private class DataAdapter extends ListBaseAdapter<ItemModel>{
-
-        private LayoutInflater mLayoutInflater;
-
-        public DataAdapter(Context context) {
-            mLayoutInflater = LayoutInflater.from(context);
-            mContext = context;
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(mLayoutInflater.inflate(R.layout.sample_item_text, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ItemModel item = mDataList.get(position);
-
-            ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.textView.setText(item.title);
-        }
-
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
-
-            private TextView textView;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                textView = (TextView) itemView.findViewById(R.id.info_text);
-            }
-        }
-    }
-```
-
-ListBaseAdapter虽然功能不强大，但是使用很方便。
-
-
-LRecyclerView使用方便简单，无论你添加多少Header和Footer，你都不用担心position的问题，除了方便还是方便。
-
-EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，供参考。
-
-SwipeMenu
----------
-本次新增SwipeMenu系列功能描述如下：
-
-1. 左右两侧都有菜单；
-2. 根据ViewType显示菜单；
-3. 长按拖拽Item(List)，与菜单结合；
-4. 长按拖拽Item(Grid)；
-5. 滑动删除Item；
-6. 指定某个Item不能拖拽或者不能滑动删除；
-7. 用SwipeMenuLayout实现你自己的侧滑。
-
-项目地址：https://github.com/jdsjlzx/LRecyclerView
-
 
 ###SwipeMenuAdapter
 
@@ -647,8 +494,8 @@ mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        mRec
 
 
 
-分组
---
+##分组
+
 效果图：
 
 ![这里写图片描述](https://github.com/jdsjlzx/LRecyclerView/blob/master/art/art6.gif)
@@ -658,8 +505,8 @@ mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        mRec
 
 
 
-代码混淆
---
+##代码混淆
+
 ```
 #LRecyclerview_library
 -dontwarn com.github.jdsjlzx.**
@@ -668,8 +515,8 @@ mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        mRec
 
 如果你想了解更多混淆配置，参考：http://blog.csdn.net/jdsjlzx/article/details/51861460
 
-注意事项
---
+##注意事项
+
 1. 如果添加了footerview，不要再使用setLScrollListener方法，如有需要，自定义实现即可。如下面代码不要同时使用：
 ```
 mRecyclerView.setLScrollListener(LScrollListener); 
@@ -677,9 +524,16 @@ RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
 
 
-Thanks
---
+##Thanks
 
 1.[HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView)
 
 2.[SwipeRecyclerView](https://github.com/yanzhenjie/SwipeRecyclerView)
+
+
+##打赏
+
+觉得本框架对你有帮助，不妨打赏赞助我一下，让我有动力走的更远。
+
+<img src="http://img.blog.csdn.net/20160524104553306" width=240 height=280 />
+
