@@ -172,6 +172,26 @@ mRecyclerView.refreshComplete();
 mLRecyclerViewAdapter.notifyDataSetChanged();
 ```
 
+###下拉刷新清空数据
+有的时候，需要下拉的时候情况数据并更新UI，可以这么做：
+```
+@Override
+public void onRefresh() {
+    RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
+    mDataAdapter.clear();
+    mCurrentCounter = 0;
+    isRefresh = true;
+    requestData();
+}
+```
+如果不需要下拉的时候情况数据并更新UI，如下即可：
+```
+@Override
+public void onRefresh() {
+    isRefresh = true;
+    requestData();
+}
+```
 
 ### 加载网络异常处理
 --------
