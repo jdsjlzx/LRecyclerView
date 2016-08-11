@@ -156,14 +156,14 @@ void onScrolled(int distanceX, int distanceY);// moving state,you can get the mo
 
 这里的下拉刷新效果借鉴了开源库：[AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView)
 
-设置加载样式：
+设置下拉刷新样式：
 
 ```
-mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
+mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader); //设置下拉刷新Progress的样式
+mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);  //设置下拉刷新箭头
 ```
 
-AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷新效果，当然你也可以自定义下拉效果。
+AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷新效果，当然你也可以自定义下拉刷新效果。
 
 效果图：
 
