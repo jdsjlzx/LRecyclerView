@@ -235,6 +235,21 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (adjPosition < adapterCount) {
                 mInnerAdapter.onBindViewHolder(holder, adjPosition);
 
+                if (mInnerAdapter instanceof SwipeMenuAdapter) {
+                    View itemView = holder.itemView;
+                    if (itemView instanceof SwipeMenuLayout) {
+                        SwipeMenuLayout swipeMenuLayout = (SwipeMenuLayout) itemView;
+                        int childCount = swipeMenuLayout.getChildCount();
+                        for (int i = 0; i < childCount; i++) {
+                            View childView = swipeMenuLayout.getChildAt(i);
+                            if (childView instanceof SwipeMenuView) {
+                                ((SwipeMenuView) childView).bindAdapterPosition(adjPosition);
+                            }
+                        }
+                    }
+
+                }
+
                 if (mOnItemClickLitener != null) {
                     holder.itemView.setOnClickListener(new View.OnClickListener()  {
                         @Override
@@ -252,21 +267,6 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                             return false;
                         }
                     });
-                }
-
-                if (mInnerAdapter instanceof SwipeMenuAdapter) {
-                    View itemView = holder.itemView;
-                    if (itemView instanceof SwipeMenuLayout) {
-                        SwipeMenuLayout swipeMenuLayout = (SwipeMenuLayout) itemView;
-                        int childCount = swipeMenuLayout.getChildCount();
-                        for (int i = 0; i < childCount; i++) {
-                            View childView = swipeMenuLayout.getChildAt(i);
-                            if (childView instanceof SwipeMenuView) {
-                                ((SwipeMenuView) childView).bindAdapterPosition(adjPosition);
-                            }
-                        }
-                    }
-
                 }
 
                 return;
