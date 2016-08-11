@@ -40,3 +40,6 @@ captures/
 
 # Keystore files
 *.jks
+
+/art
+
