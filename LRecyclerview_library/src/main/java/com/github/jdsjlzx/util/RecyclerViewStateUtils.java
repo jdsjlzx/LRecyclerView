@@ -37,18 +37,17 @@ public class RecyclerViewStateUtils {
             return;
         }
 
-        LRecyclerViewAdapter headerAndFooterAdapter = (LRecyclerViewAdapter) outerAdapter;
+        LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) outerAdapter;
 
         //只有一页的时候，就别加什么FooterView了
-        if (headerAndFooterAdapter.getInnerAdapter().getItemCount() < pageSize) {
+        if (lRecyclerViewAdapter.getInnerAdapter().getItemCount() < pageSize) {
             return;
         }
 
         LoadingFooter footerView;
-
         //已经有footerView了
-        if (headerAndFooterAdapter.getFooterViewsCount() > 0) {
-            footerView = (LoadingFooter) headerAndFooterAdapter.getFooterView();
+        if (lRecyclerViewAdapter.getFooterViewsCount() > 0) {
+            footerView = (LoadingFooter) lRecyclerViewAdapter.getFooterView();
             footerView.setState(state);
 
             if (state == LoadingFooter.State.NetWorkError) {
@@ -57,7 +56,7 @@ public class RecyclerViewStateUtils {
                 ((LRecyclerView)recyclerView).setNoMore(true);
             }
 
-            recyclerView.scrollToPosition(headerAndFooterAdapter.getItemCount() - 1);
+            recyclerView.scrollToPosition(lRecyclerViewAdapter.getItemCount() - 1);
         } else {
             footerView = new LoadingFooter(instance);
             footerView.setState(state);
@@ -68,8 +67,9 @@ public class RecyclerViewStateUtils {
                 ((LRecyclerView)recyclerView).setNoMore(true);
             }
 
-            headerAndFooterAdapter.addFooterView(footerView);
-            recyclerView.scrollToPosition(headerAndFooterAdapter.getItemCount() - 1);
+            footerView.setVisibility(View.VISIBLE);
+            lRecyclerViewAdapter.addFooterView(footerView);
+            recyclerView.scrollToPosition(lRecyclerViewAdapter.getItemCount() - 1);
         }
     }
 

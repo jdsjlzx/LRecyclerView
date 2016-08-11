@@ -88,7 +88,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setArrowImageView(R.drawable.ic_tip);
+        mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
