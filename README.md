@@ -555,5 +555,5 @@ RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
 觉得本框架对你有帮助，不妨打赏赞助我一下，让我有动力走的更远。
 
-<img src="http://img.blog.csdn.net/20160524104553306" width=240 height=280 />
+<img src="http://img.blog.csdn.net/20160812223409875" width=280 height=280 />
 
