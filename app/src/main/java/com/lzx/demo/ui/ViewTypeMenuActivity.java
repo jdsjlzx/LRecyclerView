@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.Closeable;
-import com.github.jdsjlzx.interfaces.OnItemClickLitener;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnSwipeMenuItemClickListener;
 import com.github.jdsjlzx.interfaces.SwipeMenuCreator;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -84,7 +84,7 @@ public class ViewTypeMenuActivity extends AppCompatActivity {
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
-        mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 String text = mDataAdapter.getDataList().get(position).title;

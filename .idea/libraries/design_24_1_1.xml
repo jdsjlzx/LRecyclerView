@@ -1,13 +1,16 @@
 <component name="libraryTable">
   <library name="design-24.1.1">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/design/24.1.1/annotations.zip!/" />
+    </ANNOTATIONS>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/design/24.1.1/res" />
       <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/design/24.1.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://D:/android/sdk/extras/android/m2repository/com/android/support/design/24.1.1/design-24.1.1-sources.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/design/24.1.1/c8be87d36c312ce1abd6da6b858ea95cd6dc1faa/design-24.1.1-sources.jar!/" />
+      <root url="jar://D:/android/sdk/extras/android/m2repository/com/android/support/design/24.1.1/design-24.1.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

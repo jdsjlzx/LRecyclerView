@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.github.jdsjlzx.interfaces.OnItemClickLitener;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.swipe.touch.OnItemMoveListener;
@@ -69,7 +69,7 @@ public class SwipeDeleteListActivity extends AppCompatActivity {
         mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。
         mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
 
-        mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 String text = "item " + position;

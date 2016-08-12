@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jdsjlzx.interfaces.OnItemClickLitener;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.ItemDecoration.StickyHeaderDecoration;
 import com.lzx.demo.R;
@@ -29,7 +29,7 @@ public class StickyHeaderFragment extends BaseDecorationFragment implements Recy
         list.addItemDecoration(decor, 1);
         list.addOnItemTouchListener(this);
 
-        mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(getActivity(), "Item " + position, Toast.LENGTH_SHORT).show();

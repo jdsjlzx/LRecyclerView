@@ -1,11 +1,17 @@
 <component name="libraryTable">
   <library name="rules-0.5">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support.test/rules/0.5/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support.test/rules/0.5/annotations.zip!/" />
+    </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support.test/rules/0.5/jars/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support.test/rules/0.5/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support.test/rules/0.5/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../Android/studio_sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../Android/studio_sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />
       <root url="jar://D:/android/sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />
       <root url="jar://D:/android/sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />
       <root url="jar://E:/Android/studio_sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />

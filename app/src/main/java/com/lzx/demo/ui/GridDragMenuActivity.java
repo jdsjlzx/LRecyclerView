@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.github.jdsjlzx.interfaces.Closeable;
-import com.github.jdsjlzx.interfaces.OnItemClickLitener;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnSwipeMenuItemClickListener;
 import com.github.jdsjlzx.interfaces.SwipeMenuCreator;
 import com.github.jdsjlzx.recyclerview.HeaderSpanSizeLookup;
@@ -82,7 +82,7 @@ public class GridDragMenuActivity extends AppCompatActivity {
         mRecyclerView.setLongPressDragEnabled(true);// 开启拖拽，就这么简单一句话。
         mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
 
-        mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 String text = "Click position = " + position;

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.jdsjlzx.interfaces.OnItemClickLitener;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.util.RecyclerViewUtils;
@@ -74,7 +74,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
         //禁止下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
 
-        mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);

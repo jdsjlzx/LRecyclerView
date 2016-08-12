@@ -7,7 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.jdsjlzx.interfaces.OnItemClickLitener;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.swipe.SwipeMenuAdapter;
 import com.github.jdsjlzx.swipe.SwipeMenuLayout;
 import com.github.jdsjlzx.swipe.SwipeMenuView;
@@ -41,7 +41,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ArrayList<View> mFooterViews = new ArrayList<>();
 
     private Context mContext;
-    private OnItemClickLitener mOnItemClickLitener;
+    private OnItemClickListener mOnItemClickListener;
 
     private RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
 
@@ -250,12 +250,12 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 }
 
-                if (mOnItemClickLitener != null) {
+                if (mOnItemClickListener != null) {
                     holder.itemView.setOnClickListener(new View.OnClickListener()  {
                         @Override
                         public void onClick(View v)
                         {
-                            mOnItemClickLitener.onItemClick(holder.itemView, adjPosition);
+                            mOnItemClickListener.onItemClick(holder.itemView, adjPosition);
                         }
                     });
 
@@ -263,7 +263,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                         @Override
                         public boolean onLongClick(View v)
                         {
-                            mOnItemClickLitener.onItemLongClick(holder.itemView, adjPosition);
+                            mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
                             return false;
                         }
                     });
@@ -370,9 +370,9 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener)
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener)
     {
-        this.mOnItemClickLitener = mOnItemClickLitener;
+        this.mOnItemClickListener = mOnItemClickListener;
     }
 
     /**
