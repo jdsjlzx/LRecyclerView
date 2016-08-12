@@ -71,6 +71,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
         //add a FooterView
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
+        //禁止下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
 
         mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {

@@ -1,4 +1,4 @@
-package com.lzx.demo;
+package com.lzx.demo.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,17 +16,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.util.RecyclerViewUtils;
-import com.lzx.demo.ui.CommonActivity;
-import com.lzx.demo.ui.SectionCollectionActivity;
-import com.lzx.demo.ui.SwipeMenuActivity;
+import com.lzx.demo.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class CommonActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {CommonActivity.class, SwipeMenuActivity.class, SectionCollectionActivity.class};
-    private static final String[] TITLE = {"CommonActivity","SwipeMenuActivity","SectionCollectionActivity"};
+    private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class, EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class,EmptyViewActivity.class};
+    private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity", "EndlessStaggeredGridLayoutActivity","EmptyViewActivity"};
 
     private RecyclerView mRecyclerView = null;
 
@@ -112,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        ListItem listItem = mDataList.get(RecyclerViewUtils.getAdapterPosition(mRecyclerView, ViewHolder.this));
-                        startActivity(new Intent(MainActivity.this, listItem.activity));
+                        ListItem listItem = mDataList.get(RecyclerViewUtils.getAdapterPosition(mRecyclerView, CommonActivity.DataAdapter.ViewHolder.this));
+                        startActivity(new Intent(CommonActivity.this, listItem.activity));
                     }
                 });
             }
