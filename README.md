@@ -542,7 +542,7 @@ mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        mRec
 mRecyclerView.setLScrollListener(LScrollListener); 
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ```
-
+2. 不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突。
 
 ##Thanks
 
