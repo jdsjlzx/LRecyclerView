@@ -7,11 +7,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.jdsjlzx.R;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.swipe.SwipeMenuAdapter;
 import com.github.jdsjlzx.swipe.SwipeMenuLayout;
 import com.github.jdsjlzx.swipe.SwipeMenuView;
 import com.github.jdsjlzx.view.ArrowRefreshHeader;
+import com.github.jdsjlzx.view.CommonHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +79,10 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         mContext = context;
         setRefreshHeader();
         setAdapter(innerAdapter);
+    }
+
+    public void setPullRefreshEnabled(boolean enabled) {
+        pullRefreshEnabled = enabled;
     }
 
     public void setRefreshHeader(){
@@ -214,7 +220,14 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_REFRESH_HEADER) {
-            return new ViewHolder(mRefreshHeader);
+            //temporary solution
+            if(pullRefreshEnabled) {
+                return new ViewHolder(mRefreshHeader);
+            }else {
+                CommonHeader header = new CommonHeader(mContext, R.layout.layout_recyclerview_empty_header);
+                return new ViewHolder(header);
+            }
+
         } else if (isHeaderType(viewType)) {
             return new ViewHolder(getHeaderViewByType(viewType));
         } else if (viewType == TYPE_FOOTER_VIEW) {

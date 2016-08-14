@@ -247,7 +247,7 @@ public class LRecyclerView extends RecyclerView {
     }
 
     private boolean isOnTop() {
-        if (mRefreshHeader.getParent() != null) {
+        if (pullRefreshEnabled && mRefreshHeader.getParent() != null) {
             return true;
         } else {
             return false;
@@ -279,6 +279,7 @@ public class LRecyclerView extends RecyclerView {
 
     public void setPullRefreshEnabled(boolean enabled) {
         pullRefreshEnabled = enabled;
+        mWrapAdapter.setPullRefreshEnabled(enabled);
     }
 
 
@@ -317,7 +318,8 @@ public class LRecyclerView extends RecyclerView {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
             mRefreshHeaderHeight = mRefreshHeader.getMeasuredHeight();
             mRefreshHeader.onMove(mRefreshHeaderHeight);
-            mLScrollListener.onRefresh();       }
+            mLScrollListener.onRefresh();
+        }
     }
 
     public void forceToRefresh() {

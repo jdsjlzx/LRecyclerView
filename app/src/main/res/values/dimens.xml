@@ -22,4 +22,8 @@
 
     <dimen name="item_height">60dp</dimen>
     <dimen name="item_margin">10dp</dimen>
+
+    <dimen name="pager_item_horizontal_margin">25dp</dimen>
+    <dimen name="pager_item_vertical_margin">100dp</dimen>
+    <dimen name="pager_item_big_margin">46dp</dimen>
 </resources>
