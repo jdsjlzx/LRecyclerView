@@ -34,6 +34,9 @@
 			android:layout_width="fill_parent"
 			android:layout_height="match_parent"
 			android:layout_centerInParent="true"
+			app:rvp_triggerOffset="0.1"
+			app:rvp_singlePageFling="true"
+			android:clipToPadding="false"
 			/>
 
 		<RelativeLayout
