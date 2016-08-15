@@ -39,7 +39,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     private static final int ROTATE_ANIM_DURATION = 180;
 
     public int mMeasuredHeight;
-    private static Context mContext;
+    private Context mContext;
 
     public ArrowRefreshHeader(Context context) {
         super(context);
@@ -239,7 +239,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         animator.start();
     }
 
-    public static String friendlyTime(Date time) {
+    public String friendlyTime(Date time) {
         int ct = (int) ((System.currentTimeMillis() - time.getTime()) / 1000);
 
         if (ct == 0) {
@@ -257,7 +257,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             return ct / 3600 + mContext.getResources().getString(R.string.text_hour_ago);
         if (ct >= 86400 && ct < 2592000) { //86400 * 30
             int day = ct / 86400;
-            return day + mContext.getResources().getString(R.string.text_day_ago);
+            return day + getContext().getResources().getString(R.string.text_day_ago);
         }
         if (ct >= 2592000 && ct < 31104000) { //86400 * 30
             return ct / 2592000 + mContext.getResources().getString(R.string.text_month_ago);
