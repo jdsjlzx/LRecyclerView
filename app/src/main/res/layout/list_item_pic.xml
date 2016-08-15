@@ -9,8 +9,6 @@
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="5dp"
     app:cardElevation="5dp"
-    android:layout_marginLeft="28dp"
-    android:layout_marginRight="28dp"
     android:layout_marginTop="100dp"
     android:layout_marginBottom="100dp"
     >
@@ -23,7 +21,7 @@
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="220dp"
+            android:layout_width="230dp"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:src="@mipmap/ningjing"/>

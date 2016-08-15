@@ -142,6 +142,9 @@ public class SwipeDeleteHorizontalListActivity extends AppCompatActivity {
            }
         });
 
+        //开启功能
+        mRecyclerView.setViewPagerMode(true);
+
         mRecyclerView.addOnPageChangedListener(new LRecyclerView.OnPageChangedListener() {
             @Override
             public void OnPageChanged(int oldPosition, int newPosition) {
@@ -179,8 +182,6 @@ public class SwipeDeleteHorizontalListActivity extends AppCompatActivity {
 
             }
         });
-
-        //mRecyclerView.scrollToPosition(mLRecyclerViewAdapter.getAdapterPosition(false,0));
 
     }
 

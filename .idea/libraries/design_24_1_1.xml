@@ -9,8 +9,8 @@
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/design/24.1.1/c8be87d36c312ce1abd6da6b858ea95cd6dc1faa/design-24.1.1-sources.jar!/" />
       <root url="jar://D:/android/sdk/extras/android/m2repository/com/android/support/design/24.1.1/design-24.1.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/design/24.1.1/c8be87d36c312ce1abd6da6b858ea95cd6dc1faa/design-24.1.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
