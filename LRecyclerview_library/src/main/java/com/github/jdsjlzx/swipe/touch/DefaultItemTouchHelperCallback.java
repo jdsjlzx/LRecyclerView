@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
 public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
@@ -88,10 +89,21 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        Log.e("lzx"," onChildDraw actionState " + actionState);
         //判断当前是否是swipe方式：侧滑。
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             //1.ItemView--ViewHolder; 2.侧滑条目的透明度程度关联谁？dX(delta增量，范围：当前条目-width~width)。
-            float alpha = 1 - Math.abs(dX) / viewHolder.itemView.getWidth();
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+            float alpha = 1;
+            if (layoutManager instanceof LinearLayoutManager) {
+                int orientation = ((LinearLayoutManager) layoutManager).getOrientation();
+                if ( orientation == LinearLayoutManager.HORIZONTAL) {
+                    alpha = 1 - Math.abs(dY) / viewHolder.itemView.getHeight();
+                } else if ( orientation == LinearLayoutManager.VERTICAL) {
+                    alpha = 1 - Math.abs(dX) / viewHolder.itemView.getWidth();
+                }
+            }
+
             viewHolder.itemView.setAlpha(alpha);//1~0
         }
         // super里面自动实现了viewHolder.itemView.setTranslationX(dX);
