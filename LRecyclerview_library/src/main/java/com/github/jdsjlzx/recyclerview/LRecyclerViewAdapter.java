@@ -81,10 +81,6 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         setAdapter(innerAdapter);
     }
 
-    public void setPullRefreshEnabled(boolean enabled) {
-        pullRefreshEnabled = enabled;
-    }
-
     public void setRefreshHeader(){
         if (pullRefreshEnabled) {
             ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(mContext);
