@@ -51,6 +51,21 @@ LRecyclerView requires at minimum Java 7 or Android 4.0.
 
 ##功能介绍
 
+
+### 填充数据
+
+```
+mDataAdapter = new DataAdapter(this);
+mDataAdapter.setData(dataList);
+
+mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+```
+
+> 
+1. DataAdapter是用户自己真正的adapter，用户自己定义；
+2. LRecyclerViewAdapter提供了一些实用的功能，使用者不用关心它的实现，只需构造的时候把自己的mDataAdapter以参数形式传进去即可。
+
 ### 添加HeaderView、FooterView
 ```
 //add a HeaderView
