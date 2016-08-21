@@ -134,4 +134,5 @@ public class CommonActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

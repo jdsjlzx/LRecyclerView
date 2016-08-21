@@ -85,7 +85,7 @@ public class RecyclerViewUtils {
             int headerViewCounter = ((LRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
             if (headerViewCounter > 0) {
                 View headerView = ((LRecyclerViewAdapter) outerAdapter).getHeaderView();
-                ((LRecyclerViewAdapter) outerAdapter).removeFooterView(headerView);
+                ((LRecyclerViewAdapter) outerAdapter).removeHeaderView(headerView);
             }
         }
     }

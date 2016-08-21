@@ -57,6 +57,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
     private boolean isRefresh = false;
 
+    private SampleHeader mSampleHeader;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

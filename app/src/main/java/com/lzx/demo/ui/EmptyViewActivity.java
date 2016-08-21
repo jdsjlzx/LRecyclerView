@@ -17,6 +17,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.util.TLog;
 
 import java.util.ArrayList;
 
@@ -57,6 +58,12 @@ public class EmptyViewActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setPullRefreshEnabled(false);
 
+        mEmptyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TLog.error("refresh data");
+            }
+        });
     }
 
     private class DataAdapter extends ListBaseAdapter<ItemModel> {
