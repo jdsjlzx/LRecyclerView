@@ -26,7 +26,7 @@ allprojects {
 
 Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
 ```
-compile 'com.github.jdsjlzx:LRecyclerView:1.0.6'
+compile 'com.github.jdsjlzx:LRecyclerView:1.0.7'
 ```
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
@@ -86,6 +86,19 @@ RecyclerViewUtils.setHeaderView(mRecyclerView, headerView);
 ```
 
 上面的方式同样适用于FooterView。
+
+### 移除HeaderView、FooterView
+```
+//remove a HeaderView
+RecyclerViewUtils.removeHeaderView(mRecyclerView);
+
+//remove a FooterView
+RecyclerViewUtils.removeFooterView(mRecyclerView);
+```
+注意：
+> 
+1.如果有两个以上的HeaderView，连续调用RecyclerViewUtils.removeHeaderView(mRecyclerView)即可。
+
 
 ### LScrollListener-滑动监听事件接口
 
