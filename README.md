@@ -514,8 +514,11 @@ mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
 关键代码：
 
 ```
+
 mRecyclerView.setLongPressDragEnabled(true);
-mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除        mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI
+mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除        
+mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI
+
 ```
 
 按照配置就可以实现滑动删除。
@@ -529,9 +532,11 @@ mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除        mRecycl
 关键代码：
 
 ```
+
 mRecyclerView.setLongPressDragEnabled(true);
 mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        
 mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。        mRecyclerView.setOnItemMovementListener(onItemMovementListener);
+
 ```
 
 ###用SwipeMenuLayout实现你自己的侧滑
@@ -583,6 +588,7 @@ mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新
 ```
 mRecyclerView.setLScrollListener(LScrollListener); 
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
+
 ```
 2. 不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突。
 
