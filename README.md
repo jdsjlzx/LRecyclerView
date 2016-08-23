@@ -542,6 +542,17 @@ mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        mRec
 这个与LRecyclerView关系不大，但是与SwipeMenu关系密切。为了实现滑动菜单的功能，定义了SwipeMenuLayout，详细使用见demo。
 
 
+##类似viewpager功能
+
+
+效果图：
+
+![这里写图片描述](http://img.blog.csdn.net/20160815170345658)
+
+主要有两个功能： 
+1.viewpager滑动； 
+2.上下滑动删除。
+
 
 ##分组
 
@@ -585,4 +596,3 @@ RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 觉得本框架对你有帮助，不妨打赏赞助我一下，让我有动力走的更远。
 
 <img src="http://img.blog.csdn.net/20160812223409875" width=280 height=280 />
-
