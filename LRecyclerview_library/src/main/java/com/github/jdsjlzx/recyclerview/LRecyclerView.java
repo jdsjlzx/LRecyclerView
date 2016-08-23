@@ -385,6 +385,7 @@ public class LRecyclerView extends RecyclerView {
         }
     }
 
+
     @Override
     public void onScrolled(int dx, int dy) {
         super.onScrolled(dx, dy);

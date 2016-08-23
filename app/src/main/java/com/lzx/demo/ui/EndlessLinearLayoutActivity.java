@@ -40,7 +40,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
     private static final String TAG = "lzx";
 
     /**服务器端一共多少条数据*/
-    private static final int TOTAL_COUNTER = 34;
+    private static final int TOTAL_COUNTER = 64;
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;
@@ -57,7 +57,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
     private boolean isRefresh = false;
 
-    private SampleHeader mSampleHeader;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

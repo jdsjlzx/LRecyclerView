@@ -78,7 +78,8 @@ public class SwipeDeleteListActivity extends AppCompatActivity {
 
             @Override
             public void onItemLongClick(View view, int position) {
-
+                String text = "onItemLongClick item " + position;
+                AppToast.showShortText(SwipeDeleteListActivity.this, text);
 
             }
         });

@@ -277,7 +277,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                         public boolean onLongClick(View v)
                         {
                             mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
-                            return false;
+                            return true;  
                         }
                     });
                 }
