@@ -530,7 +530,8 @@ mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除        mRecycl
 
 ```
 mRecyclerView.setLongPressDragEnabled(true);
-mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。        mRecyclerView.setOnItemMovementListener(onItemMovementListener);
+mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        
+mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。        mRecyclerView.setOnItemMovementListener(onItemMovementListener);
 ```
 
 ###用SwipeMenuLayout实现你自己的侧滑
@@ -550,8 +551,9 @@ mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。        mRec
 ![这里写图片描述](http://img.blog.csdn.net/20160815170345658)
 
 主要有两个功能： 
-1.viewpager滑动； 
-2.上下滑动删除。
+
+1. viewpager滑动； 
+2. 上下滑动删除。
 
 
 ##分组
