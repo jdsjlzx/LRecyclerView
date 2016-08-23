@@ -126,7 +126,7 @@ void onScrolled(int distanceX, int distanceY);// moving state,you can get the mo
 mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
             @Override
             public void onRefresh() {
-                //下拉刷新
+                //refresh
             }
 
             @Override
@@ -139,7 +139,7 @@ mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
 
             @Override
             public void onBottom() {
-                // 加载更多（加载下页数据）
+                // do something, such as load next page.
             }
 
             @Override
