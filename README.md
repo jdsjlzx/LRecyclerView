@@ -553,7 +553,7 @@ mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新
 
 效果图：
 
-<img src="(http://img.blog.csdn.net/20160815170345658" width=320 height=480 />
+<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/pager.gif" width=320 height=560 />
 
 
 主要有两个功能： 
