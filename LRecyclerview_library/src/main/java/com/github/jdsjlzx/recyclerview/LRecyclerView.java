@@ -46,7 +46,7 @@ public class LRecyclerView extends RecyclerView {
     private View mEmptyView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private float mLastY = -1;
-    private static final float DRAG_RATE = 3;
+    private static final float DRAG_RATE = 2.0f;
 
     private LRecyclerViewAdapter mWrapAdapter;
     private boolean isNoMore = false;
