@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.Parcelable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
@@ -15,9 +17,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 
-import com.github.jdsjlzx.BuildConfig;
 import com.github.jdsjlzx.R;
 import com.github.jdsjlzx.interfaces.Closeable;
 import com.github.jdsjlzx.interfaces.OnSwipeMenuItemClickListener;
@@ -36,17 +38,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by lizhixian on 16/1/4.
+ *
+ * @author lizhixian
+ * @created 2016/8/29 11:21
+ *
  */
 public class LRecyclerView extends RecyclerView {
-    public static final boolean DEBUG = BuildConfig.DEBUG;
     private boolean pullRefreshEnabled = true;
     private LScrollListener mLScrollListener;
     private ArrowRefreshHeader mRefreshHeader;
     private View mEmptyView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private float mLastY = -1;
-    private static final float DRAG_RATE = 2.0f;
+    private static final float DRAG_RATE = 2.5f;
 
     private LRecyclerViewAdapter mWrapAdapter;
     private boolean isNoMore = false;
@@ -150,6 +154,9 @@ public class LRecyclerView extends RecyclerView {
     private boolean reverseLayout = false;
 
     //viewpager end
+
+    private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
+
     public LRecyclerView(Context context) {
         this(context, null);
     }
@@ -163,7 +170,7 @@ public class LRecyclerView extends RecyclerView {
         mViewConfig = ViewConfiguration.get(getContext());
 
         initAttrs(context, attrs, defStyle);
-        setNestedScrollingEnabled(false);
+        setNestedScrollingEnabled(true);
     }
 
     private void initAttrs(Context context, AttributeSet attrs, int defStyle) {
@@ -251,7 +258,7 @@ public class LRecyclerView extends RecyclerView {
             case MotionEvent.ACTION_MOVE:
                 final float deltaY = ev.getRawY() - mLastY;
                 mLastY = ev.getRawY();
-                if (isOnTop() && pullRefreshEnabled) {
+                if (isOnTop() && pullRefreshEnabled  && (appbarState == AppBarStateChangeListener.State.EXPANDED)) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
                     if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
                         return false;
@@ -268,7 +275,7 @@ public class LRecyclerView extends RecyclerView {
                 break;
             default:
                 mLastY = -1; // reset
-                if (isOnTop() && pullRefreshEnabled) {
+                if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
                     if (mRefreshHeader.releaseAction()) {
                         if (mLScrollListener != null) {
                             mLScrollListener.onRefresh();
@@ -582,7 +589,41 @@ public class LRecyclerView extends RecyclerView {
         GridLayout
     }
 
-    //method for swipe menu end
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        //解决LRecyclerView与CollapsingToolbarLayout滑动冲突的问题
+        AppBarLayout appBarLayout = null;
+        ViewParent p = getParent();
+        while (p != null) {
+            if (p instanceof CoordinatorLayout) {
+                break;
+            }
+            p = p.getParent();
+        }
+        if(p instanceof CoordinatorLayout) {
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout)p;
+            final int childCount = coordinatorLayout.getChildCount();
+            for (int i = childCount - 1; i >= 0; i--) {
+                final View child = coordinatorLayout.getChildAt(i);
+                if(child instanceof AppBarLayout) {
+                    appBarLayout = (AppBarLayout)child;
+                    break;
+                }
+            }
+            if(appBarLayout != null) {
+                appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+                    @Override
+                    public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                        appbarState = state;
+                    }
+                });
+            }
+        }
+    }
+
+
+    //method for swipe menu begin
     private void initializeItemTouchHelper() {
         if (mDefaultItemTouchHelper == null) {
             mDefaultItemTouchHelper = new DefaultItemTouchHelper();

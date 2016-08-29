@@ -377,6 +377,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         mInnerAdapter.onViewRecycled(holder);
     }
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View itemView) {
             super(itemView);

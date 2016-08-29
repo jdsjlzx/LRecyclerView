@@ -41,6 +41,7 @@
         <activity android:name=".ui.DragSwipeFlagsActivity" />
         <activity android:name=".ui.DefineActivity" />
         <activity android:name=".ui.SwipeMenuActivity" />
+        <activity android:name=".ui.CollapsingToolbarLayoutActivity" />
     </application>
 
 </manifest>
