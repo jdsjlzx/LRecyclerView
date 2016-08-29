@@ -227,13 +227,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                         RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
                     }
                     break;
-                case -4:
-                    int index = activity.mDataAdapter.getDataList().size();
-                    activity.mDataAdapter.getDataList().remove(0);
-                    activity.mDataAdapter.getDataList().remove(1);
-                    activity.mDataAdapter.notifyItemRangeRemoved(0,2);
-
-                    break;
                 default:
                     break;
             }
