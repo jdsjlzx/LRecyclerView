@@ -585,13 +585,13 @@ mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新
 
 ##注意事项
 
-1. 如果添加了footerview，不要再使用setLScrollListener方法，如有需要，自定义实现即可。如下面代码不要同时使用：
+1.如果添加了footerview，不要再使用setLScrollListener方法，如有需要，自定义实现即可。如下面代码不要同时使用：
 ```
 mRecyclerView.setLScrollListener(LScrollListener); 
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
 ```
-2. 不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突。
+2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突。
 
 ##Thanks
 
