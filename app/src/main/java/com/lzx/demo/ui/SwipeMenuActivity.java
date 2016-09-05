@@ -24,7 +24,7 @@ import java.util.List;
 public class SwipeMenuActivity extends AppCompatActivity {
 
     private static final Class<?>[] ACTIVITY = {AllMenuActivity.class, ViewTypeMenuActivity.class,DragMenuListActivity.class,GridDragMenuActivity.class,
-            SwipeDeleteListActivity.class,SwipeDeleteHorizontalListActivity.class, DragSwipeFlagsActivity.class, DefineActivity.class};
+            SwipeDeleteListActivity.class,DragSwipeFlagsActivity.class, DefineActivity.class};
     private String[] TITLE ;
 
     private RecyclerView mRecyclerView = null;
