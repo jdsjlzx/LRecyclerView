@@ -26,7 +26,7 @@ allprojects {
 
 Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
 ```
-compile 'com.github.jdsjlzx:LRecyclerView:1.0.9'
+compile 'com.github.jdsjlzx:LRecyclerView:1.1.0'
 ```
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
@@ -546,20 +546,6 @@ mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/swipe_7.gif" width=320 height=560 />
 
 这个与LRecyclerView关系不大，但是与SwipeMenu关系密切。为了实现滑动菜单的功能，定义了SwipeMenuLayout，详细使用见demo。
-
-
-##类似viewpager功能
-
-
-效果图：
-
-<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/pager.gif" width=320 height=560 />
-
-
-主要有两个功能： 
-
-1. viewpager滑动； 
-2. 上下滑动删除。
 
 
 ##分组
