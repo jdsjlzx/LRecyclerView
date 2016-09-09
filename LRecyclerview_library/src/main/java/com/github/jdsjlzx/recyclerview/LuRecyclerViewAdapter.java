@@ -11,7 +11,6 @@ import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.swipe.SwipeMenuAdapter;
 import com.github.jdsjlzx.swipe.SwipeMenuLayout;
 import com.github.jdsjlzx.swipe.SwipeMenuView;
-import com.github.jdsjlzx.view.ArrowRefreshHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +19,13 @@ import java.util.List;
  * RecyclerView.Adapter with Header and Footer
  * 
  */
-public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_REFRESH_HEADER = 10000;
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER_VIEW = 10001;
     private static final int HEADER_INIT_INDEX = 10002;
     private static List<Integer> mHeaderTypes = new ArrayList<>();
-
-    private boolean pullRefreshEnabled = true;
-    private int mRefreshProgressStyle = ProgressStyle.SysProgress;
-    private ArrowRefreshHeader mRefreshHeader;
 
     /**
      * RecyclerView使用的，真正的Adapter
@@ -73,34 +68,22 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     };
 
-    public LRecyclerViewAdapter(Context context, RecyclerView.Adapter innerAdapter) {
+    public LuRecyclerViewAdapter(Context context, RecyclerView.Adapter innerAdapter) {
         mContext = context;
-        setRefreshHeader();
         setAdapter(innerAdapter);
     }
 
-    public void setPullRefreshEnabled(boolean enabled) {
-        pullRefreshEnabled = enabled;
-    }
-
-    public void setRefreshHeader(){
-        if (pullRefreshEnabled) {
-            ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(mContext);
-            refreshHeader.setProgressStyle(mRefreshProgressStyle);
-            mRefreshHeader = refreshHeader;
-
-        }
-    }
-
-    public ArrowRefreshHeader getRefreshHeader(){
-        return mRefreshHeader;
-    }
 
     /**
      * 设置adapter
      * @param adapter
      */
     public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+
+        if (adapter != null) {
+            if (!(adapter instanceof RecyclerView.Adapter))
+                throw new RuntimeException("your adapter must be a RecyclerView.Adapter");
+        }
 
         if (mInnerAdapter != null) {
             notifyItemRangeRemoved(getHeaderViewsCount(), mInnerAdapter.getItemCount());
@@ -212,9 +195,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (viewType == TYPE_REFRESH_HEADER) {
-            return new ViewHolder(mRefreshHeader);
-        } else if (isHeaderType(viewType)) {
+        if (isHeaderType(viewType)) {
             return new ViewHolder(getHeaderViewByType(viewType));
         } else if (viewType == TYPE_FOOTER_VIEW) {
             return new ViewHolder(mFooterViews.get(0));
