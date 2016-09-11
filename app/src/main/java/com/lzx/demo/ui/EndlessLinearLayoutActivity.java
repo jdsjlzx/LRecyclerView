@@ -98,6 +98,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             public void onRefresh() {
                 RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
                 mDataAdapter.clear();
+                mLRecyclerViewAdapter.notifyDataSetChanged();//fix bug:crapped or attached views may not be recycled. isScrap:false isAttached:true
                 mCurrentCounter = 0;
                 isRefresh = true;
                 requestData();
@@ -209,11 +210,10 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                     if(activity.isRefresh){
                         activity.isRefresh = false;
                         activity.mRecyclerView.refreshComplete();
-                        activity.notifyDataSetChanged();
-                    }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
                     }
 
+                    RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+                    activity.notifyDataSetChanged();
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
@@ -222,10 +222,9 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                     if(activity.isRefresh){
                         activity.isRefresh = false;
                         activity.mRecyclerView.refreshComplete();
-                        activity.notifyDataSetChanged();
-                    }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
                     }
+                    activity.notifyDataSetChanged();
+                    RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
                     break;
                 default:
                     break;

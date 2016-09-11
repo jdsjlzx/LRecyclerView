@@ -75,8 +75,10 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public LRecyclerViewAdapter(Context context, RecyclerView.Adapter innerAdapter) {
         mContext = context;
-        setRefreshHeader();
-        setAdapter(innerAdapter);
+        this.mInnerAdapter = innerAdapter;
+        //setRefreshHeader();
+
+        //setAdapter(innerAdapter);
     }
 
     public void setPullRefreshEnabled(boolean enabled) {
@@ -90,6 +92,10 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             mRefreshHeader = refreshHeader;
 
         }
+    }
+
+    public void setRefreshHeader(ArrowRefreshHeader refreshHeader){
+        mRefreshHeader = refreshHeader;
     }
 
     public ArrowRefreshHeader getRefreshHeader(){
@@ -205,8 +211,8 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public boolean isFooter(int position) {
-        int lastPosition = getItemCount() - 1;
-        return getFooterViewsCount() > 0 && position == lastPosition;
+        int lastPosition = getItemCount() - getFooterViewsCount();
+        return getFooterViewsCount() > 0 && position >= lastPosition;
     }
 
     @Override
@@ -270,7 +276,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 return;
             }
-        }
+     }
     }
 
     @Override

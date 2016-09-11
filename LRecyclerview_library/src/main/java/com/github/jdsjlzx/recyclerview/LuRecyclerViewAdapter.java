@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TYPE_REFRESH_HEADER = 10000;
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER_VIEW = 10001;
     private static final int HEADER_INIT_INDEX = 10002;
@@ -70,20 +69,15 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public LuRecyclerViewAdapter(Context context, RecyclerView.Adapter innerAdapter) {
         mContext = context;
-        setAdapter(innerAdapter);
+        //setAdapter(innerAdapter);
+        this.mInnerAdapter = innerAdapter;
     }
-
 
     /**
      * 设置adapter
-     * @param adapter
-     */
-    public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+     * @param adapter     */
 
-        if (adapter != null) {
-            if (!(adapter instanceof RecyclerView.Adapter))
-                throw new RuntimeException("your adapter must be a RecyclerView.Adapter");
-        }
+    public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
 
         if (mInnerAdapter != null) {
             notifyItemRangeRemoved(getHeaderViewsCount(), mInnerAdapter.getItemCount());
@@ -180,11 +174,7 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public boolean isHeader(int position) {
-        return position >= 1 && position < mHeaderViews.size() + 1;
-    }
-
-    public boolean isRefreshHeader(int position) {
-        return position == 0;
+        return position >= 0 && position < mHeaderViews.size() ;
     }
 
     public boolean isFooter(int position) {
@@ -205,10 +195,10 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        if (isHeader(position) || isRefreshHeader(position)) {
+        if (isHeader(position)) {
             return;
         }
-        final int adjPosition = position - (getHeaderViewsCount() + 1);
+        final int adjPosition = position - getHeaderViewsCount();
         int adapterCount;
         if (mInnerAdapter != null) {
             adapterCount = mInnerAdapter.getItemCount();
@@ -249,7 +239,6 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     });
                 }
 
-                return;
             }
         }
     }
@@ -257,20 +246,16 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemCount() {
         if (mInnerAdapter != null) {
-            return getHeaderViewsCount() + getFooterViewsCount() + mInnerAdapter.getItemCount() + 1;
+            return getHeaderViewsCount() + getFooterViewsCount() + mInnerAdapter.getItemCount();
         } else {
-            return getHeaderViewsCount() + getFooterViewsCount() + 1;
+            return getHeaderViewsCount() + getFooterViewsCount();
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        int adjPosition = position - (getHeaderViewsCount() + 1);
-        if (isRefreshHeader(position)) {
-            return TYPE_REFRESH_HEADER;
-        }
+        int adjPosition = position - getHeaderViewsCount();
         if (isHeader(position)) {
-            position = position - 1;
             return mHeaderTypes.get(position);
         }
         if (isFooter(position)) {
@@ -307,7 +292,7 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    return (isHeader(position) || isFooter(position) || isRefreshHeader(position))
+                    return (isHeader(position) || isFooter(position))
                             ? gridManager.getSpanCount() : 1;
                 }
             });
@@ -325,7 +310,7 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         super.onViewAttachedToWindow(holder);
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
         if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
-            if(isHeader(holder.getLayoutPosition()) ||isRefreshHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition())) {
+            if(isHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition())) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 p.setFullSpan(true);
             }
@@ -364,13 +349,13 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      */
     public int getAdapterPosition(boolean isCallback, int position) {
         if(isCallback) {
-            int adjPosition = position - getHeaderViewsCount() - 1;
+            int adjPosition = position - getHeaderViewsCount();
             int adapterCount = mInnerAdapter.getItemCount();
             if (adjPosition < adapterCount) {
                 return adjPosition;
             }
         }else {
-            return  (position + getHeaderViewsCount() + 1);
+            return  (position + getHeaderViewsCount());
         }
 
         return -1;

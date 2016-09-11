@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.github.jdsjlzx.recyclerview.LRecyclerView;
-import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
 import com.github.jdsjlzx.view.LoadingFooter;
 
 /**
@@ -14,10 +13,10 @@ import com.github.jdsjlzx.view.LoadingFooter;
  * @author lizhixian
  * @time 16/9/10 09:56
  */
-public class RecyclerViewStateUtils {
+public class LuRecyclerViewStateUtils {
 
     /**
-     * 设置LRecyclerViewAdapter的FooterView State
+     * 设置LuRecyclerViewAdapter的FooterView State
      *
      * @param instance      context
      * @param recyclerView  recyclerView
@@ -32,28 +31,25 @@ public class RecyclerViewStateUtils {
 
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
 
-        if (outerAdapter == null || !(outerAdapter instanceof LRecyclerViewAdapter)) {
+        if (outerAdapter == null || !(outerAdapter instanceof LuRecyclerViewAdapter)) {
             return;
         }
 
-        LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) outerAdapter;
+        LuRecyclerViewAdapter LuRecyclerViewAdapter = (LuRecyclerViewAdapter) outerAdapter;
 
         //只有一页的时候，就别加什么FooterView了
-        if (lRecyclerViewAdapter.getInnerAdapter().getItemCount() < pageSize) {
+        if (LuRecyclerViewAdapter.getInnerAdapter().getItemCount() < pageSize) {
             return;
         }
 
         LoadingFooter footerView;
         //已经有footerView了
-        if (lRecyclerViewAdapter.getFooterViewsCount() > 0) {
-            footerView = (LoadingFooter)lRecyclerViewAdapter.getFooterView();
+        if (LuRecyclerViewAdapter.getFooterViewsCount() > 0) {
+            footerView = (LoadingFooter) LuRecyclerViewAdapter.getFooterView();
             footerView.setState(state);
             footerView.setVisibility(View.VISIBLE);
-
             if (state == LoadingFooter.State.NetWorkError) {
                 footerView.setOnClickListener(errorListener);
-            } else if (state == LoadingFooter.State.TheEnd){
-                ((LRecyclerView)recyclerView).setNoMore(true);
             }
 
         }
@@ -61,7 +57,7 @@ public class RecyclerViewStateUtils {
     }
 
     /**
-     * 设置LRecyclerViewAdapter的FooterView State
+     * 设置LuRecyclerViewAdapter的FooterView State
      *
      * @param instance      context
      * @param recyclerView  recyclerView
@@ -77,17 +73,17 @@ public class RecyclerViewStateUtils {
 
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
 
-        if (outerAdapter == null || !(outerAdapter instanceof LRecyclerViewAdapter)) {
+        if (outerAdapter == null || !(outerAdapter instanceof LuRecyclerViewAdapter)) {
             return;
         }
 
-        LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) outerAdapter;
+        LuRecyclerViewAdapter LuRecyclerViewAdapter = (LuRecyclerViewAdapter) outerAdapter;
 
         LoadingFooter footerView;
 
         //已经有footerView了
-        if (lRecyclerViewAdapter.getFooterViewsCount() > 0) {
-            footerView = (LoadingFooter) lRecyclerViewAdapter.getFooterView();
+        if (LuRecyclerViewAdapter.getFooterViewsCount() > 0) {
+            footerView = (LoadingFooter) LuRecyclerViewAdapter.getFooterView();
             footerView.setState(state);
 
             if (state == LoadingFooter.State.NetWorkError) {
@@ -102,7 +98,7 @@ public class RecyclerViewStateUtils {
                 footerView.setOnClickListener(errorListener);
             }
 
-            lRecyclerViewAdapter.addFooterView(footerView);
+            LuRecyclerViewAdapter.addFooterView(footerView);
             recyclerView.scrollToPosition(0);
         }
     }
@@ -115,9 +111,9 @@ public class RecyclerViewStateUtils {
     public static LoadingFooter.State getFooterViewState(RecyclerView recyclerView) {
 
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
-        if (outerAdapter != null && outerAdapter instanceof LRecyclerViewAdapter) {
-            if (((LRecyclerViewAdapter) outerAdapter).getFooterViewsCount() > 0) {
-                LoadingFooter footerView = (LoadingFooter) ((LRecyclerViewAdapter) outerAdapter).getFooterView();
+        if (outerAdapter != null && outerAdapter instanceof LuRecyclerViewAdapter) {
+            if (((LuRecyclerViewAdapter) outerAdapter).getFooterViewsCount() > 0) {
+                LoadingFooter footerView = (LoadingFooter) ((LuRecyclerViewAdapter) outerAdapter).getFooterView();
                 return footerView.getState();
             }
         }
@@ -133,9 +129,9 @@ public class RecyclerViewStateUtils {
      */
     public static void setFooterViewState(RecyclerView recyclerView, LoadingFooter.State state) {
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
-        if (outerAdapter != null && outerAdapter instanceof LRecyclerViewAdapter) {
-            if (((LRecyclerViewAdapter) outerAdapter).getFooterViewsCount() > 0) {
-                LoadingFooter footerView = (LoadingFooter) ((LRecyclerViewAdapter) outerAdapter).getFooterView();
+        if (outerAdapter != null && outerAdapter instanceof LuRecyclerViewAdapter) {
+            if (((LuRecyclerViewAdapter) outerAdapter).getFooterViewsCount() > 0) {
+                LoadingFooter footerView = (LoadingFooter) ((LuRecyclerViewAdapter) outerAdapter).getFooterView();
                 footerView.setState(state);
             }
         }

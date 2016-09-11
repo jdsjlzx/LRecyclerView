@@ -17,15 +17,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
-import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
-import com.github.jdsjlzx.util.RecyclerViewStateUtils;
-import com.github.jdsjlzx.util.RecyclerViewUtils;
+import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
+import com.github.jdsjlzx.util.LuRecyclerViewUtils;
+import com.github.jdsjlzx.util.LuRecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
+import com.lzx.demo.util.AppUtil;
 import com.lzx.demo.util.NetworkUtils;
 import com.lzx.demo.weight.SampleHeader;
 
@@ -53,7 +54,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
     private DataAdapter mDataAdapter = null;
 
     private PreviewHandler mHandler = new PreviewHandler(this);
-    private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
+    private LuRecyclerViewAdapter mLRecyclerViewAdapter = null;
 
     private boolean isRefresh = false;
 
@@ -71,7 +72,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
         //设置刷新时动画的颜色，可以设置4个
         if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setProgressViewOffset(false, 0, 20);
+            mSwipeRefreshLayout.setProgressViewOffset(false, 0, AppUtil.dip2px(this,48));
             mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
             mSwipeRefreshLayout.setOnRefreshListener(this);
         }
@@ -92,12 +93,12 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
         mDataAdapter = new DataAdapter(this);
         mDataAdapter.addAll(dataList);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+        mLRecyclerViewAdapter = new LuRecyclerViewAdapter(this, mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+        LuRecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
         mRecyclerView.setLScrollListener(new LuRecyclerView.LScrollListener() {
 
@@ -111,7 +112,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
             @Override
             public void onBottom() {
-                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
+                LoadingFooter.State state = LuRecyclerViewStateUtils.getFooterViewState(mRecyclerView);
                 if(state == LoadingFooter.State.Loading) {
                     Log.d(TAG, "the state is Loading, just wait..");
                     return;
@@ -119,11 +120,11 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
                 if (mCurrentCounter < TOTAL_COUNTER) {
                     // loading more
-                    RecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
+                    LuRecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
                     requestData();
                 } else {
                     //the end
-                    RecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
+                    LuRecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
 
                 }
             }
@@ -155,6 +156,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
     public void onRefresh() {
         mCurrentCounter = 0;
         isRefresh = true;
+        mSwipeRefreshLayout.setRefreshing(true);
         requestData();
     }
 
@@ -212,22 +214,24 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
                     if(activity.isRefresh){
                         activity.isRefresh = false;
-                        activity.notifyDataSetChanged();
-                    }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+                        activity.mSwipeRefreshLayout.setRefreshing(false);
                     }
+                    LuRecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+                    activity.notifyDataSetChanged();
 
                     break;
                 case -2:
+                    activity.mSwipeRefreshLayout.setRefreshing(false);
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
                     if(activity.isRefresh){
                         activity.isRefresh = false;
-                        activity.notifyDataSetChanged();
-                    }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                        activity.mSwipeRefreshLayout.setRefreshing(false);
                     }
+                    LuRecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                    activity.notifyDataSetChanged();
+
                     break;
                 default:
                     break;
@@ -238,7 +242,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
     private View.OnClickListener mFooterClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            RecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
+            LuRecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
             requestData();
         }
     };
@@ -248,14 +252,14 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
      */
     private void requestData() {
         Log.d(TAG, "requestData");
+
         new Thread() {
 
             @Override
             public void run() {
                 super.run();
-
                 try {
-                    Thread.sleep(800);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

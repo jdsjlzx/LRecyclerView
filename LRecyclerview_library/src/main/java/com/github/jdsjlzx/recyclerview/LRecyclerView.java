@@ -23,7 +23,9 @@ import com.github.jdsjlzx.swipe.SwipeMenuLayout;
 import com.github.jdsjlzx.swipe.touch.DefaultItemTouchHelper;
 import com.github.jdsjlzx.swipe.touch.OnItemMoveListener;
 import com.github.jdsjlzx.swipe.touch.OnItemMovementListener;
+import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.ArrowRefreshHeader;
+import com.github.jdsjlzx.view.LoadingFooter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +41,11 @@ public class LRecyclerView extends RecyclerView {
     private LScrollListener mLScrollListener;
     private ArrowRefreshHeader mRefreshHeader;
     private View mEmptyView;
+    private View mFootView;
+    private int mRefreshProgressStyle = ProgressStyle.SysProgress;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private float mLastY = -1;
-    private static final float DRAG_RATE = 2.5f;
+    private static final float DRAG_RATE = 2.2f;
 
     private LRecyclerViewAdapter mWrapAdapter;
     private boolean isNoMore = false;
@@ -134,22 +138,27 @@ public class LRecyclerView extends RecyclerView {
     public LRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mViewConfig = ViewConfiguration.get(getContext());
-
+        init();
     }
 
+    private void init() {
+        if (pullRefreshEnabled) {
+            mRefreshHeader = new ArrowRefreshHeader(getContext());
+            mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
+        }
+        LoadingFooter footView = new LoadingFooter(getContext());
+        mFootView = footView;
+        mFootView.setVisibility(GONE);
+    }
 
     @Override
     public void setAdapter(Adapter adapter) {
-        Adapter oldAdapter = getAdapter();
-        if (oldAdapter != null && mDataObserver != null) {
-            oldAdapter.unregisterAdapterDataObserver(mDataObserver);
-        }
-        super.setAdapter(adapter);
-        adapter.registerAdapterDataObserver(mDataObserver);
+        mWrapAdapter = (LRecyclerViewAdapter) adapter;
+        super.setAdapter(mWrapAdapter);
         mDataObserver.onChanged();
 
-        mWrapAdapter = (LRecyclerViewAdapter) getAdapter();
-        mRefreshHeader = mWrapAdapter.getRefreshHeader();
+        mWrapAdapter.setRefreshHeader(mRefreshHeader);
+        mWrapAdapter.addFooterView(mFootView);
 
         //add for swipe item
         if (mWrapAdapter.getInnerAdapter() instanceof SwipeMenuAdapter) {
@@ -157,7 +166,6 @@ public class LRecyclerView extends RecyclerView {
             menuAdapter.setSwipeMenuCreator(mDefaultMenuCreator);
             menuAdapter.setSwipeMenuItemClickListener(mDefaultMenuItemClickListener);
         }
-
 
     }
 
@@ -190,6 +198,30 @@ public class LRecyclerView extends RecyclerView {
                 }
             }
 
+            if (mWrapAdapter != null) {
+                mWrapAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeChanged(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeInserted(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeRemoved(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            int headerViewsCountCount = mWrapAdapter.getHeaderViewsCount();
+            mWrapAdapter.notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1+ itemCount);
         }
 
     }
@@ -333,7 +365,12 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void forceToRefresh() {
+        LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(this);
+        if(state == LoadingFooter.State.Loading) {
+            return;
+        }
         if (pullRefreshEnabled && mLScrollListener != null) {
+            scrollToPosition(0);
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
             mRefreshHeader.onMove(mRefreshHeaderHeight);
             mLScrollListener.onRefresh();

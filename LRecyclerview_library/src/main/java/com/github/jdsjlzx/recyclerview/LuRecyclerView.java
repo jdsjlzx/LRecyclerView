@@ -23,6 +23,7 @@ import com.github.jdsjlzx.swipe.SwipeMenuLayout;
 import com.github.jdsjlzx.swipe.touch.DefaultItemTouchHelper;
 import com.github.jdsjlzx.swipe.touch.OnItemMoveListener;
 import com.github.jdsjlzx.swipe.touch.OnItemMovementListener;
+import com.github.jdsjlzx.view.LoadingFooter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +37,10 @@ import java.util.List;
 public class LuRecyclerView extends RecyclerView {
     private LScrollListener mLScrollListener;
     private View mEmptyView;
+    private View mFootView;
     private final AdapterDataObserver mDataObserver = new DataObserver();
-    private float mLastY = -1;
 
-    private LRecyclerViewAdapter mWrapAdapter;
+    private LuRecyclerViewAdapter mWrapAdapter;
 
     //scroll variables begin
     /**
@@ -129,29 +130,28 @@ public class LuRecyclerView extends RecyclerView {
     public LuRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mViewConfig = ViewConfiguration.get(getContext());
-
+        init();
     }
 
+    private void init() {
+        LoadingFooter footView = new LoadingFooter(getContext());
+        mFootView = footView;
+        mFootView.setVisibility(GONE);
+    }
 
     @Override
     public void setAdapter(Adapter adapter) {
-        Adapter oldAdapter = getAdapter();
-        if (oldAdapter != null && mDataObserver != null) {
-            oldAdapter.unregisterAdapterDataObserver(mDataObserver);
-        }
-        super.setAdapter(adapter);
-        adapter.registerAdapterDataObserver(mDataObserver);
+        mWrapAdapter = (LuRecyclerViewAdapter) adapter;
+        super.setAdapter(mWrapAdapter);
         mDataObserver.onChanged();
 
-        mWrapAdapter = (LRecyclerViewAdapter) getAdapter();
-
+        mWrapAdapter.addFooterView(mFootView);
         //add for swipe item
         if (mWrapAdapter.getInnerAdapter() instanceof SwipeMenuAdapter) {
             SwipeMenuAdapter menuAdapter = (SwipeMenuAdapter) mWrapAdapter.getInnerAdapter();
             menuAdapter.setSwipeMenuCreator(mDefaultMenuCreator);
             menuAdapter.setSwipeMenuItemClickListener(mDefaultMenuItemClickListener);
         }
-
 
     }
 
@@ -184,22 +184,38 @@ public class LuRecyclerView extends RecyclerView {
                 }
             }
 
+            if (mWrapAdapter != null) {
+                mWrapAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeChanged(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeInserted(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeRemoved(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            int headerViewsCountCount = mWrapAdapter.getHeaderViewsCount();
+            mWrapAdapter.notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1+ itemCount);
         }
 
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (mLastY == -1) {
-            mLastY = ev.getRawY();
-        }
         switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mLastY = ev.getRawY();
-                break;
             case MotionEvent.ACTION_MOVE:
-                final float deltaY = ev.getRawY() - mLastY;
-                mLastY = ev.getRawY();
 
                 //add for swipe menu
                 if (mWrapAdapter.getInnerAdapter() instanceof SwipeMenuAdapter) {
@@ -210,7 +226,6 @@ public class LuRecyclerView extends RecyclerView {
 
                 break;
             default:
-                mLastY = -1; // reset
                 break;
         }
         return super.onTouchEvent(ev);
