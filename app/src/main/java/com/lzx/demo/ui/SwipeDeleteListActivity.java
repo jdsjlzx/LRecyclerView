@@ -7,9 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.swipe.touch.OnItemMoveListener;
@@ -59,7 +57,7 @@ public class SwipeDeleteListActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());// 设置Item默认动画，加也行，不加也行。
         mRecyclerView.addItemDecoration(new ListViewDecoration());// 添加分割线。
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mRecyclerView.setPullRefreshEnabled(false);
 
@@ -68,23 +66,6 @@ public class SwipeDeleteListActivity extends AppCompatActivity {
         mRecyclerView.setLongPressDragEnabled(true);
         mRecyclerView.setItemViewSwipeEnabled(true);// 开启滑动删除。
         mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
-
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String text = "item " + position;
-                AppToast.showShortText(SwipeDeleteListActivity.this, text);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                String text = "onItemLongClick item " + position;
-                AppToast.showShortText(SwipeDeleteListActivity.this, text);
-
-            }
-        });
-
-
 
     }
 

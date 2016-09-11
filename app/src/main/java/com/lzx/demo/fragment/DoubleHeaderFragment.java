@@ -39,7 +39,7 @@ public class DoubleHeaderFragment extends BaseDecorationFragment implements Recy
         decor = new DoubleHeaderDecoration(adapter);
         setHasOptionsMenu(true);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(getActivity(), adapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         list.setAdapter(mLRecyclerViewAdapter);
         list.addItemDecoration(decor, 1);
         list.addOnItemTouchListener(this);

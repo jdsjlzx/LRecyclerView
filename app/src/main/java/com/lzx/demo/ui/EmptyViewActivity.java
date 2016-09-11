@@ -52,7 +52,7 @@ public class EmptyViewActivity extends AppCompatActivity {
         mDataAdapter = new DataAdapter(this);
         mDataAdapter.setDataList(dataList);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

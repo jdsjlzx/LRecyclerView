@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.ItemDecoration.StickyHeaderDecoration;
 import com.lzx.demo.R;
@@ -23,22 +22,12 @@ public class StickyHeaderFragment extends BaseDecorationFragment implements Recy
         decor = new StickyHeaderDecoration(adapter);
         setHasOptionsMenu(true);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(getActivity(), adapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         list.setAdapter(mLRecyclerViewAdapter);
 
         list.addItemDecoration(decor, 1);
         list.addOnItemTouchListener(this);
 
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), "Item " + position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-            }
-        });
     }
 
     @Override

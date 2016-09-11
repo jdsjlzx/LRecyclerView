@@ -7,11 +7,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.Closeable;
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnSwipeMenuItemClickListener;
 import com.github.jdsjlzx.interfaces.SwipeMenuCreator;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -77,27 +74,12 @@ public class ViewTypeMenuActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());// 设置Item默认动画，加也行，不加也行。
         mRecyclerView.addItemDecoration(new ListViewDecoration());// 添加分割线。
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mRecyclerView.setPullRefreshEnabled(false);
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
-
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position).title;
-                Toast.makeText(ViewTypeMenuActivity.this, text, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-
-            }
-        });
-
 
     }
 

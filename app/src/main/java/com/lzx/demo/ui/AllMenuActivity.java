@@ -9,11 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.Closeable;
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnSwipeMenuItemClickListener;
 import com.github.jdsjlzx.interfaces.SwipeMenuCreator;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -25,7 +23,6 @@ import com.lzx.demo.ItemDecoration.ListViewDecoration;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.MenuAdapter;
 import com.lzx.demo.bean.ItemModel;
-import com.lzx.demo.util.AppToast;
 import com.lzx.demo.weight.SampleFooter;
 import com.lzx.demo.weight.SampleHeader;
 
@@ -74,28 +71,13 @@ public class AllMenuActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());// 设置Item默认动画，加也行，不加也行。
         mRecyclerView.addItemDecoration(new ListViewDecoration());// 添加分割线。
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mRecyclerView.setPullRefreshEnabled(false);
 
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
         RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
-
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String text = mDataAdapter.getDataList().get(position).title;
-                AppToast.showShortText(AllMenuActivity.this, text);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-
-            }
-        });
-
 
     }
 

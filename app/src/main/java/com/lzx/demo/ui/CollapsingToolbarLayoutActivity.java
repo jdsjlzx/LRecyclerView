@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
@@ -22,7 +21,6 @@ import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
-import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.NetworkUtils;
 
 import java.lang.ref.WeakReference;
@@ -73,7 +71,7 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
         mDataAdapter = new DataAdapter(this);
         mDataAdapter.addAll(dataList);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -118,20 +116,6 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
             public void onScrolled(int distanceX, int distanceY) {
             }
 
-        });
-
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(CollapsingToolbarLayoutActivity.this, item.title);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(CollapsingToolbarLayoutActivity.this, "onItemLongClick - " + item.title);
-            }
         });
 
     }

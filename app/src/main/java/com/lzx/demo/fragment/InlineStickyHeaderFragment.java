@@ -19,7 +19,7 @@ public class InlineStickyHeaderFragment
         decor = new StickyHeaderDecoration(adapter, true);
         setHasOptionsMenu(true);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(getActivity(), adapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         list.setAdapter(mLRecyclerViewAdapter);
         list.addItemDecoration(decor, 1);
     }

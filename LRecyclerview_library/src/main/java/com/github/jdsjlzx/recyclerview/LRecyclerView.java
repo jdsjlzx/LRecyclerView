@@ -320,9 +320,6 @@ public class LRecyclerView extends RecyclerView {
 
     public void setPullRefreshEnabled(boolean enabled) {
         pullRefreshEnabled = enabled;
-        if(mWrapAdapter != null) {
-            mWrapAdapter.setPullRefreshEnabled(enabled);
-        }
     }
 
     public void setRefreshProgressStyle(int style) {

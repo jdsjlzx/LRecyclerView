@@ -1,13 +1,11 @@
 package com.github.jdsjlzx.recyclerview;
 
-import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.swipe.SwipeMenuAdapter;
 import com.github.jdsjlzx.swipe.SwipeMenuLayout;
 import com.github.jdsjlzx.swipe.SwipeMenuView;
@@ -29,65 +27,13 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     /**
      * RecyclerView使用的，真正的Adapter
      */
-    private RecyclerView.Adapter<RecyclerView.ViewHolder> mInnerAdapter;
+    private RecyclerView.Adapter mInnerAdapter;
 
     private ArrayList<View> mHeaderViews = new ArrayList<>();
     private ArrayList<View> mFooterViews = new ArrayList<>();
 
-    private Context mContext;
-    private OnItemClickListener mOnItemClickListener;
-
-    private RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
-
-        @Override
-        public void onChanged() {
-            super.onChanged();
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public void onItemRangeChanged(int positionStart, int itemCount) {
-            notifyItemRangeChanged(positionStart + getHeaderViewsCount() + 1, itemCount);
-        }
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-            notifyItemRangeInserted(positionStart + getHeaderViewsCount() + 1, itemCount);
-        }
-
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-            notifyItemRangeRemoved(positionStart + getHeaderViewsCount() + 1, itemCount);
-        }
-
-        @Override
-        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            int headerViewsCountCount = getHeaderViewsCount();
-            notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1+ itemCount);
-        }
-    };
-
-    public LuRecyclerViewAdapter(Context context, RecyclerView.Adapter innerAdapter) {
-        mContext = context;
-        //setAdapter(innerAdapter);
+    public LuRecyclerViewAdapter(RecyclerView.Adapter innerAdapter) {
         this.mInnerAdapter = innerAdapter;
-    }
-
-    /**
-     * 设置adapter
-     * @param adapter     */
-
-    public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
-
-        if (mInnerAdapter != null) {
-            notifyItemRangeRemoved(getHeaderViewsCount(), mInnerAdapter.getItemCount());
-            mInnerAdapter.unregisterAdapterDataObserver(mDataObserver);
-        }
-
-        this.mInnerAdapter = adapter;
-        mInnerAdapter.registerAdapterDataObserver(mDataObserver);
-        notifyItemRangeInserted(getHeaderViewsCount(), mInnerAdapter.getItemCount());
-
     }
 
     public RecyclerView.Adapter getInnerAdapter() {
@@ -220,25 +166,6 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                 }
 
-                if (mOnItemClickListener != null) {
-                    holder.itemView.setOnClickListener(new View.OnClickListener()  {
-                        @Override
-                        public void onClick(View v)
-                        {
-                            mOnItemClickListener.onItemClick(holder.itemView, adjPosition);
-                        }
-                    });
-
-                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v)
-                        {
-                            mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
-                            return true;
-                        }
-                    });
-                }
-
             }
         }
     }
@@ -334,11 +261,6 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public ViewHolder(View itemView) {
             super(itemView);
         }
-    }
-
-    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener)
-    {
-        this.mOnItemClickListener = mOnItemClickListener;
     }
 
     /**

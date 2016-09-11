@@ -12,14 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
-import com.lzx.demo.util.AppToast;
 import com.lzx.demo.weight.SampleFooter;
 import com.lzx.demo.weight.SampleHeader;
 
@@ -58,7 +56,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mDataAdapter = new DataAdapter(this);
         mDataAdapter.setDataList(dataList);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -73,20 +71,6 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
         //禁止下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
-
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(LinearLayoutActivity.this, item.title);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(LinearLayoutActivity.this, "onItemLongClick - " + item.title);
-            }
-        });
 
     }
 

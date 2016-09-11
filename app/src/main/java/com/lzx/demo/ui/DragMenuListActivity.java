@@ -7,10 +7,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.github.jdsjlzx.interfaces.Closeable;
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnSwipeMenuItemClickListener;
 import com.github.jdsjlzx.interfaces.SwipeMenuCreator;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -70,27 +68,13 @@ public class DragMenuListActivity extends AppCompatActivity {
         // 设置菜单Item点击监听。
         mRecyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
 
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         mRecyclerView.setPullRefreshEnabled(false);
 
         mRecyclerView.setLongPressDragEnabled(true);// 开启拖拽，就这么简单一句话。
         mRecyclerView.setOnItemMoveListener(onItemMoveListener);// 监听拖拽，更新UI。
-
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String text = "Click position = " + position;
-                AppToast.showShortText(DragMenuListActivity.this, text);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-
-            }
-        });
 
     }
 
