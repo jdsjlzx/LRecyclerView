@@ -134,6 +134,11 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             public void onScrolled(int distanceX, int distanceY) {
             }
 
+            @Override
+            public void onScrollStateChanged(int state) {
+
+            }
+
         });
         mRecyclerView.setRefreshing(true);
 

@@ -76,47 +76,6 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
-            @Override
-            public void onRefresh() {
-                RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
-                mDataAdapter.clear();
-                mCurrentCounter = 0;
-                isRefresh = true;
-                requestData();
-            }
-
-            @Override
-            public void onScrollUp() {
-            }
-
-            @Override
-            public void onScrollDown() {
-            }
-
-            @Override
-            public void onBottom() {
-                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-                if(state == LoadingFooter.State.Loading) {
-                    return;
-                }
-
-                if (mCurrentCounter < TOTAL_COUNTER) {
-                    // loading more
-                    RecyclerViewStateUtils.setFooterViewState(CollapsingToolbarLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-                    requestData();
-                } else {
-                    //the end
-                    RecyclerViewStateUtils.setFooterViewState(CollapsingToolbarLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
-
-                }
-            }
-
-            @Override
-            public void onScrolled(int distanceX, int distanceY) {
-            }
-
-        });
 
     }
 

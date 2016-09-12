@@ -349,6 +349,8 @@ public class LRecyclerView extends RecyclerView {
         void onBottom();//load next page
 
         void onScrolled(int distanceX, int distanceY);// moving state,you can get the move distance
+
+        void onScrollStateChanged(int state);
     }
 
     private int mRefreshHeaderHeight;
@@ -438,20 +440,25 @@ public class LRecyclerView extends RecyclerView {
         super.onScrollStateChanged(state);
         currentScrollState = state;
 
-        if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE && mLScrollListener != null) {
-            RecyclerView.LayoutManager layoutManager = getLayoutManager();
-            int visibleItemCount = layoutManager.getChildCount();
-            int totalItemCount = layoutManager.getItemCount();
-            if (visibleItemCount > 0
-                    && lastVisibleItemPosition >= totalItemCount - 1
-                    && totalItemCount > visibleItemCount
-                    && !isNoMore
-                    && !mIsScrollDown
-                    && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
-                mLScrollListener.onBottom();
+        if (mLScrollListener != null) {
+            mLScrollListener.onScrollStateChanged(state);
+            if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE) {
+                RecyclerView.LayoutManager layoutManager = getLayoutManager();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                if (visibleItemCount > 0
+                        && lastVisibleItemPosition >= totalItemCount - 1
+                        && totalItemCount > visibleItemCount
+                        && !isNoMore
+                        && !mIsScrollDown
+                        && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+                    mLScrollListener.onBottom();
+                }
+
             }
 
         }
+
 
     }
 
@@ -777,6 +784,8 @@ public class LRecyclerView extends RecyclerView {
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     isIntercepted = handleUnDown(x, y, isIntercepted);
+                    break;
+                default:
                     break;
             }
         }

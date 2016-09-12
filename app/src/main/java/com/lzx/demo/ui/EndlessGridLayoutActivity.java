@@ -24,7 +24,6 @@ import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.NetworkUtils;
-import com.lzx.demo.util.TLog;
 import com.lzx.demo.weight.SampleHeader;
 
 import java.lang.ref.WeakReference;
@@ -75,44 +74,6 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
-        mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
-            @Override
-            public void onRefresh() {
-                isRefresh = true;
-                requestData();
-            }
-
-            @Override
-            public void onScrollUp() {
-            }
-
-            @Override
-            public void onScrollDown() {
-            }
-
-            @Override
-            public void onBottom() {
-                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-                if(state == LoadingFooter.State.Loading) {
-                    TLog.log("the state is Loading, just wait..");
-                    return;
-                }
-
-                if (mCurrentCounter < TOTAL_COUNTER) {
-                    // loading more
-                    RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-                    requestData();
-                } else {
-                    //the end
-                    RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
-                }
-            }
-
-            @Override
-            public void onScrolled(int distanceX, int distanceY) {
-            }
-
-        });
         mRecyclerView.setRefreshing(true);
 
     }
