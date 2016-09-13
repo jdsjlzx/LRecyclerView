@@ -3,9 +3,11 @@ package com.github.jdsjlzx.recyclerview;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.swipe.SwipeMenuAdapter;
 import com.github.jdsjlzx.swipe.SwipeMenuLayout;
 import com.github.jdsjlzx.swipe.SwipeMenuView;
@@ -27,6 +29,12 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static List<Integer> mHeaderTypes = new ArrayList<>();
 
     private ArrowRefreshHeader mRefreshHeader;
+
+    private OnItemClickListener mOnItemClickListener;
+    /**
+     * 当前滑动的状态
+     */
+    private int mCurrentScrollState = RecyclerView.SCROLL_STATE_IDLE;
 
     /**
      * RecyclerView使用的，真正的Adapter
@@ -140,6 +148,10 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         return getFooterViewsCount() > 0 && position >= lastPosition;
     }
 
+    public void setScrollState(int state) {
+        mCurrentScrollState = state;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -178,6 +190,27 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                         }
                     }
 
+                }
+
+                Log.e("lzx","adapter mCurrentScrollState = " + mCurrentScrollState);
+                if (mOnItemClickListener != null && (mCurrentScrollState == RecyclerView.SCROLL_STATE_IDLE
+                        || mCurrentScrollState == RecyclerView.SCROLL_STATE_SETTLING) ) {
+                    holder.itemView.setOnClickListener(new View.OnClickListener()  {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            mOnItemClickListener.onItemClick(holder.itemView, adjPosition);
+                        }
+                    });
+
+                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v)
+                        {
+                            mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
+                            return true;
+                        }
+                    });
                 }
 
             }
@@ -299,6 +332,11 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         return -1;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener)
+    {
+        this.mOnItemClickListener = mOnItemClickListener;
     }
 
 }

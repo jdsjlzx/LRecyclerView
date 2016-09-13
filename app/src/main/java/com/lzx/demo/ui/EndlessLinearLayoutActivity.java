@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
@@ -140,7 +141,23 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             }
 
         });
+
+
         mRecyclerView.setRefreshing(true);
+
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                ItemModel item = mDataAdapter.getDataList().get(position);
+                AppToast.showShortText(EndlessLinearLayoutActivity.this, item.title);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                ItemModel item = mDataAdapter.getDataList().get(position);
+                AppToast.showShortText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title);
+            }
+        });
 
     }
 
@@ -277,7 +294,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.textView.setText(item.title);
 
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+           /* viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ItemModel item = mDataAdapter.getDataList().get(position);
@@ -292,7 +309,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                     AppToast.showShortText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title);
                     return true; // return true表示事件不再往下传递
                 }
-            });
+            });*/
 
         }
 

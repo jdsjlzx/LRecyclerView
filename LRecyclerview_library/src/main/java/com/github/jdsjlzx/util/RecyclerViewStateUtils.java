@@ -57,6 +57,7 @@ public class RecyclerViewStateUtils {
             }
 
         }
+        recyclerView.scrollToPosition(lRecyclerViewAdapter.getItemCount() - 1);
 
     }
 

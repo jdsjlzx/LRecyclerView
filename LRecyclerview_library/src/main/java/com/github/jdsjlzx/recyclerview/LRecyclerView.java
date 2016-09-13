@@ -115,7 +115,7 @@ public class LRecyclerView extends RecyclerView {
     private int mDownX;
     private int mDownY;
     private boolean isSwiebeEnable = true;
-
+    private int mRefreshHeaderHeight;
     protected ViewConfiguration mViewConfig;
     protected SwipeMenuLayout mOldSwipedLayout;
     protected int mOldTouchedPosition = INVALID_POSITION;
@@ -353,7 +353,6 @@ public class LRecyclerView extends RecyclerView {
         void onScrollStateChanged(int state);
     }
 
-    private int mRefreshHeaderHeight;
     public void setRefreshing(boolean refreshing) {
         if (refreshing && pullRefreshEnabled && mLScrollListener != null) {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
@@ -439,6 +438,7 @@ public class LRecyclerView extends RecyclerView {
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
         currentScrollState = state;
+        mWrapAdapter.setScrollState(state);
 
         if (mLScrollListener != null) {
             mLScrollListener.onScrollStateChanged(state);
