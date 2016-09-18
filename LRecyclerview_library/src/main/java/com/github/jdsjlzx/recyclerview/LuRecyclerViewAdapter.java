@@ -6,9 +6,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.jdsjlzx.swipe.SwipeMenuAdapter;
-import com.github.jdsjlzx.swipe.SwipeMenuLayout;
-import com.github.jdsjlzx.swipe.SwipeMenuView;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,13 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int TYPE_FOOTER_VIEW = 10001;
     private static final int HEADER_INIT_INDEX = 10002;
     private static List<Integer> mHeaderTypes = new ArrayList<>();
+
+
+    private OnItemClickListener mOnItemClickListener;
+    /**
+     * 当前滑动的状态
+     */
+    private int mCurrentScrollState = RecyclerView.SCROLL_STATE_IDLE;
 
     /**
      * RecyclerView使用的，真正的Adapter
@@ -128,6 +133,10 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return getFooterViewsCount() > 0 && position == lastPosition;
     }
 
+    public void setScrollState(int state) {
+        mCurrentScrollState = state;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -151,19 +160,24 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (adjPosition < adapterCount) {
                 mInnerAdapter.onBindViewHolder(holder, adjPosition);
 
-                if (mInnerAdapter instanceof SwipeMenuAdapter) {
-                    View itemView = holder.itemView;
-                    if (itemView instanceof SwipeMenuLayout) {
-                        SwipeMenuLayout swipeMenuLayout = (SwipeMenuLayout) itemView;
-                        int childCount = swipeMenuLayout.getChildCount();
-                        for (int i = 0; i < childCount; i++) {
-                            View childView = swipeMenuLayout.getChildAt(i);
-                            if (childView instanceof SwipeMenuView) {
-                                ((SwipeMenuView) childView).bindAdapterPosition(adjPosition);
-                            }
+                if (mOnItemClickListener != null && (mCurrentScrollState == RecyclerView.SCROLL_STATE_IDLE
+                        || mCurrentScrollState == RecyclerView.SCROLL_STATE_SETTLING) ) {
+                    holder.itemView.setOnClickListener(new View.OnClickListener()  {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            mOnItemClickListener.onItemClick(holder.itemView, adjPosition);
                         }
-                    }
+                    });
 
+                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v)
+                        {
+                            mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
+                            return true;
+                        }
+                    });
                 }
 
             }

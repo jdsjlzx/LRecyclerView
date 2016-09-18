@@ -32,14 +32,6 @@
         <activity android:name=".ui.SectionCollectionActivity" />
         <activity android:name=".ui.SectionLayoutActivity" />
         <activity android:name=".ui.SectionAnimalActivity" />
-        <activity android:name=".ui.AllMenuActivity" />
-        <activity android:name=".ui.ViewTypeMenuActivity" />
-        <activity android:name=".ui.DragMenuListActivity" />
-        <activity android:name=".ui.GridDragMenuActivity" />
-        <activity android:name=".ui.SwipeDeleteListActivity" />
-        <activity android:name=".ui.DragSwipeFlagsActivity" />
-        <activity android:name=".ui.DefineActivity" />
-        <activity android:name=".ui.SwipeMenuActivity" />
         <activity android:name=".ui.CollapsingToolbarLayoutActivity" />
         <activity android:name=".ui.SwipeRefreshLayoutActivity" />
     </application>

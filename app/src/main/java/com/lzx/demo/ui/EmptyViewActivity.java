@@ -39,7 +39,7 @@ public class EmptyViewActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emptyview);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -61,7 +61,10 @@ public class EmptyViewActivity extends AppCompatActivity {
         mEmptyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO 请求数据
                 TLog.error("refresh data");
+
+
             }
         });
     }

@@ -55,5 +55,4 @@ public class ListBaseAdapter<T extends Entity> extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-
 }

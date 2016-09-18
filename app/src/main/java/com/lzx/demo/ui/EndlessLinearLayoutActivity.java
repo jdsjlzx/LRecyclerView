@@ -67,22 +67,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
-        //init data
-        ArrayList<ItemModel> dataList = new ArrayList<>();
-
-        for (int i = 0; i < 11; i++) {
-
-            ItemModel item = new ItemModel();
-            item.id = i;
-            item.title = "item" + i;
-            //dataList.add(item);
-        }
-
-        mCurrentCounter = dataList.size();
 
         mDataAdapter = new DataAdapter(this);
-        mDataAdapter.addAll(dataList);
-
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 

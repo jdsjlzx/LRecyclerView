@@ -3,14 +3,10 @@ package com.github.jdsjlzx.recyclerview;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
-import com.github.jdsjlzx.swipe.SwipeMenuAdapter;
-import com.github.jdsjlzx.swipe.SwipeMenuLayout;
-import com.github.jdsjlzx.swipe.SwipeMenuView;
 import com.github.jdsjlzx.view.ArrowRefreshHeader;
 
 import java.util.ArrayList;
@@ -177,22 +173,6 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (adjPosition < adapterCount) {
                 mInnerAdapter.onBindViewHolder(holder, adjPosition);
 
-                if (mInnerAdapter instanceof SwipeMenuAdapter) {
-                    View itemView = holder.itemView;
-                    if (itemView instanceof SwipeMenuLayout) {
-                        SwipeMenuLayout swipeMenuLayout = (SwipeMenuLayout) itemView;
-                        int childCount = swipeMenuLayout.getChildCount();
-                        for (int i = 0; i < childCount; i++) {
-                            View childView = swipeMenuLayout.getChildAt(i);
-                            if (childView instanceof SwipeMenuView) {
-                                ((SwipeMenuView) childView).bindAdapterPosition(adjPosition);
-                            }
-                        }
-                    }
-
-                }
-
-                Log.e("lzx","adapter mCurrentScrollState = " + mCurrentScrollState);
                 if (mOnItemClickListener != null && (mCurrentScrollState == RecyclerView.SCROLL_STATE_IDLE
                         || mCurrentScrollState == RecyclerView.SCROLL_STATE_SETTLING) ) {
                     holder.itemView.setOnClickListener(new View.OnClickListener()  {

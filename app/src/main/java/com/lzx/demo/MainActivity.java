@@ -18,15 +18,14 @@ import android.widget.TextView;
 import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.lzx.demo.ui.CommonActivity;
 import com.lzx.demo.ui.SectionCollectionActivity;
-import com.lzx.demo.ui.SwipeMenuActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {CommonActivity.class, SwipeMenuActivity.class, SectionCollectionActivity.class};
-    private static final String[] TITLE = {"CommonActivity","SwipeMenuActivity","SectionCollectionActivity"};
+    private static final Class<?>[] ACTIVITY = {CommonActivity.class, SectionCollectionActivity.class};
+    private static final String[] TITLE = {"CommonActivity","SectionCollectionActivity"};
 
     private RecyclerView mRecyclerView = null;
 

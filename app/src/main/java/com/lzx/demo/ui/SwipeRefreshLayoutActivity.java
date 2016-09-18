@@ -131,6 +131,11 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
             public void onScrolled(int distanceX, int distanceY) {
             }
 
+            @Override
+            public void onScrollStateChanged(int state) {
+
+            }
+
         });
 
         onRefresh();
