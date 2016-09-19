@@ -38,8 +38,6 @@ LRecyclerView requires at minimum Java 7 or Android 4.0.
 4. 具备item点击和长按事件；
 5. 网络错误加载失败点击Footer重新请求数据；
 6. 可以动态为FooterView赋予不同状态（加载中、加载失败、滑到最底等）；
-7. SwipeMenu系列功能，包括Item侧滑菜单、长按拖拽Item，滑动删除Item等；
-8. 实现viewpager的功能。
 
 <br>注意：EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果。</b>
 
@@ -316,7 +314,7 @@ mRecyclerView.setLScrollListener(LScrollListener);
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
 ```
-2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突，如果你实在想用，请参考
+2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突，如果你实在想用，请参考SwipeRefreshLayoutActivity类的实现。
 
 ##Thanks
 
