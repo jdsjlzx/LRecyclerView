@@ -45,9 +45,12 @@ public class ListBaseAdapter<T extends Entity> extends RecyclerView.Adapter {
         }
     }
 
-    public void delete(int position) {
-        mDataList.remove(position);
-        notifyItemRemoved(position);
+    public void remove(int position) {
+        if(this.mDataList.size() > 0) {
+            mDataList.remove(position);
+            notifyItemRemoved(position);
+        }
+
     }
 
     public void clear() {

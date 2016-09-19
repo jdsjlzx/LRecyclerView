@@ -140,27 +140,6 @@ public class LuRecyclerView extends RecyclerView {
             }
         }
 
-        @Override
-        public void onItemRangeChanged(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeChanged(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
-        }
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeInserted(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
-        }
-
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeRemoved(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
-        }
-
-        @Override
-        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            int headerViewsCountCount = mWrapAdapter.getHeaderViewsCount();
-            mWrapAdapter.notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1+ itemCount);
-        }
-
     }
 
     private int findMax(int[] lastPositions) {

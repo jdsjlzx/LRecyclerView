@@ -40,8 +40,53 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ArrayList<View> mHeaderViews = new ArrayList<>();
     private ArrayList<View> mFooterViews = new ArrayList<>();
 
+    private RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
+
+        @Override
+        public void onChanged() {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount) {
+            notifyItemRangeChanged(positionStart + getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            notifyItemRangeInserted(positionStart + getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
+            notifyItemRangeRemoved(positionStart + getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            int headerViewsCountCount = getHeaderViewsCount();
+            notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1 + itemCount);
+        }
+    };
+
     public LRecyclerViewAdapter(RecyclerView.Adapter innerAdapter) {
-        this.mInnerAdapter = innerAdapter;
+        setAdapter(innerAdapter);
+    }
+
+    /**
+     * 设置adapter
+     * @param adapter
+     */
+    public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+
+        if (mInnerAdapter != null) {
+            notifyItemRangeRemoved(getHeaderViewsCount(), mInnerAdapter.getItemCount());
+            mInnerAdapter.unregisterAdapterDataObserver(mDataObserver);
+        }
+
+        this.mInnerAdapter = adapter;
+        mInnerAdapter.registerAdapterDataObserver(mDataObserver);
+        notifyItemRangeInserted(getHeaderViewsCount(), mInnerAdapter.getItemCount());
     }
 
     public void setRefreshHeader(ArrowRefreshHeader refreshHeader){
@@ -302,13 +347,13 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
      */
     public int getAdapterPosition(boolean isCallback, int position) {
         if(isCallback) {
-            int adjPosition = position - getHeaderViewsCount() - 1;
+            int adjPosition = position - (getHeaderViewsCount() + 1);
             int adapterCount = mInnerAdapter.getItemCount();
             if (adjPosition < adapterCount) {
                 return adjPosition;
             }
         }else {
-            return  (position + getHeaderViewsCount() + 1);
+            return  (position + getHeaderViewsCount()) - 1;
         }
 
         return -1;

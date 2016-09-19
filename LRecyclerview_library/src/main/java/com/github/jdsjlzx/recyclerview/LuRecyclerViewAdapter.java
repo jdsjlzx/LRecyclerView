@@ -37,8 +37,53 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private ArrayList<View> mHeaderViews = new ArrayList<>();
     private ArrayList<View> mFooterViews = new ArrayList<>();
 
+    private RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
+
+        @Override
+        public void onChanged() {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount) {
+            notifyItemRangeChanged(positionStart + getHeaderViewsCount(), itemCount);
+        }
+
+        @Override
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            notifyItemRangeInserted(positionStart + getHeaderViewsCount(), itemCount);
+        }
+
+        @Override
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
+            notifyItemRangeRemoved(positionStart + getHeaderViewsCount(), itemCount);
+        }
+
+        @Override
+        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            int headerViewsCountCount = getHeaderViewsCount();
+            notifyItemRangeChanged(fromPosition + headerViewsCountCount, toPosition + headerViewsCountCount + itemCount);
+        }
+    };
+
     public LuRecyclerViewAdapter(RecyclerView.Adapter innerAdapter) {
-        this.mInnerAdapter = innerAdapter;
+        setAdapter(innerAdapter);
+    }
+
+    /**
+     * 设置adapter
+     * @param adapter
+     */
+    public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+
+        if (mInnerAdapter != null) {
+            notifyItemRangeRemoved(getHeaderViewsCount(), mInnerAdapter.getItemCount());
+            mInnerAdapter.unregisterAdapterDataObserver(mDataObserver);
+        }
+
+        this.mInnerAdapter = adapter;
+        mInnerAdapter.registerAdapterDataObserver(mDataObserver);
+        notifyItemRangeInserted(getHeaderViewsCount(), mInnerAdapter.getItemCount());
     }
 
     public RecyclerView.Adapter getInnerAdapter() {

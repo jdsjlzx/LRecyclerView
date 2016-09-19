@@ -280,23 +280,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.textView.setText(item.title);
 
-           /* viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ItemModel item = mDataAdapter.getDataList().get(position);
-                    AppToast.showShortText(EndlessLinearLayoutActivity.this, item.title);
-                }
-            });
-
-            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    ItemModel item = mDataAdapter.getDataList().get(position);
-                    AppToast.showShortText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title);
-                    return true; // return true表示事件不再往下传递
-                }
-            });*/
-
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
@@ -321,7 +304,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.menu_refresh) {
-            mRecyclerView.forceToRefresh();
+            //mRecyclerView.forceToRefresh();
+            mDataAdapter.remove(mLRecyclerViewAdapter.getAdapterPosition(false,3));
         }
         return true;
     }
