@@ -154,7 +154,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
         });
 
-        onRefresh();
+        //onRefresh();
     }
 
     @Override

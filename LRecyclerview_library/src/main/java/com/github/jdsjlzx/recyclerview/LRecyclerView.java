@@ -362,7 +362,10 @@ public class LRecyclerView extends RecyclerView {
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
         currentScrollState = state;
-        mWrapAdapter.setScrollState(state);
+
+        if (mWrapAdapter != null) {
+            mWrapAdapter.setScrollState(state);
+        }
 
         if (mLScrollListener != null) {
             mLScrollListener.onScrollStateChanged(state);
