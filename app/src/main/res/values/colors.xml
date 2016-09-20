@@ -15,4 +15,21 @@
     <color name="green_pressed">#30A070</color>
     <color name="purple_normal">#9932CC</color>
     <color name="purple_pressed">#9F79EE</color>
+
+    <color name="lightGray">#e0e0e0</color>
+    <color name="white">#ffffff</color>
+    <color name="dark">#5e5656</color>
+    <color name="hint">#666262</color>
+    <color name="black">#000000</color>
+    <color name="divider">#c9cbcd</color>
+    <color name="disable">#f5f5f5</color>
+    <color name="background">#c9cbcd</color>
+    <color name="background_detail">#d2c3c7</color>
+    <color name="split">#cccccc</color>
+    <color name="feed_text_color">#4a5158</color>
+    <color name="button_login_color">#3a7eec</color>
+    <color name="button_signup_color">#93b3d7</color>
+    <color name="background_login">#fafafa</color>
+    <color name="title_color">#2e2d2d</color>
+    <color name="des_color">#404346</color>
 </resources>

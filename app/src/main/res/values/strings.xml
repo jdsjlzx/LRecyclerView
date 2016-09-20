@@ -11,4 +11,7 @@
 
     <string name="about">About</string>
     <string name="clear_cache">Clear Cache</string>
+
+    <string name="expand_all">Expand All</string>
+    <string name="collapse_all">Collapse All</string>
 </resources>

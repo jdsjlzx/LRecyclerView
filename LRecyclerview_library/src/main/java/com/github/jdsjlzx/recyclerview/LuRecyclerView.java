@@ -253,10 +253,6 @@ public class LuRecyclerView extends RecyclerView {
         super.onScrollStateChanged(state);
         currentScrollState = state;
 
-        if (mWrapAdapter != null) {
-            mWrapAdapter.setScrollState(state);
-        }
-
         if (mLScrollListener != null) {
             mLScrollListener.onScrollStateChanged(state);
 

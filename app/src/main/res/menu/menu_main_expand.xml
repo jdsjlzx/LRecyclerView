@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools" tools:context=".recycle.MainActivity">
+    <item android:id="@+id/action_expand_all" android:title="@string/expand_all"
+          android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_collapse_all" android:title="@string/collapse_all"
+          android:orderInCategory="101" app:showAsAction="never" />
+</menu>

@@ -27,10 +27,6 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ArrowRefreshHeader mRefreshHeader;
 
     private OnItemClickListener mOnItemClickListener;
-    /**
-     * 当前滑动的状态
-     */
-    private int mCurrentScrollState = RecyclerView.SCROLL_STATE_IDLE;
 
     /**
      * RecyclerView使用的，真正的Adapter
@@ -189,10 +185,6 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         return getFooterViewsCount() > 0 && position >= lastPosition;
     }
 
-    public void setScrollState(int state) {
-        mCurrentScrollState = state;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -218,8 +210,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (adjPosition < adapterCount) {
                 mInnerAdapter.onBindViewHolder(holder, adjPosition);
 
-                if (mOnItemClickListener != null && (mCurrentScrollState == RecyclerView.SCROLL_STATE_IDLE
-                        || mCurrentScrollState == RecyclerView.SCROLL_STATE_SETTLING) ) {
+                if (mOnItemClickListener != null) {
                     holder.itemView.setOnClickListener(new View.OnClickListener()  {
                         @Override
                         public void onClick(View v)
