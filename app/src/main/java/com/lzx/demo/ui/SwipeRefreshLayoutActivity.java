@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
 import com.github.jdsjlzx.util.LuRecyclerViewStateUtils;
@@ -24,6 +25,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.AppUtil;
 import com.lzx.demo.util.NetworkUtils;
 import com.lzx.demo.weight.SampleHeader;
@@ -97,6 +99,20 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         LuRecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                ItemModel item = mDataAdapter.getDataList().get(position);
+                AppToast.showShortText(SwipeRefreshLayoutActivity.this, item.title);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                ItemModel item = mDataAdapter.getDataList().get(position);
+                AppToast.showShortText(SwipeRefreshLayoutActivity.this, "onItemLongClick - " + item.title);
+            }
+        });
 
         mRecyclerView.setLScrollListener(new LuRecyclerView.LScrollListener() {
 

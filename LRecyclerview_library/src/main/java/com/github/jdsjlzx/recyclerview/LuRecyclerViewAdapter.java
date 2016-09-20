@@ -342,4 +342,9 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return -1;
     }
 
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener)
+    {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
 }
