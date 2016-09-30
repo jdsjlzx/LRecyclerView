@@ -22,7 +22,7 @@
                 android:textSize="13sp"
                 android:id="@+id/tvname"
                 android:textColor="@color/black"
-                android:text="Thanh Nguyen"
+                android:text="课堂讲师"
                 android:paddingLeft="4dp"
                 android:gravity="center_vertical"
                 android:textStyle="bold"

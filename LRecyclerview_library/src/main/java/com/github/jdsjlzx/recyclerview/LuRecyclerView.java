@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
 
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.view.LoadingFooter;
 
 /**
@@ -21,6 +22,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
  */
 public class LuRecyclerView extends RecyclerView {
     private LScrollListener mLScrollListener;
+    private OnLoadMoreListener mLoadMoreListener;
     private View mEmptyView;
     private View mFootView;
     private final AdapterDataObserver mDataObserver = new DataObserver();
@@ -172,6 +174,10 @@ public class LuRecyclerView extends RecyclerView {
         this.mEmptyView = emptyView;
     }
 
+    public void setOnLoadMoreListener(OnLoadMoreListener listener) {
+        mLoadMoreListener = listener;
+    }
+
     public void setLScrollListener(LScrollListener listener) {
         mLScrollListener = listener;
     }
@@ -182,8 +188,6 @@ public class LuRecyclerView extends RecyclerView {
 
         void onScrollDown();//scroll from up to down
 
-        void onBottom();//load next page
-
         void onScrolled(int distanceX, int distanceY);// moving state,you can get the move distance
 
         void onScrollStateChanged(int state);
@@ -193,56 +197,57 @@ public class LuRecyclerView extends RecyclerView {
     @Override
     public void onScrolled(int dx, int dy) {
         super.onScrolled(dx, dy);
-        if (null != mLScrollListener) {
-            int firstVisibleItemPosition = 0;
-            LayoutManager layoutManager = getLayoutManager();
 
-            if (layoutManagerType == null) {
-                if (layoutManager instanceof LinearLayoutManager) {
-                    layoutManagerType = LayoutManagerType.LinearLayout;
-                } else if (layoutManager instanceof GridLayoutManager) {
-                    layoutManagerType = LayoutManagerType.GridLayout;
-                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-                    layoutManagerType = LayoutManagerType.StaggeredGridLayout;
-                } else {
-                    throw new RuntimeException(
-                            "Unsupported LayoutManager used. Valid ones are LinearLayoutManager, GridLayoutManager and StaggeredGridLayoutManager");
+        int firstVisibleItemPosition = 0;
+        LayoutManager layoutManager = getLayoutManager();
+
+        if (layoutManagerType == null) {
+            if (layoutManager instanceof LinearLayoutManager) {
+                layoutManagerType = LayoutManagerType.LinearLayout;
+            } else if (layoutManager instanceof GridLayoutManager) {
+                layoutManagerType = LayoutManagerType.GridLayout;
+            } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                layoutManagerType = LayoutManagerType.StaggeredGridLayout;
+            } else {
+                throw new RuntimeException(
+                        "Unsupported LayoutManager used. Valid ones are LinearLayoutManager, GridLayoutManager and StaggeredGridLayoutManager");
+            }
+        }
+
+        switch (layoutManagerType) {
+            case LinearLayout:
+                firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                break;
+            case GridLayout:
+                firstVisibleItemPosition = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                break;
+            case StaggeredGridLayout:
+                StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+                if (lastPositions == null) {
+                    lastPositions = new int[staggeredGridLayoutManager.getSpanCount()];
                 }
-            }
+                staggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
+                lastVisibleItemPosition = findMax(lastPositions);
+                staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions(lastPositions);
+                firstVisibleItemPosition = findMax(lastPositions);
+                break;
+        }
 
-            switch (layoutManagerType) {
-                case LinearLayout:
-                    firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
-                    lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                    break;
-                case GridLayout:
-                    firstVisibleItemPosition = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
-                    lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
-                    break;
-                case StaggeredGridLayout:
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
-                    if (lastPositions == null) {
-                        lastPositions = new int[staggeredGridLayoutManager.getSpanCount()];
-                    }
-                    staggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
-                    lastVisibleItemPosition = findMax(lastPositions);
-                    staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions(lastPositions);
-                    firstVisibleItemPosition = findMax(lastPositions);
-                    break;
-            }
-
-            // 根据类型来计算出第一个可见的item的位置，由此判断是否触发到底部的监听器
-            // 计算并判断当前是向上滑动还是向下滑动
-            calculateScrollUpOrDown(firstVisibleItemPosition, dy);
-            // 移动距离超过一定的范围，我们监听就没有啥实际的意义了
-            mScrolledXDistance += dx;
-            mScrolledYDistance += dy;
-            mScrolledXDistance = (mScrolledXDistance < 0) ? 0 : mScrolledXDistance;
-            mScrolledYDistance = (mScrolledYDistance < 0) ? 0 : mScrolledYDistance;
-            if (mIsScrollDown && (dy == 0)) {
-                mScrolledYDistance = 0;
-            }
-            //Be careful in here
+        // 根据类型来计算出第一个可见的item的位置，由此判断是否触发到底部的监听器
+        // 计算并判断当前是向上滑动还是向下滑动
+        calculateScrollUpOrDown(firstVisibleItemPosition, dy);
+        // 移动距离超过一定的范围，我们监听就没有啥实际的意义了
+        mScrolledXDistance += dx;
+        mScrolledYDistance += dy;
+        mScrolledXDistance = (mScrolledXDistance < 0) ? 0 : mScrolledXDistance;
+        mScrolledYDistance = (mScrolledYDistance < 0) ? 0 : mScrolledYDistance;
+        if (mIsScrollDown && (dy == 0)) {
+            mScrolledYDistance = 0;
+        }
+        //Be careful in here
+        if (null != mLScrollListener) {
             mLScrollListener.onScrolled(mScrolledXDistance, mScrolledYDistance);
         }
 
@@ -255,6 +260,9 @@ public class LuRecyclerView extends RecyclerView {
 
         if (mLScrollListener != null) {
             mLScrollListener.onScrollStateChanged(state);
+        }
+
+        if (mLoadMoreListener != null) {
 
             if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE || currentScrollState == RecyclerView.SCROLL_STATE_SETTLING) {
                 RecyclerView.LayoutManager layoutManager = getLayoutManager();
@@ -262,13 +270,12 @@ public class LuRecyclerView extends RecyclerView {
                 int totalItemCount = layoutManager.getItemCount();
                 if (visibleItemCount > 0
                         && lastVisibleItemPosition >= totalItemCount - 1
-                        && totalItemCount > visibleItemCount
-                        && !mIsScrollDown) {
-                    mLScrollListener.onBottom();
+                        && totalItemCount > visibleItemCount ) {
+                    mLoadMoreListener.onLoadMore();
+
                 }
 
             }
-
         }
 
     }
@@ -277,22 +284,25 @@ public class LuRecyclerView extends RecyclerView {
      * 计算当前是向上滑动还是向下滑动
      */
     private void calculateScrollUpOrDown(int firstVisibleItemPosition, int dy) {
-        if (firstVisibleItemPosition == 0) {
-            if (!mIsScrollDown) {
-                mIsScrollDown = true;
-                mLScrollListener.onScrollDown();
-            }
-        } else {
-            if (mDistance > HIDE_THRESHOLD && mIsScrollDown) {
-                mIsScrollDown = false;
-                mLScrollListener.onScrollUp();
-                mDistance = 0;
-            } else if (mDistance < -HIDE_THRESHOLD && !mIsScrollDown) {
-                mIsScrollDown = true;
-                mLScrollListener.onScrollDown();
-                mDistance = 0;
+        if (mLScrollListener != null) {
+            if (firstVisibleItemPosition == 0) {
+                if (!mIsScrollDown) {
+                    mIsScrollDown = true;
+                    mLScrollListener.onScrollDown();
+                }
+            } else {
+                if (mDistance > HIDE_THRESHOLD && mIsScrollDown) {
+                    mIsScrollDown = false;
+                    mLScrollListener.onScrollUp();
+                    mDistance = 0;
+                } else if (mDistance < -HIDE_THRESHOLD && !mIsScrollDown) {
+                    mIsScrollDown = true;
+                    mLScrollListener.onScrollDown();
+                    mDistance = 0;
+                }
             }
         }
+
         if ((mIsScrollDown && dy > 0) || (!mIsScrollDown && dy < 0)) {
             mDistance += dy;
         }

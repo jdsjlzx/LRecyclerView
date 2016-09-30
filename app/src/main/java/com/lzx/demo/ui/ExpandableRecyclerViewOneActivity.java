@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
@@ -26,6 +26,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.CommentExpandAdapter;
 import com.lzx.demo.adapter.ExpandableRecyclerAdapter;
+import com.lzx.demo.base.CommentItem;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.NetworkUtils;
@@ -41,7 +42,7 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
     private static final String TAG = "lzx";
 
     /**服务器端一共多少条数据*/
-    private static final int TOTAL_COUNTER = 64;
+    private static final int TOTAL_COUNTER = 24;
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;
@@ -69,7 +70,7 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
 
-        mDataAdapter = new CommentExpandAdapter(this);
+        mDataAdapter = new CommentExpandAdapter(this,mRecyclerView);
         mDataAdapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
@@ -81,56 +82,19 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
-        mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
+        mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mCurrentCounter = 0;
                 isRefresh = true;
                 requestData();
             }
-
-            @Override
-            public void onScrollUp() {
-            }
-
-            @Override
-            public void onScrollDown() {
-            }
-
-            @Override
-            public void onBottom() {
-                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-                if(state == LoadingFooter.State.Loading) {
-                    Log.d(TAG, "the state is Loading, just wait..");
-                    return;
-                }
-
-                if (mCurrentCounter < TOTAL_COUNTER) {
-                    // loading more
-                    RecyclerViewStateUtils.setFooterViewState(ExpandableRecyclerViewOneActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-                    requestData();
-                } else {
-                    //the end
-                    RecyclerViewStateUtils.setFooterViewState(ExpandableRecyclerViewOneActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
-
-                }
-            }
-
-            @Override
-            public void onScrolled(int distanceX, int distanceY) {
-            }
-
-            @Override
-            public void onScrollStateChanged(int state) {
-
-            }
-
         });
-
 
         mRecyclerView.setRefreshing(true);
 
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+        //不要在调用下面代码
+        /*mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 //ItemModel item = mDataAdapter.getDataList().get(position);
@@ -142,7 +106,7 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
                 //ItemModel item = mDataAdapter.getDataList().get(position);
                 //AppToast.showShortText(ExpandableRecyclerViewOneActivity.this, "onItemLongClick - " + item.title);
             }
-        });
+        });*/
 
     }
 
@@ -150,11 +114,10 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
         mLRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private void addItems(ArrayList<ItemModel> list) {
+    private void addItems(ArrayList<CommentItem> list) {
 
-        //mDataAdapter.addAll(list);
+        mDataAdapter.setItems(list);
         mCurrentCounter += list.size();
-
     }
 
     private static class PreviewHandler extends Handler {
@@ -196,7 +159,7 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
                     }
 
 
-                    activity.addItems(newList);
+                    activity.addItems(activity.mDataAdapter.getSampleItems());
 
                     if(activity.isRefresh){
                         activity.isRefresh = false;
@@ -294,7 +257,9 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_expand, menu);
+        super.onPrepareOptionsMenu(menu);
+        menu.clear();
+        this.getMenuInflater().inflate(R.menu.menu_main_expand, menu);
         return true;
     }
 
@@ -311,8 +276,10 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
                 mDataAdapter.collapseAll();
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return true;
         }
+
+
     }
 
 }

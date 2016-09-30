@@ -1,128 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout4">
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/white"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/linearLayout4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-    android:layout_marginRight="8dp"
-    android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+		<RelativeLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="3dp"
+			android:layout_marginRight="8dp"
+			android:paddingBottom="8dp"
+			android:paddingTop="8dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:id="@+id/tvname"
-                android:textColor="@color/black"
-                android:text="Thanh Nguyen"
-                android:paddingLeft="4dp"
-                android:gravity="center_vertical"
-                android:textStyle="bold"
-                android:layout_toRightOf="@+id/avatacomment"
-                android:layout_toEndOf="@+id/avatacomment"
-                android:layout_above="@+id/tvComment"
-                android:layout_alignParentTop="true" />
+			<TextView
+				android:id="@+id/tvname"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_above="@+id/tvComment"
+				android:layout_alignParentTop="true"
+				android:layout_toEndOf="@+id/avatacomment"
+				android:layout_toRightOf="@+id/avatacomment"
+				android:gravity="center_vertical"
+				android:paddingLeft="4dp"
+				android:text="课堂讲师"
+				android:textColor="@color/black"
+				android:textSize="14sp"
+				android:textStyle="bold"/>
 
-            <ImageView
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:src="@drawable/profile_anonymous_user"
-                android:id="@+id/avatacomment"
-                android:scaleType="fitCenter"
-                android:layout_alignParentTop="true" />
+			<ImageView
+				android:id="@+id/avatacomment"
+				android:layout_width="38dp"
+				android:layout_height="38dp"
+				android:layout_alignParentTop="true"
+				android:scaleType="fitCenter"
+				android:src="@drawable/profile_anonymous_user"/>
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvComment"
-                android:textSize="14sp"
-                android:textColor="@color/title_color"
-                android:gravity="center_vertical"
-                android:paddingBottom="8dp"
-                android:paddingLeft="4dp"
-                android:layout_marginTop="-5dp"
-                android:text="about_us_detailsabout_us_detailsabout_us_detailsabout_us_detailabout_us_detailsabout_us_details"
-                android:layout_toRightOf="@+id/avatacomment"
-                android:layout_toEndOf="@+id/avatacomment"
-                android:layout_below="@+id/avatacomment" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/tvTime"
-                android:textSize="11dp"
-                android:textColor="@color/black"
-                android:layout_marginTop="1dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_marginRight="5dp"
-                android:layout_alignTop="@+id/tvname"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_above="@+id/tvComment"
-                android:text="3d ago" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:id="@+id/imageView20"
-                android:src="@drawable/profile_anonymous_user"
-                android:layout_alignTop="@+id/tvname"
-                android:visibility="gone"
-                android:layout_toLeftOf="@+id/tvTime"
-                android:layout_toStartOf="@+id/tvTime" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="\@user_name"
-                android:id="@+id/textView9"
-                android:textSize="13dp"
-                android:visibility="gone"
-                android:textColor="@color/title_color"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_marginLeft="5dp"
-                android:layout_alignTop="@+id/tvTime"
-                android:layout_toRightOf="@+id/tvname"
-                android:layout_toEndOf="@+id/tvname"
-                android:layout_alignBottom="@+id/tvname" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 android:textSize="13sp"
-                android:textColor="@color/button_login_color"
-                android:text="3 trả lời"
-                android:id="@+id/tvReply"
-
-                android:layout_below="@+id/tvComment"
-                android:layout_alignLeft="@+id/tvComment"
-                android:layout_alignStart="@+id/tvComment" />
+			<TextView
+				android:id="@+id/tvComment"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/avatacomment"
+				android:layout_marginTop="-5dp"
+				android:layout_toEndOf="@+id/avatacomment"
+				android:layout_toRightOf="@+id/avatacomment"
+				android:gravity="center_vertical"
+				android:paddingBottom="8dp"
+				android:paddingLeft="4dp"
+				android:text="有心课堂，传递的不仅仅是技术"
+				android:textColor="@color/title_color"
+				android:textSize="14sp"/>
 
 
-        </RelativeLayout>
+			<TextView
+				android:id="@+id/tvTime"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_above="@+id/tvComment"
+				android:layout_alignParentEnd="true"
+				android:layout_alignParentRight="true"
+				android:layout_alignTop="@+id/tvname"
+				android:layout_marginRight="5dp"
+				android:layout_marginTop="1dp"
+				android:gravity="center_vertical|center_horizontal"
+				android:text="3d ago"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:textColor="@color/black"
+				android:textSize="11dp"/>
 
-        <ImageView android:id="@+id/item_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:visibility="gone" />
+			<ImageView
+				android:id="@+id/imageView20"
+				android:layout_width="wrap_content"
+				android:layout_height="30dp"
+				android:layout_alignTop="@+id/tvname"
+				android:layout_toLeftOf="@+id/tvTime"
+				android:layout_toStartOf="@+id/tvTime"
+				android:src="@drawable/profile_anonymous_user"
+				android:visibility="gone"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/background"/>
-    </LinearLayout>
+			<TextView
+				android:id="@+id/textView9"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignBottom="@+id/tvname"
+				android:layout_alignTop="@+id/tvTime"
+				android:layout_marginLeft="5dp"
+				android:layout_toEndOf="@+id/tvname"
+				android:layout_toRightOf="@+id/tvname"
+				android:gravity="center_vertical|center_horizontal"
+				android:text="\@user_name"
+				android:textColor="@color/title_color"
+				android:textSize="13dp"
+				android:visibility="gone"/>
+
+			<TextView
+				android:id="@+id/tvReply"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignLeft="@+id/tvComment"
+				android:layout_alignStart="@+id/tvComment"
+				android:layout_below="@+id/tvComment"
+
+				android:text="3 trả lời"
+				android:textColor="@color/button_login_color"
+				android:textSize="13sp"/>
+
+
+		</RelativeLayout>
+
+		<ImageView
+			android:id="@+id/item_arrow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:src="@mipmap/arrow_down"
+			android:visibility="gone"/>
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@color/background"/>
+	</LinearLayout>
 
 
 </RelativeLayout>

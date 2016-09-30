@@ -5,11 +5,11 @@ import android.view.View;
 
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
-
 /**
- * Created by cundong on 2015/10/22.
- * <p/>
  * RecyclerView设置Header/Footer所用到的工具类
+ * @author Lzx
+ * @created 2016/9/30 10:36
+ *
  */
 public class RecyclerViewUtils {
 
@@ -104,7 +104,7 @@ public class RecyclerViewUtils {
 
             int headerViewCounter = ((LRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
             if (headerViewCounter > 0) {
-                return holder.getLayoutPosition() - headerViewCounter;
+                return holder.getLayoutPosition() - (headerViewCounter + 1);
             }
         }
 
@@ -124,7 +124,7 @@ public class RecyclerViewUtils {
 
             int headerViewCounter = ((LRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
             if (headerViewCounter > 0) {
-                return holder.getAdapterPosition() - headerViewCounter;
+                return holder.getAdapterPosition() - (headerViewCounter + 1);
             }
         }
 

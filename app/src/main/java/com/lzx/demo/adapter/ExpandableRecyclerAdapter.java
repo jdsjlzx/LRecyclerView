@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.github.jdsjlzx.recyclerview.LRecyclerView;
+import com.github.jdsjlzx.util.RecyclerViewUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
     private SparseIntArray expandMap = new SparseIntArray();
     private int mode;
 
-    protected static final int TYPE_HEADER = 1000;
+    public static final int TYPE_HEADER = 1000;
 
     private static final int ARROW_ROTATION_DURATION = 150;
 
@@ -60,11 +63,13 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
 
     public class HeaderViewHolder extends ViewHolder {
         ImageView arrow;
+        LRecyclerView recyclerView;
 
-        public HeaderViewHolder(View view, final ImageView arrow) {
+        public HeaderViewHolder(View view, final ImageView arrow, final LRecyclerView recyclerView) {
             super(view);
 
             this.arrow = arrow;
+            this.recyclerView = recyclerView;
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,7 +80,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         }
 
         protected void handleClick() {
-            if (toggleExpandedItems(getLayoutPosition(), false)) {
+            if (toggleExpandedItems(RecyclerViewUtils.getLayoutPosition(recyclerView,this), false)) {
                 openArrow(arrow);
             } else {
                 closeArrow(arrow);

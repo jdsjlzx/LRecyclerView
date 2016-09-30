@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
 import com.github.jdsjlzx.util.LuRecyclerViewStateUtils;
@@ -99,6 +100,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         LuRecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+        LuRecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -114,18 +116,9 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
             }
         });
 
-        mRecyclerView.setLScrollListener(new LuRecyclerView.LScrollListener() {
-
+        mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onScrollUp() {
-            }
-
-            @Override
-            public void onScrollDown() {
-            }
-
-            @Override
-            public void onBottom() {
+            public void onLoadMore() {
                 LoadingFooter.State state = LuRecyclerViewStateUtils.getFooterViewState(mRecyclerView);
                 if(state == LoadingFooter.State.Loading) {
                     Log.d(TAG, "the state is Loading, just wait..");
@@ -142,19 +135,9 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
                 }
             }
-
-            @Override
-            public void onScrolled(int distanceX, int distanceY) {
-            }
-
-            @Override
-            public void onScrollStateChanged(int state) {
-
-            }
-
         });
 
-        //onRefresh();
+        onRefresh();
     }
 
     @Override

@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 /**
  * 带HeaderView的分页加载LinearLayout RecyclerView
  */
-public class EndlessLinearLayoutActivity extends AppCompatActivity {
+public class EndlessLinearLayoutActivity extends AppCompatActivity{
     private static final String TAG = "lzx";
 
     /**服务器端一共多少条数据*/
@@ -79,7 +81,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
 
-        mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
+        mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
@@ -89,17 +91,11 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
                 isRefresh = true;
                 requestData();
             }
+        });
 
+        mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onScrollUp() {
-            }
-
-            @Override
-            public void onScrollDown() {
-            }
-
-            @Override
-            public void onBottom() {
+            public void onLoadMore() {
                 LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
                 if(state == LoadingFooter.State.Loading) {
                     Log.d(TAG, "the state is Loading, just wait..");
@@ -116,6 +112,18 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity {
 
                 }
             }
+        });
+
+        mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
+
+            @Override
+            public void onScrollUp() {
+            }
+
+            @Override
+            public void onScrollDown() {
+            }
+
 
             @Override
             public void onScrolled(int distanceX, int distanceY) {
