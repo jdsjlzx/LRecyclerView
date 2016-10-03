@@ -25,7 +25,7 @@ allprojects {
 
 Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
 ```
-compile 'com.github.jdsjlzx:LRecyclerView:1.2.3'
+compile 'com.github.jdsjlzx:LRecyclerView:1.2.4'
 ```
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
@@ -99,44 +99,30 @@ RecyclerViewUtils.removeFooterView(mRecyclerView);
 
 ### LScrollListener-滑动监听事件接口
 
-LScrollListener实现了nRefresh()、onScrollUp()、onScrollDown()、onBottom()、onScrolled五个事件，如下所示：
+LScrollListener实现了onScrollUp()、onScrollDown()、onScrolled三个事件，如下所示：
 
 ```
-void onRefresh();//pull down to refresh
 
 void onScrollUp();//scroll down to up
 
 void onScrollDown();//scroll from up to down
 
-void onBottom();//load next page
-
 void onScrolled(int distanceX, int distanceY);// moving state,you can get the move distance
 ```
- - onRefresh()——RecyclerView下拉刷新事件；
+
  - onScrollUp()——RecyclerView向上滑动的监听事件；
  - onScrollDown()——RecyclerView向下滑动的监听事件；
- - onBottom()——RecyclerView滑动到底部的监听事件；
  - onScrollDown()——RecyclerView正在滚动的监听事件；
  
 使用：
 ```
 mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
             @Override
-            public void onRefresh() {
-                //refresh
-            }
-
-            @Override
             public void onScrollUp() {
             }
 
             @Override
             public void onScrollDown() {
-            }
-
-            @Override
-            public void onBottom() {
-                // do something, such as load next page.
             }
 
             @Override
@@ -147,10 +133,24 @@ mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
  
 ```
 
-###下拉刷新和加载更多
-
-详见LScrollListener接口介绍。
-
+###下拉刷新
+```
+mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                
+            }
+        });
+```
+###加载更多
+```
+mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                
+            }
+        });
+```
 ####设置下拉刷新样式
 
 ```
