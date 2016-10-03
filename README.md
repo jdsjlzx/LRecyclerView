@@ -99,7 +99,7 @@ RecyclerViewUtils.removeFooterView(mRecyclerView);
 
 ### LScrollListener-滑动监听事件接口
 
-LScrollListener实现了onScrollUp()、onScrollDown()、onScrolled三个事件，如下所示：
+LScrollListener实现了onScrollUp()、onScrollDown()、onScrolled、onScrollStateChanged四个事件，如下所示：
 
 ```
 
@@ -108,11 +108,15 @@ void onScrollUp();//scroll down to up
 void onScrollDown();//scroll from up to down
 
 void onScrolled(int distanceX, int distanceY);// moving state,you can get the move distance
+
+void onScrollStateChanged(int state)；
+
 ```
 
  - onScrollUp()——RecyclerView向上滑动的监听事件；
  - onScrollDown()——RecyclerView向下滑动的监听事件；
  - onScrollDown()——RecyclerView正在滚动的监听事件；
+ - onScrollStateChanged(int state)——RecyclerView正在滚动的监听事件；
  
 使用：
 ```
@@ -127,6 +131,10 @@ mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
 
             @Override
             public void onScrolled(int distanceX, int distanceY) {
+            }
+            @Override
+            public void onScrollStateChanged(int state) {
+
             }
 
         });
