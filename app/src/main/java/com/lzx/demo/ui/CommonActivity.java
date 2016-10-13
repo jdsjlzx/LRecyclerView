@@ -23,8 +23,13 @@ import java.util.List;
 
 public class CommonActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class, EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class,EmptyViewActivity.class,CollapsingToolbarLayoutActivity.class,SwipeRefreshLayoutActivity.class,ExpandableRecyclerViewOneActivity.class};
-    private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity", "EndlessStaggeredGridLayoutActivity","EmptyViewActivity","CollapsingToolbarLayoutActivity","SwipeRefreshLayoutActivity","ExpandableRecyclerViewOneActivity"};
+    private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class,
+            EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class,EmptyViewActivity.class,
+            CollapsingToolbarLayoutActivity.class,SwipeRefreshLayoutActivity.class,ExpandableRecyclerViewOneActivity.class,
+            MulItemLinearLayoutActivity.class};
+    private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity",
+            "EndlessStaggeredGridLayoutActivity","EmptyViewActivity","CollapsingToolbarLayoutActivity","SwipeRefreshLayoutActivity",
+            "ExpandableRecyclerViewOneActivity","MulItemLinearLayoutActivity"};
 
     private RecyclerView mRecyclerView = null;
 

@@ -17,12 +17,9 @@ package com.lzx.demo;
 
 import android.app.Application;
 
-/**
- * Created by Yan Zhenjie on 2016/7/27.
- */
-public class App extends Application {
+public class AppContext extends Application {
 
-    private static App instance;
+    private static AppContext instance;
 
     @Override
     public void onCreate() {
@@ -33,7 +30,7 @@ public class App extends Application {
         }
     }
 
-    public static App getInstance() {
+    public static AppContext getInstance() {
         return instance;
     }
 }
