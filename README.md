@@ -38,8 +38,12 @@ LRecyclerView requires at minimum Java 7 or Android 4.0.
 4. 具备item点击和长按事件；
 5. 网络错误加载失败点击Footer重新请求数据；
 6. 可以动态为FooterView赋予不同状态（加载中、加载失败、滑到最底等）；
+7. 可以根据不同的viewtype自定义item视图；
+8. 具备类似IOS侧滑删除菜单功能更；
 
-<br>注意：EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果。</b>
+### 注意：
+1. EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果；
+2. 本着解耦的原则，能在demo中实现的就尽量不在libray中实现。
 
 
 
@@ -66,20 +70,20 @@ mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 ### 添加HeaderView、FooterView
 ```
 //add a HeaderView
-RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
 //add a FooterView
-RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
+mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 ```
 添加HeaderView还可以使用下面两种方式：
 
 ```
 View header = LayoutInflater.from(this).inflate(R.layout.sample_header,(ViewGroup)findViewById(android.R.id.content), false);
-RecyclerViewUtils.setHeaderView(mRecyclerView, header);
+mLRecyclerViewAdapter.addHeaderView(header);
 
 
 CommonHeader headerView = new CommonHeader(getActivity(), R.layout.layout_home_header);
-RecyclerViewUtils.setHeaderView(mRecyclerView, headerView);
+mLRecyclerViewAdapter.addHeaderView(headerView);
 ```
 
 上面的方式同样适用于FooterView。
@@ -292,6 +296,11 @@ public static abstract class ViewHolder {
 mRecyclerView.setEmptyView(view);
 ```
 
+##滑动删除
+
+效果图：
+![这里写图片描述](https://camo.githubusercontent.com/d2257cad7e4b932cd57969e1ce65181b7b7b1f70/687474703a2f2f6e6f74652e796f7564616f2e636f6d2f7977732f7075626c69632f7265736f757263652f62626336396331653035356362333335643031633737326531646164623063312f786d6c6e6f74652f44463646324336353038433234364330393331383037464333313332353737452f3130323635)
+
 
 ##分组
 
@@ -327,6 +336,8 @@ RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ##Thanks
 
 1.[HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView)
+2.[SwipeDelMenuViewGroup](https://github.com/mcxtzhang/SwipeDelMenuViewGroup)
+
 
 
 ##打赏
