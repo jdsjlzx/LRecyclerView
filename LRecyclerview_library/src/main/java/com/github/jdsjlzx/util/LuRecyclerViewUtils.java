@@ -57,7 +57,6 @@ public class LuRecyclerViewUtils {
      *
      * @param recyclerView
      */
-    @Deprecated
     public static void removeFooterView(RecyclerView recyclerView) {
 
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
@@ -77,7 +76,6 @@ public class LuRecyclerViewUtils {
      *
      * @param recyclerView
      */
-    @Deprecated
     public static void removeHeaderView(RecyclerView recyclerView) {
 
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
