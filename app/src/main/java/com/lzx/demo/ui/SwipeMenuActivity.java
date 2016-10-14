@@ -20,11 +20,10 @@ import com.lzx.demo.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SectionCollectionActivity extends AppCompatActivity {
+public class SwipeMenuActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {SectionLayoutActivity.class, SectionAnimalActivity.class};
-    private static final String[] TITLE = {"SectionLayoutActivity", "SectionAnimalActivity"};
-
+    private static final Class<?>[] ACTIVITY = {SwipeDeleteActivity.class, };
+    private static final String[] TITLE = {"SwipeDeleteActivity", };
 
     private RecyclerView mRecyclerView = null;
 
@@ -38,7 +37,6 @@ public class SectionCollectionActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -95,7 +93,7 @@ public class SectionCollectionActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     ListItem listItem = mDataList.get(position);
-                    startActivity(new Intent(SectionCollectionActivity.this, listItem.activity));
+                    startActivity(new Intent(SwipeMenuActivity.this, listItem.activity));
                 }
             });
         }
@@ -128,9 +126,7 @@ public class SectionCollectionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        } else if (item.getItemId() == R.id.action_about) {
+        if (item.getItemId() == R.id.action_about) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/jdsjlzx/LRecyclerView"));
             this.startActivity(intent);
             return true;
@@ -138,4 +134,5 @@ public class SectionCollectionActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

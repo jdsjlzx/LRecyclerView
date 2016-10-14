@@ -14,12 +14,11 @@ import android.widget.TextView;
 
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
-import com.lzx.demo.weight.SampleFooter;
-import com.lzx.demo.weight.SampleHeader;
+import com.lzx.demo.view.SampleFooter;
+import com.lzx.demo.view.SampleHeader;
 
 import java.util.ArrayList;
 
@@ -63,11 +62,12 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
         //add a HeaderView
         View header = LayoutInflater.from(this).inflate(R.layout.sample_header,(ViewGroup)findViewById(android.R.id.content), false);
-        RecyclerViewUtils.setHeaderView(mRecyclerView, header);
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+
+        mLRecyclerViewAdapter.addHeaderView(header);
+        mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
         //add a FooterView
-        RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
+        mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
         //禁止下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);

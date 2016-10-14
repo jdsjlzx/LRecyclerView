@@ -23,14 +23,13 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
-import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.NetworkUtils;
-import com.lzx.demo.weight.SampleHeader;
+import com.lzx.demo.view.SampleHeader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
-        RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+        mLRecyclerViewAdapter.addHeaderView( new SampleHeader(this));
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override

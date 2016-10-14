@@ -19,6 +19,7 @@ public class RecyclerViewUtils {
      * @param recyclerView
      * @param view
      */
+    @Deprecated
     public static void setHeaderView(RecyclerView recyclerView, View view) {
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
 
@@ -39,6 +40,7 @@ public class RecyclerViewUtils {
      * @param recyclerView
      * @param view
      */
+    @Deprecated
     public static void setFooterView(RecyclerView recyclerView, View view) {
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
 
@@ -58,6 +60,7 @@ public class RecyclerViewUtils {
      *
      * @param recyclerView
      */
+    @Deprecated
     public static void removeFooterView(RecyclerView recyclerView) {
 
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
@@ -77,6 +80,7 @@ public class RecyclerViewUtils {
      *
      * @param recyclerView
      */
+    @Deprecated
     public static void removeHeaderView(RecyclerView recyclerView) {
 
         RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();

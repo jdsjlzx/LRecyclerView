@@ -15,17 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.lzx.demo.ui.CommonActivity;
 import com.lzx.demo.ui.SectionCollectionActivity;
+import com.lzx.demo.ui.SwipeMenuActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final Class<?>[] ACTIVITY = {CommonActivity.class, SectionCollectionActivity.class};
-    private static final String[] TITLE = {"CommonActivity","SectionCollectionActivity"};
+    private static final Class<?>[] ACTIVITY = {CommonActivity.class, SectionCollectionActivity.class, SwipeMenuActivity.class};
+    private static final String[] TITLE = {"CommonActivity","SectionCollectionActivity","SwipeMenuActivity"};
 
     private RecyclerView mRecyclerView = null;
 
@@ -83,12 +83,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
             ListItem listItem = mDataList.get(position);
 
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.textView.setText(listItem.title);
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ListItem listItem = mDataList.get(position);
+                    startActivity(new Intent(MainActivity.this, listItem.activity));
+                }
+            });
         }
 
         @Override
@@ -107,14 +116,6 @@ public class MainActivity extends AppCompatActivity {
             public ViewHolder(View itemView) {
                 super(itemView);
                 textView = (TextView) itemView.findViewById(R.id.info_text);
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        ListItem listItem = mDataList.get(RecyclerViewUtils.getAdapterPosition(mRecyclerView, ViewHolder.this));
-                        startActivity(new Intent(MainActivity.this, listItem.activity));
-                    }
-                });
             }
         }
     }

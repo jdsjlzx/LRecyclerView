@@ -1,4 +1,4 @@
-package com.lzx.demo.weight;
+package com.lzx.demo.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

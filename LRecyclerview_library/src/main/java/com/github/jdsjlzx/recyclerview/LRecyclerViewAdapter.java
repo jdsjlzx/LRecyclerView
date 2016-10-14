@@ -103,14 +103,16 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         mHeaderViews.add(view);
     }
 
-    public void addFooterView(View footer) {
+    public void addFooterView(View view) {
 
-        if (footer == null) {
+        if (view == null) {
             throw new RuntimeException("footer is null");
         }
-
-        mFooterViews.add(footer);
-        this.notifyDataSetChanged();
+        if (getFooterViewsCount() > 0) {
+            removeFooterView(getFooterView());
+        }
+        mFooterViews.add(view);
+        //this.notifyDataSetChanged();
     }
 
     /**

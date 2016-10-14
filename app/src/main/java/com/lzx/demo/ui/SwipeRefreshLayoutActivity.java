@@ -21,7 +21,6 @@ import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
 import com.github.jdsjlzx.util.LuRecyclerViewStateUtils;
-import com.github.jdsjlzx.util.LuRecyclerViewUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
@@ -29,7 +28,7 @@ import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.AppUtil;
 import com.lzx.demo.util.NetworkUtils;
-import com.lzx.demo.weight.SampleHeader;
+import com.lzx.demo.view.SampleHeader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -99,8 +98,8 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        LuRecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
-        LuRecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));
+        mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
+        mLRecyclerViewAdapter.addFooterView(new SampleHeader(this));
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.jdsjlzx.util.RecyclerViewUtils;
 import com.lzx.demo.R;
 
 import java.util.ArrayList;
@@ -87,12 +86,21 @@ public class CommonActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
             ListItem listItem = mDataList.get(position);
 
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.textView.setText(listItem.title);
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ListItem listItem = mDataList.get(position);
+                    startActivity(new Intent(CommonActivity.this, listItem.activity));
+                }
+            });
         }
 
         @Override
@@ -111,14 +119,6 @@ public class CommonActivity extends AppCompatActivity {
             public ViewHolder(View itemView) {
                 super(itemView);
                 textView = (TextView) itemView.findViewById(R.id.info_text);
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        ListItem listItem = mDataList.get(RecyclerViewUtils.getAdapterPosition(mRecyclerView, CommonActivity.DataAdapter.ViewHolder.this));
-                        startActivity(new Intent(CommonActivity.this, listItem.activity));
-                    }
-                });
             }
         }
     }
