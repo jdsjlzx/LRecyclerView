@@ -38,8 +38,12 @@ LRecyclerView requires at minimum Java 7 or Android 4.0.
 4. 具备item点击和长按事件；
 5. 网络错误加载失败点击Footer重新请求数据；
 6. 可以动态为FooterView赋予不同状态（加载中、加载失败、滑到最底等）；
+7. 可以根据不同的viewtype自定义item视图；
+8. 具备滑动删除功能；
 
-<br>注意：EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果。</b>
+### 注意：
+1. EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果；
+2. 本着解耦的原则，能在demo中实现的就尽量不在libray中实现。
 
 
 
@@ -327,6 +331,8 @@ RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ##Thanks
 
 1.[HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView)
+2.[SwipeDelMenuViewGroup](https://github.com/mcxtzhang/SwipeDelMenuViewGroup)
+
 
 
 ##打赏
