@@ -28,7 +28,7 @@ public class CommonActivity extends AppCompatActivity {
             MulItemLinearLayoutActivity.class,PartialRefreshActivity.class};
     private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity",
             "EndlessStaggeredGridLayoutActivity","EmptyViewActivity","CollapsingToolbarLayoutActivity","SwipeRefreshLayoutActivity",
-            "ExpandableRecyclerViewOneActivity","MulItemLinearLayoutActivity","PartialRefreshActivity"};
+            "ExpandableRecyclerViewOneActivity","MulItemLinearLayoutActivity","(局部刷新)PartialRefreshActivity"};
 
     private RecyclerView mRecyclerView = null;
 
