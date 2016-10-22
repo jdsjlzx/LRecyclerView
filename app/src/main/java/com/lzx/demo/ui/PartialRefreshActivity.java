@@ -97,37 +97,37 @@ public class PartialRefreshActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            TLog.error("onBindViewHolder 00000");
-            ItemModel itemModel = mDataList.get(position);
-
-            ViewHolder viewHolder = (ViewHolder) holder;
-
-            viewHolder.textView.setText(itemModel.title);
-            Glide.with(mContext)
-                    .load(itemModel.imgUrl)
-                    .crossFade()
-                    .placeholder(R.mipmap.icon)
-                    .into(viewHolder.avatarImage);
+            bind(holder,position);
         }
 
         //局部刷新关键：带payload的这个onBindViewHolder方法必须实现
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
-            TLog.error("onBindViewHolder payloads.isEmpty() ?  " + payloads.isEmpty());
+            TLog.error("onBindViewHolder payloads.isEmpty() ?  " + payloads.isEmpty() );
             if (payloads.isEmpty()) {
                 onBindViewHolder(holder,position);
-            } else {//更新想更新的控件
-                ItemModel itemModel = mDataList.get(position);
+            } else {//需要更新的数据
+                TLog.error("onBindViewHolder payloads.size() =  " + payloads.size());
 
-                ViewHolder viewHolder = (ViewHolder) holder;
+                //notifyItemChanged(int position, Object payload) 要与payload的类型保持一致
+                if (payloads.get(0) instanceof Integer) {
+                    bind(holder,position);
+                }
 
-                viewHolder.textView.setText(itemModel.title);
-
-                Glide.with(mContext)
-                        .load(itemModel.imgUrl)
-                        .placeholder(R.mipmap.icon)
-                        .into(viewHolder.avatarImage);
             }
+        }
+
+        private void bind(RecyclerView.ViewHolder holder, int position) {
+            ItemModel itemModel = mDataList.get(position);
+
+            ViewHolder viewHolder = (ViewHolder) holder;
+
+            viewHolder.textView.setText(itemModel.title);
+
+            Glide.with(mContext)
+                    .load(itemModel.imgUrl)
+                    .placeholder(R.mipmap.icon)
+                    .into(viewHolder.avatarImage);
         }
 
         @Override
@@ -161,7 +161,7 @@ public class PartialRefreshActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.menu_partial_refresh) {
 
             int position = 1;//指定列表中的第2个item
-            //改变第4个item值
+
             ItemModel itemModel = mDataAdapter.getDataList().get(position);
             itemModel.id = 100;
             itemModel.title = "refresh item " + itemModel.id;
@@ -169,7 +169,8 @@ public class PartialRefreshActivity extends AppCompatActivity {
             mDataAdapter.getDataList().set(position,itemModel);
 
             //RecyclerView局部刷新  详见：https://github.com/jdsjlzx/LRecyclerView/issues/45
-            mLRecyclerViewAdapter.notifyItemChanged(mLRecyclerViewAdapter.getAdapterPosition(false,position) ,mDataAdapter.getDataList());
+            // notifyItemChanged(int position, Object payload) 其中的payload相当于一个标记，类型不限
+            mLRecyclerViewAdapter.notifyItemChanged(mLRecyclerViewAdapter.getAdapterPosition(false,position) , position);
 
         }
         return true;
