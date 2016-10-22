@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -308,13 +309,13 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
                 case TYPE_PHOTO_ITEM:
                     PhotoViewHolder photoViewHolder = (PhotoViewHolder) holder;
                     photoViewHolder.textView.setText(item.title);
+                    photoViewHolder.avatarImage.setImageResource(R.mipmap.icon);
                     break;
                 default:
                     TextViewHolder viewHolder = (TextViewHolder) holder;
                     viewHolder.textView.setText(item.title);
                     break;
             }
-
 
         }
 
@@ -330,10 +331,12 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         private class PhotoViewHolder extends RecyclerView.ViewHolder {
 
             private TextView textView;
+            private ImageView avatarImage;
 
             public PhotoViewHolder(View itemView) {
                 super(itemView);
                 textView = (TextView) itemView.findViewById(R.id.info_text);
+                avatarImage = (ImageView) itemView.findViewById(R.id.avatar_image);
             }
         }
     }

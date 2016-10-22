@@ -3,6 +3,7 @@ package com.github.jdsjlzx.recyclerview;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -236,6 +237,47 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder,position);
+        } else {
+            Log.e("lzx","onBindViewHolder payloads position = " + position);
+            if (isHeader(position) || isRefreshHeader(position)) {
+                return;
+            }
+            final int adjPosition = position - (getHeaderViewsCount() + 1);
+            int adapterCount;
+            if (mInnerAdapter != null) {
+                adapterCount = mInnerAdapter.getItemCount();
+                if (adjPosition < adapterCount) {
+                    mInnerAdapter.onBindViewHolder(holder, adjPosition, payloads);
+
+                    if (mOnItemClickListener != null) {
+                        holder.itemView.setOnClickListener(new View.OnClickListener()  {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                mOnItemClickListener.onItemClick(holder.itemView, adjPosition);
+                            }
+                        });
+
+                        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v)
+                            {
+                                mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
+                                return true;
+                            }
+                        });
+                    }
+
+                }
+            }
+
+        }
+    }
+
+    @Override
     public int getItemCount() {
         if (mInnerAdapter != null) {
             return getHeaderViewsCount() + getFooterViewsCount() + mInnerAdapter.getItemCount() + 1;
@@ -346,7 +388,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                 return adjPosition;
             }
         }else {
-            return  (position + getHeaderViewsCount()) - 1;
+            return  (position + getHeaderViewsCount()) + 1;
         }
 
         return -1;

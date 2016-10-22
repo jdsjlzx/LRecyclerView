@@ -24,6 +24,11 @@ public class ListBaseAdapter<T extends Entity> extends RecyclerView.Adapter {
     }
 
     @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+    }
+
+    @Override
     public int getItemCount() {
         return mDataList.size();
     }
