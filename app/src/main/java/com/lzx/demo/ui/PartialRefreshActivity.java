@@ -110,6 +110,7 @@ public class PartialRefreshActivity extends AppCompatActivity {
                     .into(viewHolder.avatarImage);
         }
 
+        //局部刷新关键：带payload的这个onBindViewHolder方法必须实现
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
             TLog.error("onBindViewHolder payloads.isEmpty() ?  " + payloads.isEmpty());
