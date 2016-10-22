@@ -40,6 +40,7 @@ LRecyclerView requires at minimum Java 7 or Android 4.0.
 6. 可以动态为FooterView赋予不同状态（加载中、加载失败、滑到最底等）；
 7. 可以根据不同的viewtype自定义item视图；
 8. 具备类似IOS侧滑删除菜单功能；
+9. 完善的局部刷新效果；
 
 ### 注意：
 1. EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果；
