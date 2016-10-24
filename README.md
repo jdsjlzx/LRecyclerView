@@ -337,6 +337,7 @@ RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 ##Thanks
 
 1.[HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView)
+
 2.[SwipeDelMenuViewGroup](https://github.com/mcxtzhang/SwipeDelMenuViewGroup)
 
 
