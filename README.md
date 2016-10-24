@@ -25,7 +25,7 @@ allprojects {
 
 Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
 ```
-compile 'com.github.jdsjlzx:LRecyclerView:1.2.4'
+compile 'com.github.jdsjlzx:LRecyclerView:1.2.5'
 ```
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
