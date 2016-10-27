@@ -102,8 +102,8 @@ public class SwipeDeleteActivity extends AppCompatActivity{
 
                 mDataAdapter.notifyItemRemoved(pos + 1);
 
-                if((pos + 1) != (mDataAdapter.getDataList().size())){ // 如果移除的是最后一个，忽略
-                    mDataAdapter.notifyItemRangeChanged((pos + 1), mDataAdapter.getDataList().size() - (pos + 1));
+                if(pos != mDataAdapter.getDataList().size()){ // 如果移除的是最后一个，忽略
+                    mDataAdapter.notifyItemRangeChanged(0, mDataAdapter.getDataList().size() - 1);
                 }
 
                 if (((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition() == 0) {
