@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -81,24 +80,36 @@ public class SwipeDeleteActivity extends AppCompatActivity{
             @Override
             public void onDel(int pos) {
                 Toast.makeText(SwipeDeleteActivity.this, "删除:" + pos, Toast.LENGTH_SHORT).show();
+
+                //RecyclerView关于notifyItemRemoved的那点小事 参考：http://blog.csdn.net/jdsjlzx/article/details/52131528
                 mDataAdapter.getDataList().remove(pos);
                 mDataAdapter.notifyItemRemoved(pos);//推荐用这个
-                //如果删除时，不使用mAdapter.notifyItemRemoved(pos)，则删除没有动画效果，
+
+                if(pos != (mDataAdapter.getDataList().size())){ // 如果移除的是最后一个，忽略
+                    mDataAdapter.notifyItemRangeChanged(pos, mDataAdapter.getDataList().size() - pos);
+                }
                 //且如果想让侧滑菜单同时关闭，需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();
-                //mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onTop(int pos) {
                 ItemModel itemModel = mDataAdapter.getDataList().get(pos);
-                mDataAdapter.getDataList().remove(itemModel);
-                mDataAdapter.notifyItemInserted(0);
+
+                mDataAdapter.getDataList().remove(pos);
+
                 mDataAdapter.getDataList().add(0, itemModel);
+                mDataAdapter.notifyItemInserted(0);
+
                 mDataAdapter.notifyItemRemoved(pos + 1);
+
+                if((pos + 1) != (mDataAdapter.getDataList().size())){ // 如果移除的是最后一个，忽略
+                    mDataAdapter.notifyItemRangeChanged((pos + 1), mDataAdapter.getDataList().size() - (pos + 1));
+                }
+
                 if (((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition() == 0) {
                     mRecyclerView.scrollToPosition(0);
                 }
-                //notifyItemRangeChanged(0,holder.getAdapterPosition()+1);
+
             }
         });
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
@@ -123,7 +134,7 @@ public class SwipeDeleteActivity extends AppCompatActivity{
             }
         });
 
-        mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
+        /*mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
@@ -142,29 +153,7 @@ public class SwipeDeleteActivity extends AppCompatActivity{
 
                 }
             }
-        });
-
-        mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
-
-            @Override
-            public void onScrollUp() {
-            }
-
-            @Override
-            public void onScrollDown() {
-            }
-
-
-            @Override
-            public void onScrolled(int distanceX, int distanceY) {
-            }
-
-            @Override
-            public void onScrollStateChanged(int state) {
-
-            }
-
-        });
+        });*/
 
 
         mRecyclerView.setRefreshing(true);
