@@ -103,16 +103,19 @@ public class PartialRefreshActivity extends AppCompatActivity {
         //局部刷新关键：带payload的这个onBindViewHolder方法必须实现
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
-            TLog.error("onBindViewHolder payloads.isEmpty() ?  " + payloads.isEmpty() );
+
             if (payloads.isEmpty()) {
                 onBindViewHolder(holder,position);
-            } else {//需要更新的数据
-                TLog.error("onBindViewHolder payloads.size() =  " + payloads.size());
+            } else {
 
-                //notifyItemChanged(int position, Object payload) 要与payload的类型保持一致
-                if (payloads.get(0) instanceof Integer) {
-                    bind(holder,position);
-                }
+                //注意：payloads的size总是1
+                String payload = (String)payloads.get(0);
+                TLog.error("payload = " + payload);
+
+                //需要更新的控件
+                ItemModel itemModel = mDataList.get(position);
+                ViewHolder viewHolder = (ViewHolder) holder;
+                viewHolder.textView.setText(itemModel.title);
 
             }
         }
@@ -165,12 +168,11 @@ public class PartialRefreshActivity extends AppCompatActivity {
             ItemModel itemModel = mDataAdapter.getDataList().get(position);
             itemModel.id = 100;
             itemModel.title = "refresh item " + itemModel.id;
-            itemModel.imgUrl = "http://avatar.csdn.net/2/9/C/1_jdsjlzx.jpg";
             mDataAdapter.getDataList().set(position,itemModel);
 
-            //RecyclerView局部刷新  详见：https://github.com/jdsjlzx/LRecyclerView/issues/45
+            //RecyclerView局部刷新
             // notifyItemChanged(int position, Object payload) 其中的payload相当于一个标记，类型不限
-            mLRecyclerViewAdapter.notifyItemChanged(mLRecyclerViewAdapter.getAdapterPosition(false,position) , position);
+            mLRecyclerViewAdapter.notifyItemChanged(mLRecyclerViewAdapter.getAdapterPosition(false,position) , "jdsjlzx");
 
         }
         return true;

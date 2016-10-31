@@ -28,6 +28,7 @@ import com.lzx.demo.adapter.SwipeMenuAdapter;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.NetworkUtils;
+import com.lzx.demo.util.TLog;
 import com.lzx.demo.view.SampleHeader;
 
 import java.lang.ref.WeakReference;
@@ -92,19 +93,16 @@ public class SwipeDeleteActivity extends AppCompatActivity{
             }
 
             @Override
-            public void onTop(int pos) {
+            public void onTop(int pos) {//置顶功能有bug，后续解决
+                TLog.error("onTop pos = " + pos);
                 ItemModel itemModel = mDataAdapter.getDataList().get(pos);
 
                 mDataAdapter.getDataList().remove(pos);
 
-                mDataAdapter.getDataList().add(0, itemModel);
                 mDataAdapter.notifyItemInserted(0);
-
+                mDataAdapter.getDataList().add(0, itemModel);
                 mDataAdapter.notifyItemRemoved(pos + 1);
 
-                if(pos != mDataAdapter.getDataList().size()){ // 如果移除的是最后一个，忽略
-                    mDataAdapter.notifyItemRangeChanged(0, mDataAdapter.getDataList().size() - 1);
-                }
 
                 if (((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition() == 0) {
                     mRecyclerView.scrollToPosition(0);

@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
 
+import com.github.jdsjlzx.interfaces.BaseRefreshHeader;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
@@ -242,8 +243,8 @@ public class LRecyclerView extends RecyclerView {
         isNoMore = noMore;
     }
 
-    public void setRefreshHeader(ArrowRefreshHeader refreshHeader) {
-        mRefreshHeader = refreshHeader;
+    public void setRefreshHeader(BaseRefreshHeader refreshHeader) {
+        mRefreshHeader = (ArrowRefreshHeader) refreshHeader;
     }
 
     public void setPullRefreshEnabled(boolean enabled) {

@@ -3,7 +3,6 @@ package com.github.jdsjlzx.recyclerview;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -241,7 +240,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (payloads.isEmpty()) {
             onBindViewHolder(holder,position);
         } else {
-            Log.e("lzx","onBindViewHolder payloads position = " + position);
+
             if (isHeader(position) || isRefreshHeader(position)) {
                 return;
             }
