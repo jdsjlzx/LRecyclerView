@@ -98,15 +98,16 @@ public class SwipeDeleteActivity extends AppCompatActivity{
                 ItemModel itemModel = mDataAdapter.getDataList().get(pos);
 
                 mDataAdapter.getDataList().remove(pos);
-
-                mDataAdapter.notifyItemInserted(0);
+                mDataAdapter.notifyItemRemoved(pos);
                 mDataAdapter.getDataList().add(0, itemModel);
-                mDataAdapter.notifyItemRemoved(pos + 1);
+                mDataAdapter.notifyItemInserted(0);
 
 
-                if (((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition() == 0) {
-                    mRecyclerView.scrollToPosition(0);
+                if(pos != (mDataAdapter.getDataList().size())){ // 如果移除的是最后一个，忽略
+                    mDataAdapter.notifyItemRangeChanged(0, mDataAdapter.getDataList().size() - 1,"jdsjlzx");
                 }
+
+                mRecyclerView.scrollToPosition(0);
 
             }
         });
