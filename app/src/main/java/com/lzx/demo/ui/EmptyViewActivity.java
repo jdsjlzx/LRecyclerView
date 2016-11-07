@@ -63,7 +63,13 @@ public class EmptyViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO 请求数据
                 TLog.error("refresh data");
-
+                ArrayList<ItemModel> dataList = new ArrayList<>();
+                for (int i = 0; i < 10; i++) {
+                    ItemModel itemModel = new ItemModel();
+                    itemModel.title = "item" + i;
+                    dataList.add(itemModel);
+                }
+                mDataAdapter.setDataList(dataList);
 
             }
         });

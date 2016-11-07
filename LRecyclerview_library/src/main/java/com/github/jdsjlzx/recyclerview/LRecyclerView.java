@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
@@ -118,6 +119,8 @@ public class LRecyclerView extends RecyclerView {
     public void setAdapter(Adapter adapter) {
         mWrapAdapter = (LRecyclerViewAdapter) adapter;
         super.setAdapter(mWrapAdapter);
+
+        mWrapAdapter.getInnerAdapter().registerAdapterDataObserver(mDataObserver);
         mDataObserver.onChanged();
 
         mWrapAdapter.setRefreshHeader(mRefreshHeader);
@@ -131,9 +134,10 @@ public class LRecyclerView extends RecyclerView {
             Adapter<?> adapter = getAdapter();
 
             if (adapter instanceof LRecyclerViewAdapter) {
-                LRecyclerViewAdapter headerAndFooterAdapter = (LRecyclerViewAdapter) adapter;
-                if (headerAndFooterAdapter.getInnerAdapter() != null && mEmptyView != null) {
-                    int count = headerAndFooterAdapter.getInnerAdapter().getItemCount();
+                LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) adapter;
+                if (lRecyclerViewAdapter.getInnerAdapter() != null && mEmptyView != null) {
+                    int count = lRecyclerViewAdapter.getInnerAdapter().getItemCount();
+                    Log.e("lzx","count " + count);
                     if (count == 0) {
                         mEmptyView.setVisibility(View.VISIBLE);
                         LRecyclerView.this.setVisibility(View.GONE);
@@ -157,6 +161,28 @@ public class LRecyclerView extends RecyclerView {
             if (mWrapAdapter != null) {
                 mWrapAdapter.notifyDataSetChanged();
             }
+
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeChanged(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeInserted(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
+            mWrapAdapter.notifyItemRangeRemoved(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+        }
+
+        @Override
+        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            int headerViewsCountCount = mWrapAdapter.getHeaderViewsCount();
+            mWrapAdapter.notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1 + itemCount);
         }
 
     }
@@ -232,6 +258,7 @@ public class LRecyclerView extends RecyclerView {
      */
     public void setEmptyView(View emptyView) {
         this.mEmptyView = emptyView;
+        mDataObserver.onChanged();
     }
 
     public void refreshComplete() {
