@@ -60,7 +60,7 @@ LRecyclerView requires at minimum Java 7 or Android 4.0.
 mDataAdapter = new DataAdapter(this);
 mDataAdapter.setData(dataList);
 
-mLRecyclerViewAdapter = new LRecyclerViewAdapter(this, mDataAdapter);
+mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
 mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 ```
 
