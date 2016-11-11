@@ -15,11 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.TLog;
 import com.lzx.demo.view.SampleFooter;
 import com.lzx.demo.view.SampleHeader;
@@ -77,6 +79,20 @@ public class PartialRefreshActivity extends AppCompatActivity {
 
         //禁止下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
+
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                ItemModel item = mDataAdapter.getDataList().get(position);
+                AppToast.showShortText(PartialRefreshActivity.this, item.title);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                ItemModel item = mDataAdapter.getDataList().get(position);
+                AppToast.showShortText(PartialRefreshActivity.this, "onItemLongClick - " + item.title);
+            }
+        });
 
     }
 

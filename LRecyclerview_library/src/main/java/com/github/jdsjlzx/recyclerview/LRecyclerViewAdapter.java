@@ -206,26 +206,6 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                 adapterCount = mInnerAdapter.getItemCount();
                 if (adjPosition < adapterCount) {
                     mInnerAdapter.onBindViewHolder(holder, adjPosition, payloads);
-
-                    if (mOnItemClickListener != null) {
-                        holder.itemView.setOnClickListener(new View.OnClickListener()  {
-                            @Override
-                            public void onClick(View v)
-                            {
-                                mOnItemClickListener.onItemClick(holder.itemView, adjPosition);
-                            }
-                        });
-
-                        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View v)
-                            {
-                                mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
-                                return true;
-                            }
-                        });
-                    }
-
                 }
             }
 

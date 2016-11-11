@@ -221,6 +221,25 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder,position);
+        } else {
+            if (isHeader(position)) {
+                return;
+            }
+            final int adjPosition = position - getHeaderViewsCount();
+            int adapterCount;
+            if (mInnerAdapter != null) {
+                adapterCount = mInnerAdapter.getItemCount();
+                if (adjPosition < adapterCount) {
+                    mInnerAdapter.onBindViewHolder(holder, adjPosition, payloads);
+                }
+            }
+        }
+    }
+
+    @Override
     public int getItemCount() {
         if (mInnerAdapter != null) {
             return getHeaderViewsCount() + getFooterViewsCount() + mInnerAdapter.getItemCount();
