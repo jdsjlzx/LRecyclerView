@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.R;
@@ -87,6 +88,9 @@ public class PartialRefreshActivity extends AppCompatActivity {
                 AppToast.showShortText(PartialRefreshActivity.this, item.title);
             }
 
+        });
+
+        mLRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);

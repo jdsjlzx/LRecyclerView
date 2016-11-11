@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.view.ArrowRefreshHeader;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ArrowRefreshHeader mRefreshHeader;
 
     private OnItemClickListener mOnItemClickListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
 
     /**
      * RecyclerView使用的，真正的Adapter
@@ -177,11 +179,14 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                         }
                     });
 
+                }
+
+                if (mOnItemLongClickListener != null) {
                     holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v)
                         {
-                            mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
+                            mOnItemLongClickListener.onItemLongClick(holder.itemView, adjPosition);
                             return true;
                         }
                     });
@@ -329,9 +334,14 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         return -1;
     }
 
-    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener)
+    public void setOnItemClickListener(OnItemClickListener itemClickListener)
     {
-        this.mOnItemClickListener = mOnItemClickListener;
+        this.mOnItemClickListener = itemClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener)
+    {
+        this.mOnItemLongClickListener = itemLongClickListener;
     }
 
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
     private OnItemClickListener mOnItemClickListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
 
     /**
      * RecyclerView使用的，真正的Adapter
@@ -206,14 +208,17 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         }
                     });
 
-                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v)
-                        {
-                            mOnItemClickListener.onItemLongClick(holder.itemView, adjPosition);
-                            return true;
-                        }
-                    });
+                    if (mOnItemLongClickListener != null) {
+                        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v)
+                            {
+                                mOnItemLongClickListener.onItemLongClick(holder.itemView, adjPosition);
+                                return true;
+                            }
+                        });
+                    }
+
                 }
 
             }
@@ -355,6 +360,12 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void setOnItemClickListener(OnItemClickListener mOnItemClickListener)
     {
         this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+
+    public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener)
+    {
+        this.mOnItemLongClickListener = itemLongClickListener;
     }
 
 }

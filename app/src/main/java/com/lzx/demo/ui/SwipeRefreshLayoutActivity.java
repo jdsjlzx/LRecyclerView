@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
@@ -93,8 +94,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
         mDataAdapter = new DataAdapter(this);
         mDataAdapter.addAll(dataList);
 
-        mLRecyclerViewAdapter = new LuRecyclerViewAdapter(mDataAdapter);
-        mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+        mLRecyclerViewAdapter = new LuRecyclerViewAdapter(mDataAdapter);        mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -108,6 +108,9 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
                 AppToast.showShortText(SwipeRefreshLayoutActivity.this, item.title);
             }
 
+        });
+
+        mLRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
