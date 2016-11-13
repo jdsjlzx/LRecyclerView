@@ -35,53 +35,9 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private ArrayList<View> mHeaderViews = new ArrayList<>();
     private ArrayList<View> mFooterViews = new ArrayList<>();
 
-    private RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
-
-        @Override
-        public void onChanged() {
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public void onItemRangeChanged(int positionStart, int itemCount) {
-            notifyItemRangeChanged(positionStart + getHeaderViewsCount(), itemCount);
-        }
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-            notifyItemRangeInserted(positionStart + getHeaderViewsCount(), itemCount);
-        }
-
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-            notifyItemRangeRemoved(positionStart + getHeaderViewsCount(), itemCount);
-        }
-
-        @Override
-        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            int headerViewsCountCount = getHeaderViewsCount();
-            notifyItemRangeChanged(fromPosition + headerViewsCountCount, toPosition + headerViewsCountCount + itemCount);
-        }
-    };
 
     public LuRecyclerViewAdapter(RecyclerView.Adapter innerAdapter) {
-        setAdapter(innerAdapter);
-    }
-
-    /**
-     * 设置adapter
-     * @param adapter
-     */
-    public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
-
-        if (mInnerAdapter != null) {
-            notifyItemRangeRemoved(getHeaderViewsCount(), mInnerAdapter.getItemCount());
-            mInnerAdapter.unregisterAdapterDataObserver(mDataObserver);
-        }
-
-        this.mInnerAdapter = adapter;
-        mInnerAdapter.registerAdapterDataObserver(mDataObserver);
-        notifyItemRangeInserted(getHeaderViewsCount(), mInnerAdapter.getItemCount());
+        this.mInnerAdapter = innerAdapter;
     }
 
     public RecyclerView.Adapter getInnerAdapter() {
@@ -98,14 +54,15 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         mHeaderViews.add(view);
     }
 
-    public void addFooterView(View footer) {
+    public void addFooterView(View view) {
 
-        if (footer == null) {
+        if (view == null) {
             throw new RuntimeException("footer is null");
         }
-
-        mFooterViews.add(footer);
-        this.notifyDataSetChanged();
+        if (getFooterViewsCount() > 0) {
+            removeFooterView(getFooterView());
+        }
+        mFooterViews.add(view);
     }
 
     /**
@@ -173,7 +130,7 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public boolean isFooter(int position) {
         int lastPosition = getItemCount() - 1;
-        return getFooterViewsCount() > 0 && position == lastPosition;
+        return getFooterViewsCount() > 0 && position >= lastPosition;
     }
 
     @Override
@@ -207,18 +164,17 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             mOnItemClickListener.onItemClick(holder.itemView, adjPosition);
                         }
                     });
+                }
 
-                    if (mOnItemLongClickListener != null) {
-                        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View v)
-                            {
-                                mOnItemLongClickListener.onItemLongClick(holder.itemView, adjPosition);
-                                return true;
-                            }
-                        });
-                    }
-
+                if (mOnItemLongClickListener != null) {
+                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v)
+                        {
+                            mOnItemLongClickListener.onItemLongClick(holder.itemView, adjPosition);
+                            return true;
+                        }
+                    });
                 }
 
             }

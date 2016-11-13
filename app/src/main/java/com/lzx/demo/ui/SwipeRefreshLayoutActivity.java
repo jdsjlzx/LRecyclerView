@@ -41,7 +41,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
     private static final String TAG = "lzx";
 
     /**服务器端一共多少条数据*/
-    private static final int TOTAL_COUNTER = 64;
+    private static final int TOTAL_COUNTER = 34;
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;
@@ -55,7 +55,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
     private DataAdapter mDataAdapter = null;
 
     private PreviewHandler mHandler = new PreviewHandler(this);
-    private LuRecyclerViewAdapter mLRecyclerViewAdapter = null;
+    private LuRecyclerViewAdapter mLuRecyclerViewAdapter = null;
 
     private boolean isRefresh = false;
 
@@ -78,30 +78,20 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
             mSwipeRefreshLayout.setOnRefreshListener(this);
         }
 
-        //init data
-        ArrayList<ItemModel> dataList = new ArrayList<>();
-
-        for (int i = 0; i < 11; i++) {
-
-            ItemModel item = new ItemModel();
-            item.id = i;
-            item.title = "item" + i;
-            //dataList.add(item);
-        }
-
-        mCurrentCounter = dataList.size();
 
         mDataAdapter = new DataAdapter(this);
-        mDataAdapter.addAll(dataList);
 
-        mLRecyclerViewAdapter = new LuRecyclerViewAdapter(mDataAdapter);        mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+        mLuRecyclerViewAdapter = new LuRecyclerViewAdapter(mDataAdapter);
+        mRecyclerView.setAdapter(mLuRecyclerViewAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
-        mLRecyclerViewAdapter.addFooterView(new SampleHeader(this));
+        mLuRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+        //如果使用了下拉刷新，就不要添加FooterView了
+        //mLuRecyclerViewAdapter.addFooterView(new SampleFooter(this));
+
+        mLuRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
@@ -110,7 +100,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
         });
 
-        mLRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+        mLuRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
@@ -151,7 +141,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
     }
 
     private void notifyDataSetChanged() {
-        mLRecyclerViewAdapter.notifyDataSetChanged();
+        mLuRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void addItems(ArrayList<ItemModel> list) {
