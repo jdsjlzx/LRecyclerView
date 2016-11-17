@@ -66,8 +66,22 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter.addHeaderView(header);
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
+        SampleFooter sampleFooter = new SampleFooter(this);
+        sampleFooter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 加载更多
+                ArrayList<ItemModel> dataList = new ArrayList<>();
+                for (int i = 0; i < 10; i++) {
+                    ItemModel itemModel = new ItemModel();
+                    itemModel.title = "item" + (i + mDataAdapter.getItemCount());
+                    dataList.add(itemModel);
+                }
+                mDataAdapter.addAll(dataList);
+            }
+        });
         //add a FooterView
-        mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
+        mLRecyclerViewAdapter.addFooterView(sampleFooter);
 
         //禁止下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
