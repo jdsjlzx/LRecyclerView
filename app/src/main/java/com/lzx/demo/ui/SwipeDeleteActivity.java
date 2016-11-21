@@ -157,18 +157,12 @@ public class SwipeDeleteActivity extends AppCompatActivity{
 
         mRecyclerView.setRefreshing(true);
 
-        //点击事件要adapter内部实现，详见说明
+        //侧滑删除请不要使用下面接口，SwipeMenuAdapter内部实现item点击事件
         /*mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
                 AppToast.showShortText(SwipeDeleteActivity.this, item.title);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(SwipeDeleteActivity.this, "onItemLongClick - " + item.title);
             }
         });*/
 
