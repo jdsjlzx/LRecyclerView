@@ -39,6 +39,7 @@
         <activity android:name=".ui.SwipeMenuActivity" />
         <activity android:name=".ui.SwipeDeleteActivity" />
         <activity android:name=".ui.PartialRefreshActivity" />
+        <activity android:name=".ui.NestRecylcerviewActivity" />
     </application>
 
 </manifest>

@@ -14,7 +14,7 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 
 Step 1. 在你的根build.gradle文件中增加JitPack仓库依赖。
 
-```
+```groovy
 allprojects {
     repositories {
         jcenter()
@@ -24,7 +24,8 @@ allprojects {
 ```	
 
 Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
-```
+
+```groovy
 compile 'com.github.jdsjlzx:LRecyclerView:1.2.8'
 ```
 
@@ -56,7 +57,7 @@ LRecyclerView requires at minimum Java 7 or Android 4.0.
 
 ### 填充数据
 
-```
+```java
 mDataAdapter = new DataAdapter(this);
 mDataAdapter.setData(dataList);
 
@@ -69,7 +70,8 @@ mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 2. LRecyclerViewAdapter提供了一些实用的功能，使用者不用关心它的实现，只需构造的时候把自己的mDataAdapter以参数形式传进去即可。
 
 ### 添加HeaderView、FooterView
-```
+
+```java
 //add a HeaderView
 mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
@@ -78,7 +80,7 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 ```
 添加HeaderView还可以使用下面两种方式：
 
-```
+```java
 View header = LayoutInflater.from(this).inflate(R.layout.sample_header,(ViewGroup)findViewById(android.R.id.content), false);
 mLRecyclerViewAdapter.addHeaderView(header);
 
@@ -90,7 +92,8 @@ mLRecyclerViewAdapter.addHeaderView(headerView);
 上面的方式同样适用于FooterView。
 
 ### 移除HeaderView、FooterView
-```
+
+```java
 //remove a HeaderView
 RecyclerViewUtils.removeHeaderView(mRecyclerView);
 
@@ -106,8 +109,8 @@ RecyclerViewUtils.removeFooterView(mRecyclerView);
 
 LScrollListener实现了onScrollUp()、onScrollDown()、onScrolled、onScrollStateChanged四个事件，如下所示：
 
-```
 
+```java
 void onScrollUp();//scroll down to up
 
 void onScrollDown();//scroll from up to down
@@ -124,7 +127,8 @@ void onScrollStateChanged(int state)；
  - onScrollStateChanged(int state)——RecyclerView正在滚动的监听事件；
  
 使用：
-```
+
+```java
 mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
             @Override
             public void onScrollUp() {
@@ -147,7 +151,8 @@ mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
 ```
 
 ###下拉刷新
-```
+
+```java
 mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -156,7 +161,7 @@ mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
         });
 ```
 ###加载更多
-```
+```java
 mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -164,9 +169,9 @@ mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             }
         });
 ```
-####设置下拉刷新样式
+###设置下拉刷新样式
 
-```
+```java
 mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader); //设置下拉刷新Progress的样式
 mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);  //设置下拉刷新箭头
 ```
@@ -177,19 +182,20 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 
 ![这里写图片描述](http://img.blog.csdn.net/20160701173404897)
 
-####设置加载更多样式
+###设置加载更多样式
 
 拷贝LRecyclerview_library中的文件文件layout_recyclerview_list_footer_loading.xml到你的工程中，修改后即可。
 
 
 ###开启和禁止下拉刷新功能
 
-```
+```java
 mRecyclerView.setPullRefreshEnabled(true);
 ```
 
 or
-```
+
+```java
 mRecyclerView.setPullRefreshEnabled(false);
 ```
 
@@ -200,20 +206,21 @@ mRecyclerView.setPullRefreshEnabled(false);
 
 根据大家的反馈，增加了一个强制刷新的方法，使用如下：
 
-```
+```java
 mRecyclerView.forceToRefresh();
 ```
 
 **无论是下拉刷新还是强制刷新，刷新完成后调用下面代码：**
 
-```
+```java
 mRecyclerView.refreshComplete();
 mLRecyclerViewAdapter.notifyDataSetChanged();
 ```
 
 ###下拉刷新清空数据
 有的时候，需要下拉的时候情况数据并更新UI，可以这么做：
-```
+
+```java
 @Override
 public void onRefresh() {
     RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
@@ -224,7 +231,8 @@ public void onRefresh() {
 }
 ```
 如果不需要下拉的时候情况数据并更新UI，如下即可：
-```
+
+```java
 @Override
 public void onRefresh() {
     isRefresh = true;
@@ -261,18 +269,19 @@ private View.OnClickListener mFooterClick = new View.OnClickListener() {
 
 先看下怎么使用：
 
-```
-mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
+```java 
+mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                Toast.makeText(EndlessLinearLayoutActivity.this, item.title, Toast.LENGTH_SHORT).show();
+                
             }
 
+        });
+
+mLRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                Toast.makeText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title, Toast.LENGTH_SHORT).show();
+                
             }
         });
 ```
@@ -281,7 +290,7 @@ mLRecyclerViewAdapter.setOnItemClickLitener(new OnItemClickLitener() {
 
 viewHolder源码如下：
 
-```
+```java
 public static abstract class ViewHolder {
         public final View itemView;
         int mPosition = NO_POSITION;
@@ -293,7 +302,7 @@ public static abstract class ViewHolder {
 
 ###设置空白View（setEmptyView）
 
-```
+```java
 mRecyclerView.setEmptyView(view);
 ```
 
@@ -316,7 +325,7 @@ mRecyclerView.setEmptyView(view);
 
 ##代码混淆
 
-```
+```java
 #LRecyclerview_library
 -dontwarn com.github.jdsjlzx.**
 -keep class com.github.jdsjlzx.**{*;}
@@ -327,11 +336,13 @@ mRecyclerView.setEmptyView(view);
 ##注意事项
 
 1.如果添加了footerview，不要再使用setLScrollListener方法，如有需要，自定义实现即可。如下面代码不要同时使用：
-```
+
+```java
 mRecyclerView.setLScrollListener(LScrollListener); 
 RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
 
 ```
+
 2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突，如果你实在想用，请参考SwipeRefreshLayoutActivity类的实现。
 
 ##Thanks

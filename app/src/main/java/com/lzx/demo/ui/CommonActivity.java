@@ -25,10 +25,10 @@ public class CommonActivity extends AppCompatActivity {
     private static final Class<?>[] ACTIVITY = {LinearLayoutActivity.class, EndlessLinearLayoutActivity.class,
             EndlessGridLayoutActivity.class, EndlessStaggeredGridLayoutActivity.class,EmptyViewActivity.class,
             CollapsingToolbarLayoutActivity.class,SwipeRefreshLayoutActivity.class,ExpandableRecyclerViewOneActivity.class,
-            MulItemLinearLayoutActivity.class,PartialRefreshActivity.class};
+            MulItemLinearLayoutActivity.class,PartialRefreshActivity.class, NestRecylcerviewActivity.class};
     private static final String[] TITLE = {"LinearLayoutSample", "EndlessLinearLayoutActivity", "EndlessGridLayoutActivity",
             "EndlessStaggeredGridLayoutActivity","EmptyViewActivity","CollapsingToolbarLayoutActivity","SwipeRefreshLayoutActivity",
-            "ExpandableRecyclerViewOneActivity","MulItemLinearLayoutActivity","(局部刷新)PartialRefreshActivity"};
+            "ExpandableRecyclerViewOneActivity","MulItemLinearLayoutActivity","(局部刷新)PartialRefreshActivity","(Recylcerview嵌套)NestRecylcerviewActivity"};
 
     private RecyclerView mRecyclerView = null;
 
