@@ -46,7 +46,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
         //init data
         ArrayList<ItemModel> dataList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 16; i++) {
             ItemModel itemModel = new ItemModel();
             itemModel.title = "item" + i;
             dataList.add(itemModel);
@@ -80,11 +80,16 @@ public class LinearLayoutActivity extends AppCompatActivity {
                 mDataAdapter.addAll(dataList);
             }
         });
+
+
+        //禁用下拉刷新功能
+        mRecyclerView.setPullRefreshEnabled(false);
+
+        //禁用自动加载更多功能
+        mRecyclerView.setLoadMoreEnabled(false);
+
         //add a FooterView
         mLRecyclerViewAdapter.addFooterView(sampleFooter);
-
-        //禁止下拉刷新功能
-        mRecyclerView.setPullRefreshEnabled(false);
 
     }
 

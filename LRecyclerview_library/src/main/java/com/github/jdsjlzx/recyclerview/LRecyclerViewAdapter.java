@@ -70,7 +70,6 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             removeFooterView(getFooterView());
         }
         mFooterViews.add(view);
-        //this.notifyDataSetChanged();
     }
 
     /**

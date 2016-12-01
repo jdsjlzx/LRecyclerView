@@ -21,6 +21,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
  *
  */
 public class LuRecyclerView extends RecyclerView {
+    private boolean mLoadMoreEnabled = true;
     private LScrollListener mLScrollListener;
     private OnLoadMoreListener mLoadMoreListener;
     private View mEmptyView;
@@ -106,7 +107,9 @@ public class LuRecyclerView extends RecyclerView {
         mWrapAdapter.getInnerAdapter().registerAdapterDataObserver(mDataObserver);
         mDataObserver.onChanged();
 
-        mWrapAdapter.addFooterView(mFootView);
+        if(mLoadMoreEnabled) {
+            mWrapAdapter.addFooterView(mFootView);
+        }
 
     }
 
@@ -197,6 +200,15 @@ public class LuRecyclerView extends RecyclerView {
         this.mEmptyView = emptyView;
     }
 
+    public void setLoadMoreEnabled(boolean enabled) {
+        mLoadMoreEnabled = enabled;
+        if (!enabled) {
+            if (mFootView instanceof LoadingFooter) {
+                mWrapAdapter.removeFooterView(mFootView);
+            }
+        }
+    }
+
     public void setOnLoadMoreListener(OnLoadMoreListener listener) {
         mLoadMoreListener = listener;
     }
@@ -285,7 +297,7 @@ public class LuRecyclerView extends RecyclerView {
             mLScrollListener.onScrollStateChanged(state);
         }
 
-        if (mLoadMoreListener != null) {
+        if (mLoadMoreListener != null && mLoadMoreEnabled) {
 
             if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE || currentScrollState == RecyclerView.SCROLL_STATE_SETTLING) {
                 RecyclerView.LayoutManager layoutManager = getLayoutManager();
