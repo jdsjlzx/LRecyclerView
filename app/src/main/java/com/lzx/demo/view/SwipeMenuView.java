@@ -1,5 +1,7 @@
 package com.lzx.demo.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.PointF;
@@ -9,7 +11,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.animation.AnticipateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 public class SwipeMenuView extends ViewGroup {
@@ -29,6 +31,7 @@ public class SwipeMenuView extends ViewGroup {
      * 滑动判定临界值（右侧菜单宽度的40%） 手指抬起时，超过了展开，没超过收起menu
      */
     private int mLimit;
+    private View mContentView;
     //private Scroller mScroller;//以前item的滑动动画靠它做，现在用属性动画做
     //上一次的xy
     private PointF mLastP = new PointF();
@@ -48,6 +51,8 @@ public class SwipeMenuView extends ViewGroup {
 
     //20160929add 左滑右滑的开关
     private boolean isLeftSwipe = false;
+
+    private boolean isExpand;//代表当前是否是展开状态
 
     public SwipeMenuView(Context context) {
         this(context, null);
@@ -113,9 +118,12 @@ public class SwipeMenuView extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //Log.d(TAG, "onMeasure() called with: " + "widthMeasureSpec = [" + widthMeasureSpec + "], heightMeasureSpec = [" + heightMeasureSpec + "]");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        setClickable(true);//令自己可点击，从而获取触摸事件
+
         mRightMenuWidths = 0;//由于ViewHolder的复用机制，每次这里要手动恢复初始值
+        int contentWidth = 0;//适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度
         int childCount = getChildCount();
 
         //add by 2016 08 11 为了子View的高，可以matchParent(参考的FrameLayout 和LinearLayout的Horizontal)
@@ -125,19 +133,24 @@ public class SwipeMenuView extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
-                //measureChild(childView, widthMeasureSpec, heightMeasureSpec);
-                measureChildWithMargins(childView, widthMeasureSpec, 0, heightMeasureSpec, 0);
+                //后续计划加入上滑、下滑，则将不再支持Item的margin
+                measureChild(childView, widthMeasureSpec, heightMeasureSpec);
+                //measureChildWithMargins(childView, widthMeasureSpec, 0, heightMeasureSpec, 0);
                 final MarginLayoutParams lp = (MarginLayoutParams) childView.getLayoutParams();
-                mHeight = Math.max(mHeight, childView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
+                mHeight = Math.max(mHeight, childView.getMeasuredHeight());
                 if (measureMatchParentChildren && lp.height == LayoutParams.MATCH_PARENT) {
                     isNeedMeasureChildHeight = true;
                 }
                 if (i > 0) {//第一个布局是Left item，从第二个开始才是RightMenu
                     mRightMenuWidths += childView.getMeasuredWidth();
+                } else {
+                    mContentView = childView;
+                    contentWidth = childView.getMeasuredWidth();
                 }
             }
         }
-        setMeasuredDimension(mScreenW, mHeight);//宽度取屏幕宽度
+        setMeasuredDimension(getPaddingLeft() + getPaddingRight() + contentWidth,
+                mHeight + getPaddingTop() + getPaddingBottom());//宽度取第一个Item(Content)的宽度
         mLimit = mRightMenuWidths * 4 / 10;//滑动判断的临界值
         //Log.d(TAG, "onMeasure() called with: " + "mRightMenuWidths = [" + mRightMenuWidths);
         if (isNeedMeasureChildHeight) {//如果子View的height有MatchParent属性的，设置子View高度
@@ -182,16 +195,15 @@ public class SwipeMenuView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        //LogUtils.d(TAG, "onLayout() called with: " + "changed = [" + changed + "], l = [" + l + "], t = [" + t + "], r = [" + r + "], b = [" + b + "]");
         int childCount = getChildCount();
-        int left = l;
-        int right = 0;
+        int left = 0 + getPaddingLeft();
+        int right = 0 + getPaddingLeft();
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
                 if (i == 0) {//第一个子View是内容 宽度设置为全屏
-                    childView.layout(left, getPaddingTop(), left + mScreenW, getPaddingTop() + childView.getMeasuredHeight());
-                    left = left + mScreenW;
+                    childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
+                    left = left + childView.getMeasuredWidth();
                 } else {
                     if (isLeftSwipe) {
                         childView.layout(left, getPaddingTop(), left + childView.getMeasuredWidth(), getPaddingTop() + childView.getMeasuredHeight());
@@ -204,7 +216,6 @@ public class SwipeMenuView extends ViewGroup {
                 }
             }
         }
-        //Log.d(TAG, "onLayout() called with: " + "maxScrollGap = [" + maxScrollGap + "], l = [" + l + "], t = [" + t + "], r = [" + r + "], b = [" + b + "]");
     }
 
     @Override
@@ -335,6 +346,11 @@ public class SwipeMenuView extends ViewGroup {
                         if (ev.getX() < getWidth() - getScrollX()) {
                             return true;//true表示拦截
                         }
+                    }else {
+                        float gap = mLastP.x - ev.getRawX();
+                        if(gap<0 && getScaleX() == 1.0) {
+                            return true;
+                        }
                     }
                 } else {
                     if (-getScrollX() > mScaleTouchSlop) {
@@ -361,8 +377,17 @@ public class SwipeMenuView extends ViewGroup {
     private ValueAnimator mExpandAnim, mCloseAnim;
 
     public void smoothExpand() {
-        /*mScroller.startScroll(getScrollX(), 0, mRightMenuWidths - getScrollX(), 0);
-        invalidate();*/
+        //展开就加入ViewCache：
+        mViewCache = SwipeMenuView.this;
+
+        //2016 11 13 add 侧滑菜单展开，屏蔽content长按
+        if (null != mContentView) {
+            mContentView.setLongClickable(false);
+        }
+
+        if (mCloseAnim != null && mCloseAnim.isRunning()) {
+            mCloseAnim.cancel();
+        }
         mExpandAnim = ValueAnimator.ofInt(getScrollX(), isLeftSwipe ? mRightMenuWidths : -mRightMenuWidths);
         mExpandAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -371,6 +396,12 @@ public class SwipeMenuView extends ViewGroup {
             }
         });
         mExpandAnim.setInterpolator(new OvershootInterpolator());
+        mExpandAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isExpand = true;
+            }
+        });
         mExpandAnim.setDuration(300).start();
     }
 
@@ -378,8 +409,16 @@ public class SwipeMenuView extends ViewGroup {
      * 平滑关闭
      */
     public void smoothClose() {
-/*        mScroller.startScroll(getScrollX(), 0, -getScrollX(), 0);
-        invalidate();*/
+        mViewCache = null;
+
+        //2016 11 13 add 侧滑菜单展开，屏蔽content长按
+        if (null != mContentView) {
+            mContentView.setLongClickable(true);
+        }
+
+        if (mExpandAnim != null && mExpandAnim.isRunning()) {
+            mExpandAnim.cancel();
+        }
         mCloseAnim = ValueAnimator.ofInt(getScrollX(), 0);
         mCloseAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -387,9 +426,15 @@ public class SwipeMenuView extends ViewGroup {
                 scrollTo((Integer) animation.getAnimatedValue(), 0);
             }
         });
-        mCloseAnim.setInterpolator(new AnticipateInterpolator());
+        mCloseAnim.setInterpolator(new AccelerateInterpolator());
+        mCloseAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isExpand = false;
+
+            }
+        });
         mCloseAnim.setDuration(300).start();
-        //LogUtils.d(TAG, "smoothClose() called with:getScrollX() " + getScrollX());
     }
 
 

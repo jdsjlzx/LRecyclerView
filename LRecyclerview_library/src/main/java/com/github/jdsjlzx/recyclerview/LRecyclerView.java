@@ -284,7 +284,7 @@ public class LRecyclerView extends RecyclerView {
         mLoadMoreEnabled = enabled;
         if (!enabled) {
             if (mFootView instanceof LoadingFooter) {
-                mWrapAdapter.removeFooterView(mFootView);
+                mWrapAdapter.removeFooterView();
             }
         }
     }

@@ -30,7 +30,6 @@ import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.NetworkUtils;
-import com.lzx.demo.view.SampleHeader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -79,11 +78,14 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
-        mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
+        //add a HeaderView
+        final View header = LayoutInflater.from(this).inflate(R.layout.sample_header,(ViewGroup)findViewById(android.R.id.content), false);
+        mLRecyclerViewAdapter.addHeaderView(header);
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
                 mDataAdapter.clear();
                 mLRecyclerViewAdapter.notifyDataSetChanged();//fix bug:crapped or attached views may not be recycled. isScrap:false isAttached:true
