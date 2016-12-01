@@ -239,6 +239,19 @@ public void onRefresh() {
     requestData();
 }
 ```
+###开启和禁止自动加载更多功能
+
+```java
+mRecyclerView.setLoadMoreEnabled(true);
+```
+
+or
+
+```java
+mRecyclerView.setLoadMoreEnabled(false);;
+```
+
+默认是开启。如果不需要自动加载更多功能（也就是不需要分页）手动设置为false即可。
 
 ### 加载网络异常处理
 --------
