@@ -57,6 +57,7 @@ public class NestRecylcerviewActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
 
         initData();
 
