@@ -95,14 +95,14 @@ mLRecyclerViewAdapter.addHeaderView(headerView);
 
 ```java
 //remove a HeaderView
-RecyclerViewUtils.removeHeaderView(mRecyclerView);
+mLRecyclerViewAdapter.removeHeaderView();
 
 //remove a FooterView
-RecyclerViewUtils.removeFooterView(mRecyclerView);
+mLRecyclerViewAdapter.removeFooterView();
 ```
 注意：
 > 
-1.如果有两个以上的HeaderView，连续调用RecyclerViewUtils.removeHeaderView(mRecyclerView)即可。
+1.如果有两个以上的HeaderView，连续调用mLRecyclerViewAdapter.removeHeaderView()即可。
 
 
 ### LScrollListener-滑动监听事件接口
@@ -352,7 +352,7 @@ mRecyclerView.setEmptyView(view);
 
 ```java
 mRecyclerView.setLScrollListener(LScrollListener); 
-RecyclerViewUtils.setFooterView(mRecyclerView, new SampleFooter(this));
+mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 ```
 
