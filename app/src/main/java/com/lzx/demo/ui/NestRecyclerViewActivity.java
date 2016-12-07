@@ -36,7 +36,7 @@ import java.util.Random;
  * RecyclerView嵌套RecyclerView
  * 参考：http://blog.csdn.net/z593492734/article/details/51492472
  */
-public class NestRecylcerviewActivity extends AppCompatActivity{
+public class NestRecyclerViewActivity extends AppCompatActivity{
     private static final String TAG = "lzx";
 
     private LRecyclerView mRecyclerView = null;
@@ -91,7 +91,7 @@ public class NestRecylcerviewActivity extends AppCompatActivity{
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(NestRecylcerviewActivity.this, item.title);
+                AppToast.showShortText(NestRecyclerViewActivity.this, item.title);
             }
 
         });
@@ -100,7 +100,7 @@ public class NestRecylcerviewActivity extends AppCompatActivity{
             @Override
             public void onItemLongClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(NestRecylcerviewActivity.this, "onItemLongClick - " + item.title);
+                AppToast.showShortText(NestRecyclerViewActivity.this, "onItemLongClick - " + item.title);
             }
         });
 
