@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -23,6 +22,8 @@ import com.github.why168.entity.LoopStyle;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.imageloader.ImageLoader;
+import com.lzx.demo.imageloader.ImageLoaderUtil;
 import com.lzx.demo.view.SampleFooter;
 
 import java.util.ArrayList;
@@ -125,7 +126,14 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity implements Loo
 
     @Override
     public void onLoadImageView(ImageView imageView, Object object) {
-        Glide.with(this).load((Integer) object).into(imageView);
+
+        ImageLoaderUtil imageLoaderUtil = new ImageLoaderUtil();
+        ImageLoader imageLoader = new ImageLoader.Builder()
+                .imgView(imageView)
+                .url(object)
+                .build();
+
+        imageLoaderUtil.loadImage(this, imageLoader);
     }
 
     private class DataAdapter extends ListBaseAdapter<ItemModel> {

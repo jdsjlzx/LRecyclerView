@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -22,6 +21,8 @@ import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.imageloader.ImageLoader;
+import com.lzx.demo.imageloader.ImageLoaderUtil;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.TLog;
 import com.lzx.demo.view.SampleFooter;
@@ -147,10 +148,14 @@ public class PartialRefreshActivity extends AppCompatActivity {
 
             viewHolder.textView.setText(itemModel.title);
 
-            Glide.with(mContext)
-                    .load(itemModel.imgUrl)
-                    .placeholder(R.mipmap.icon)
-                    .into(viewHolder.avatarImage);
+            ImageLoaderUtil imageLoaderUtil = new ImageLoaderUtil();
+            ImageLoader imageLoader = new ImageLoader.Builder()
+                    .imgView(viewHolder.avatarImage)
+                    .url(itemModel.imgUrl)
+                    //.strategy(ImageLoaderUtil.LOAD_STRATEGY_ONLY_WIFI) 可以不写
+                    .build();
+            //imageLoaderUtil.setLoadImgStrategy(new GlideImageLoaderStrategy()); //这里可以更改图片加载框架
+            imageLoaderUtil.loadImage(mContext, imageLoader);
         }
 
         @Override
