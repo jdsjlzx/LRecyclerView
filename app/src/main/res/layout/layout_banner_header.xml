@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.why168.LoopViewPagerLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/mLoopViewPagerLayout"
+	android:layout_width="match_parent"
+	android:layout_height="160dp" />

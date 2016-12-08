@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
+import com.github.jdsjlzx.recyclerview.InnerRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
@@ -168,12 +169,12 @@ public class NestRecyclerViewActivity extends AppCompatActivity{
         private class ViewHolder extends RecyclerView.ViewHolder {
 
             private TextView textView;
-            private RecyclerView recyclerView;
+            private InnerRecyclerView recyclerView;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 textView = (TextView) itemView.findViewById(R.id.info_text);
-                recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerview_inner);
+                recyclerView = (InnerRecyclerView) itemView.findViewById(R.id.recyclerview_inner);
             }
         }
     }
