@@ -81,7 +81,6 @@ public class LinearLayoutActivity extends AppCompatActivity {
             }
         });
 
-
         //禁用下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
 
@@ -90,6 +89,8 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
         //add a FooterView
         mLRecyclerViewAdapter.addFooterView(sampleFooter);
+
+
 
     }
 

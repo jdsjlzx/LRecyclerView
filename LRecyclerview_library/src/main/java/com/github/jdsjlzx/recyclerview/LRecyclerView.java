@@ -125,10 +125,10 @@ public class LRecyclerView extends RecyclerView {
 
         mWrapAdapter.setRefreshHeader(mRefreshHeader);
 
-        if(mLoadMoreEnabled) {
+        /*if(mLoadMoreEnabled) {
             mWrapAdapter.addFooterView(mFootView);
-        }
-
+        }*/
+        mWrapAdapter.addFooterView(mFootView);
     }
 
     private class DataObserver extends RecyclerView.AdapterDataObserver {
@@ -284,6 +284,8 @@ public class LRecyclerView extends RecyclerView {
         if (!enabled) {
             if (mFootView instanceof LoadingFooter) {
                 mWrapAdapter.removeFooterView();
+            } else {
+                mFootView.setVisibility(VISIBLE);
             }
         }
     }
