@@ -31,6 +31,8 @@ compile 'com.github.jdsjlzx:LRecyclerView:1.2.9'
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
 
+##JavaDoc
+https://jitpack.io/com/github/jdsjlzx/LRecyclerView/1.2.9/javadoc/
 
 ##项目简述
 1. 下拉刷新、滑动到底部自动加载下页数据； 
