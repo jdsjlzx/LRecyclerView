@@ -18,7 +18,9 @@ import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.why168.LoopViewPagerLayout;
-import com.github.why168.entity.LoopStyle;
+import com.github.why168.listener.OnLoadImageViewListener;
+import com.github.why168.modle.BannerInfo;
+import com.github.why168.modle.LoopStyle;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.ItemModel;
@@ -32,7 +34,7 @@ import java.util.ArrayList;
  *
  * 带HeaderView、FooterView的LinearLayout RecyclerView
  */
-public class BannerHeaderLayoutActivity extends AppCompatActivity implements LoopViewPagerLayout.OnLoadImageViewListener {
+public class BannerHeaderLayoutActivity extends AppCompatActivity{
 
     private LRecyclerView mRecyclerView = null;
 
@@ -71,17 +73,36 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity implements Loo
         //add a HeaderView
         //LoopViewPagerLayout使用方法详见github：https://github.com/why168/LoopViewPagerLayout
         mLoopViewPagerLayout = (LoopViewPagerLayout) LayoutInflater.from(this).inflate(R.layout.layout_banner_header,(ViewGroup)findViewById(android.R.id.content), false);
-        mLoopViewPagerLayout.initializeView();//初始化View
         mLoopViewPagerLayout.setLoop_ms(2000);//轮播的速度(毫秒)
-        mLoopViewPagerLayout.setLoop_duration(1000);//滑动的速率(毫秒)
+        mLoopViewPagerLayout.setLoop_duration(800);//滑动的速率(毫秒)
         mLoopViewPagerLayout.setLoop_style(LoopStyle.Empty);//轮播的样式-默认empty
         mLoopViewPagerLayout.initializeData(this);//初始化数据
-        ArrayList<LoopViewPagerLayout.BannerInfo> data = new ArrayList<>();
-        data.add(new LoopViewPagerLayout.BannerInfo<Integer>(R.mipmap.slient, "第一张图片"));
-        data.add(new LoopViewPagerLayout.BannerInfo<Integer>(R.mipmap.arrow_down, "第三张图片"));
-        data.add(new LoopViewPagerLayout.BannerInfo<Integer>(R.mipmap.ic_action_add, "第四张图片"));
-        data.add(new LoopViewPagerLayout.BannerInfo<Integer>(R.mipmap.smile, "第五张图片"));
-        mLoopViewPagerLayout.setLoopData(data,null,this);
+        ArrayList<BannerInfo> data = new ArrayList<>();
+        data.add(new BannerInfo<Integer>(R.mipmap.slient, "第一张图片"));
+        data.add(new BannerInfo<Integer>(R.mipmap.arrow_down, "第三张图片"));
+        data.add(new BannerInfo<Integer>(R.mipmap.ic_action_add, "第四张图片"));
+        data.add(new BannerInfo<Integer>(R.mipmap.smile, "第五张图片"));
+        mLoopViewPagerLayout.setOnLoadImageViewListener(new OnLoadImageViewListener() {
+            @Override
+            public void onLoadImageView(ImageView imageView, Object parameter) {
+                ImageLoaderUtil imageLoaderUtil = new ImageLoaderUtil();
+                ImageLoader imageLoader = new ImageLoader.Builder()
+                        .imgView(imageView)
+                        .url(parameter)
+                        .build();
+
+                imageLoaderUtil.loadImage(BannerHeaderLayoutActivity.this, imageLoader);
+            }
+
+            @Override
+            public ImageView createImageView(Context context) {
+                ImageView imageView = new ImageView(context);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                return imageView;
+            }
+        });
+        mLoopViewPagerLayout.setLoopData(data);
+
         mLRecyclerViewAdapter.addHeaderView(mLoopViewPagerLayout);
 
         SampleFooter sampleFooter = new SampleFooter(this);
@@ -125,15 +146,15 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity implements Loo
     }
 
     @Override
-    public void onLoadImageView(ImageView imageView, Object object) {
+    protected void onStart() {
+        super.onStart();
+        mLoopViewPagerLayout.startLoop();
+    }
 
-        ImageLoaderUtil imageLoaderUtil = new ImageLoaderUtil();
-        ImageLoader imageLoader = new ImageLoader.Builder()
-                .imgView(imageView)
-                .url(object)
-                .build();
-
-        imageLoaderUtil.loadImage(this, imageLoader);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mLoopViewPagerLayout.stopLoop();
     }
 
     private class DataAdapter extends ListBaseAdapter<ItemModel> {
