@@ -125,9 +125,6 @@ public class LRecyclerView extends RecyclerView {
 
         mWrapAdapter.setRefreshHeader(mRefreshHeader);
 
-        /*if(mLoadMoreEnabled) {
-            mWrapAdapter.addFooterView(mFootView);
-        }*/
         mWrapAdapter.addFooterView(mFootView);
     }
 
