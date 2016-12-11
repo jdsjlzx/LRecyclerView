@@ -40,6 +40,7 @@
         <activity android:name=".ui.SwipeDeleteActivity" />
         <activity android:name=".ui.PartialRefreshActivity" />
         <activity android:name=".ui.NestRecyclerViewActivity" />
+        <activity android:name=".ui.Nest2RecyclerViewActivity" />
         <activity android:name=".ui.BannerHeaderLayoutActivity" />
     </application>
 

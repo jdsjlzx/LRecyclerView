@@ -56,9 +56,9 @@ public class InnerRecyclerView extends RecyclerView {
             if(isUpSlip || isDownSlip) {//上下滑动
                 // 通知父view是否要处理touch事件
                 Log.e("lzx","通知父view是否要处理touch事件");
-                getParent().requestDisallowInterceptTouchEvent(false);
-            } else {
                 getParent().requestDisallowInterceptTouchEvent(true);
+            } else {
+                getParent().requestDisallowInterceptTouchEvent(false);
 
             }
         }

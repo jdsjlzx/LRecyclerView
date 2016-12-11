@@ -110,6 +110,7 @@ public class LRecyclerView extends RecyclerView {
             mRefreshHeader = new ArrowRefreshHeader(getContext());
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
         }
+
         LoadingFooter footView = new LoadingFooter(getContext());
         mFootView = footView;
         mFootView.setVisibility(GONE);
@@ -125,7 +126,10 @@ public class LRecyclerView extends RecyclerView {
 
         mWrapAdapter.setRefreshHeader(mRefreshHeader);
 
-        mWrapAdapter.addFooterView(mFootView);
+        if (mLoadMoreEnabled) {
+            mWrapAdapter.addFooterView(mFootView);
+        }
+
     }
 
     private class DataObserver extends RecyclerView.AdapterDataObserver {
@@ -279,7 +283,7 @@ public class LRecyclerView extends RecyclerView {
     public void setLoadMoreEnabled(boolean enabled) {
         mLoadMoreEnabled = enabled;
         if (!enabled) {
-            if (mFootView instanceof LoadingFooter) {
+            if (mFootView instanceof LoadingFooter && null !=mWrapAdapter) {
                 mWrapAdapter.removeFooterView();
             } else {
                 mFootView.setVisibility(VISIBLE);

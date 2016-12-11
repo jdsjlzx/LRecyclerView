@@ -70,7 +70,6 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
-
         mDataAdapter = new DataAdapter(this);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
@@ -290,6 +289,7 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
                 return TYPE_ITEM;
             }
 
+
         }
 
         @Override
@@ -306,7 +306,6 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ItemModel item = mDataList.get(position);
-
 
             int itemViewType = getItemViewType(position);
             switch (itemViewType) {

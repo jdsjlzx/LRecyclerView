@@ -26,4 +26,8 @@
     <dimen name="pager_item_horizontal_margin">15dp</dimen>
     <dimen name="pager_item_vertical_margin">100dp</dimen>
     <dimen name="pager_item_big_margin">36dp</dimen>
+
+    <dimen name="related_thumbnail_width">90dp</dimen>
+    <dimen name="related_thumbnail_height">130dp</dimen>
+    <dimen name="related_item_height">140dp</dimen>
 </resources>

@@ -1,0 +1,17 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="8dp">
+
+    <ImageView
+        android:id="@+id/movie_related_thumbnail"
+        android:layout_width="@dimen/related_thumbnail_width"
+        android:layout_height="@dimen/related_thumbnail_height"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/loading"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"/>
+
+</android.support.v7.widget.CardView>
