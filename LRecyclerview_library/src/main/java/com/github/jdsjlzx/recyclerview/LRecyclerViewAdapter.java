@@ -340,13 +340,11 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         return -1;
     }
 
-    public void setOnItemClickListener(OnItemClickListener itemClickListener)
-    {
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
         this.mOnItemClickListener = itemClickListener;
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener)
-    {
+    public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener) {
         this.mOnItemLongClickListener = itemLongClickListener;
     }
 

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
-import com.github.jdsjlzx.recyclerview.HeaderSpanSizeLookup;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.R;
@@ -25,6 +24,7 @@ import com.lzx.demo.base.Entity;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.Goods;
 import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.util.TLog;
 import com.lzx.demo.view.SampleHeader;
 
 import java.util.ArrayList;
@@ -57,19 +57,35 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
         mRecyclerView.setNestedScrollingEnabled(false);
 
+        mDataAdapter = new DataAdapter(this,mGoodsList);
+
+        //setLayoutManager must before setAdapter
+        final GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+
+            @Override
+            public int getSpanSize(int position) {
+                //这里指定第一个位置为横向滑动列表，在实际项目中可以根据 mItemModels.get(position) instanceof XX 的结果来判断
+                TLog.error("11 getSpanSize ");
+                switch(mDataAdapter.getItemViewType(position)){
+                    case DataAdapter.TYPE_LIST_ITEMS:
+                        TLog.error("11 getSpanSize " + position);
+                        return layoutManager.getSpanCount();
+                    case DataAdapter.TYPE_ITEM:
+                        return 1;
+                    default:
+                        return -1;
+                }
+            }
+        });
+        mRecyclerView.setLayoutManager(layoutManager);
+
         initData();
 
-        mDataAdapter = new DataAdapter(this,mGoodsList);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mDataAdapter.addAll(mItemModels);
 
-        //setLayoutManager
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        manager.setSpanSizeLookup(new HeaderSpanSizeLookup((LRecyclerViewAdapter) mRecyclerView.getAdapter(), manager.getSpanCount()));
-        mRecyclerView.setLayoutManager(manager);
-
-        mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
@@ -118,7 +134,7 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
 
     private class DataAdapter extends ListBaseAdapter<Entity> {
         private static final int TYPE_ITEM = 1001;
-        private static final int TYPE_PIC_ITEMS = 1002;
+        private static final int TYPE_LIST_ITEMS = 1002;
 
         private LayoutInflater mLayoutInflater;
         private List<Goods> mGoodsList = new ArrayList<>();
@@ -134,8 +150,8 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
 
             int type = super.getItemViewType(position);
 
-            if (position == 0) {
-                type = TYPE_PIC_ITEMS;
+            if (position == 0) { //指定第一个位置为横向滑动列表
+                type = TYPE_LIST_ITEMS;
             } else {
                 type = TYPE_ITEM;
             }
@@ -153,13 +169,27 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
                     view = mLayoutInflater.inflate(R.layout.sample_item_card, parent, false);
                     customItemViewHolder = new TextViewHolder(view);
                     break;
-                case TYPE_PIC_ITEMS:
+                case TYPE_LIST_ITEMS:
                     view = mLayoutInflater.inflate(R.layout.layout_list_item_goods_related, parent, false);
                     customItemViewHolder = new RelatedGoodsViewHolder(view);
+
+                    final GridLayoutManager layoutManager = (GridLayoutManager) mRecyclerView.getLayoutManager();
+                    layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+
+                        @Override
+                        public int getSpanSize(int position) {
+                            //这里指定第一个位置为横向滑动列表，在实际项目中可以根据 mItemModels.get(position) instanceof XX 的结果来判断
+                            TLog.error("11 getSpanSize ");
+                           return layoutManager.getSpanCount();
+                        }
+                    });
+                    mRecyclerView.setLayoutManager(layoutManager);
                     break;
                 default:
                     break;
             }
+
+
 
             return customItemViewHolder;
         }
@@ -191,6 +221,7 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
             public RelatedGoodsViewHolder(View itemView) {
                 super(itemView);
                 relatedItemsRecyclerView = (RecyclerView) itemView.findViewById(R.id.related_recyclerview);
+
             }
         }
 

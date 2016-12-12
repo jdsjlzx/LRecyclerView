@@ -3,7 +3,7 @@ package com.lzx.demo.util;
 import android.util.Log;
 
 public class TLog {
-	public static final String LOG_TAG = "lizhixian";
+	public static final String LOG_TAG = "AppLog";
 	public static boolean DEBUG = true;
 
 	public TLog() {

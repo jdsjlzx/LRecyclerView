@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
-import com.github.jdsjlzx.recyclerview.HeaderSpanSizeLookup;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
@@ -63,15 +62,16 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
+        //setLayoutManager must before setAdapter
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(manager);
+
         mDataAdapter = new DataAdapter(this);
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
-        //setLayoutManager
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        manager.setSpanSizeLookup(new HeaderSpanSizeLookup((LRecyclerViewAdapter) mRecyclerView.getAdapter(), manager.getSpanCount()));
-        mRecyclerView.setLayoutManager(manager);
+
 
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
