@@ -90,8 +90,6 @@ public class LinearLayoutActivity extends AppCompatActivity {
         //add a FooterView
         mLRecyclerViewAdapter.addFooterView(sampleFooter);
 
-
-
     }
 
     private class DataAdapter extends ListBaseAdapter<ItemModel> {
@@ -101,7 +99,6 @@ public class LinearLayoutActivity extends AppCompatActivity {
         public DataAdapter(Context context) {
             mLayoutInflater = LayoutInflater.from(context);
         }
-
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

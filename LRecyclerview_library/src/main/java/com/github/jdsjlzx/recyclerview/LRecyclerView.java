@@ -336,10 +336,14 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void forceToRefresh() {
-        LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(this);
-        if(state == LoadingFooter.State.Loading) {
-            return;
+
+        if (mWrapAdapter.getFooterView() instanceof  LoadingFooter) {
+            LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(this);
+            if(state == LoadingFooter.State.Loading) {
+                return;
+            }
         }
+
         if (mPullRefreshEnabled && mRefreshListener != null) {
             scrollToPosition(0);
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);

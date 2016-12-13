@@ -212,7 +212,6 @@ public class MulItemGridLayoutActivity extends AppCompatActivity{
             finish();
         } else if (item.getItemId() == R.id.menu_refresh) {
             mRecyclerView.forceToRefresh();
-            //mDataAdapter.remove(mLRecyclerViewAdapter.getAdapterPosition(false,3));
         }
         return true;
     }
