@@ -9,6 +9,8 @@ import android.widget.ImageView;
 
 import com.lzx.demo.R;
 import com.lzx.demo.bean.Goods;
+import com.lzx.demo.imageloader.ImageLoader;
+import com.lzx.demo.imageloader.ImageLoaderUtil;
 
 import java.util.List;
 
@@ -29,7 +31,13 @@ public class RelatedGoodsAdapter extends RecyclerView.Adapter<RelatedGoodsAdapte
 
     @Override
     public void onBindViewHolder(RelatedGoodsViewHolder holder, int position) {
+        ImageLoaderUtil imageLoaderUtil = new ImageLoaderUtil();
+        ImageLoader imageLoader = new ImageLoader.Builder()
+                .imgView(holder.thumbnail)
+                .url("http://avatar.csdn.net/2/9/C/1_jdsjlzx.jpg")
+                .build();
 
+        imageLoaderUtil.loadImage(mContext, imageLoader);
     }
 
     @Override
@@ -44,6 +52,7 @@ public class RelatedGoodsAdapter extends RecyclerView.Adapter<RelatedGoodsAdapte
 
         public RelatedGoodsViewHolder(View view) {
             super(view);
+            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
         }
 
     }

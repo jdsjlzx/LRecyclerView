@@ -38,6 +38,8 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ArrayList<View> mHeaderViews = new ArrayList<>();
     private ArrayList<View> mFooterViews = new ArrayList<>();
 
+    private SpanSizeLookup mSpanSizeLookup;
+
 
     public LRecyclerViewAdapter(RecyclerView.Adapter innerAdapter) {
         this.mInnerAdapter = innerAdapter;
@@ -276,8 +278,14 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    return (isHeader(position) || isFooter(position) || isRefreshHeader(position))
-                            ? gridManager.getSpanCount() : 1;
+                    if (mSpanSizeLookup == null) {
+                        return (isHeader(position) || isFooter(position) || isRefreshHeader(position))
+                                ? gridManager.getSpanCount() : 1;
+                    } else {
+                        return (isHeader(position) || isFooter(position) || isRefreshHeader(position))
+                                ? gridManager.getSpanCount() : mSpanSizeLookup.getSpanSize(gridManager,  (position - (getHeaderViewsCount() + 1)));
+                    }
+
                 }
             });
         }
@@ -346,6 +354,18 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener) {
         this.mOnItemLongClickListener = itemLongClickListener;
+    }
+
+    public interface SpanSizeLookup {
+        int getSpanSize(GridLayoutManager gridLayoutManager, int position);
+    }
+
+    /**
+     * @param spanSizeLookup
+     * only used to GridLayoutManager
+     */
+    public void setSpanSizeLookup(SpanSizeLookup spanSizeLookup) {
+        this.mSpanSizeLookup = spanSizeLookup;
     }
 
 }

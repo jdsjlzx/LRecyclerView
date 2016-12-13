@@ -36,6 +36,7 @@
         <activity android:name=".ui.SwipeRefreshLayoutActivity" />
         <activity android:name=".ui.ExpandableRecyclerViewOneActivity" />
         <activity android:name=".ui.MulItemLinearLayoutActivity" />
+        <activity android:name=".ui.MulItemGridLayoutActivity" />
         <activity android:name=".ui.SwipeMenuActivity" />
         <activity android:name=".ui.SwipeDeleteActivity" />
         <activity android:name=".ui.PartialRefreshActivity" />

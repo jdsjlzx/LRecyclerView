@@ -24,7 +24,7 @@ import com.lzx.demo.base.Entity;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.bean.Goods;
 import com.lzx.demo.bean.ItemModel;
-import com.lzx.demo.util.TLog;
+import com.lzx.demo.util.HorizontalItemDecorator;
 import com.lzx.demo.view.SampleHeader;
 
 import java.util.ArrayList;
@@ -60,24 +60,7 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
         mDataAdapter = new DataAdapter(this,mGoodsList);
 
         //setLayoutManager must before setAdapter
-        final GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-
-            @Override
-            public int getSpanSize(int position) {
-                //这里指定第一个位置为横向滑动列表，在实际项目中可以根据 mItemModels.get(position) instanceof XX 的结果来判断
-                TLog.error("11 getSpanSize ");
-                switch(mDataAdapter.getItemViewType(position)){
-                    case DataAdapter.TYPE_LIST_ITEMS:
-                        TLog.error("11 getSpanSize " + position);
-                        return layoutManager.getSpanCount();
-                    case DataAdapter.TYPE_ITEM:
-                        return 1;
-                    default:
-                        return -1;
-                }
-            }
-        });
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
 
         initData();
@@ -86,6 +69,17 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mDataAdapter.addAll(mItemModels);
 
+        mLRecyclerViewAdapter.setSpanSizeLookup(new LRecyclerViewAdapter.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
+                if (position == 2) {
+                    return gridLayoutManager.getSpanCount();
+                } else {
+                    return 1;
+                }
+
+            }
+        });
 
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
@@ -150,7 +144,7 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
 
             int type = super.getItemViewType(position);
 
-            if (position == 0) { //指定第一个位置为横向滑动列表
+            if (position == 2) { //指定第一个位置为横向滑动列表
                 type = TYPE_LIST_ITEMS;
             } else {
                 type = TYPE_ITEM;
@@ -177,8 +171,6 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
                 default:
                     break;
             }
-
-
 
             return customItemViewHolder;
         }
@@ -216,6 +208,7 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
 
         private void bindTextViewHolder(TextViewHolder holder, final ItemModel itemModel) {
 
+            holder.textView.setText(itemModel.title);
         }
 
         private void bindRelatedGoodsViewHolder(final RelatedGoodsViewHolder holder) {
@@ -223,6 +216,7 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
                     = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             RelatedGoodsAdapter adapter = new RelatedGoodsAdapter(mContext, mGoodsList);
             holder.relatedItemsRecyclerView.setAdapter(adapter);
+            holder.relatedItemsRecyclerView.addItemDecoration(new HorizontalItemDecorator((int) mContext.getResources().getDimension(R.dimen.padding_size_small)));
             holder.relatedItemsRecyclerView.setLayoutManager(layoutManager);
             holder.relatedItemsRecyclerView.setHasFixedSize(true);
         }

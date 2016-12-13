@@ -30,4 +30,7 @@
     <dimen name="related_thumbnail_width">90dp</dimen>
     <dimen name="related_thumbnail_height">130dp</dimen>
     <dimen name="related_item_height">140dp</dimen>
+    <dimen name="padding_size_small">3dp</dimen>
+    <dimen name="padding_size_default">8dp</dimen>
+    <dimen name="padding_size_medium">6dp</dimen>
 </resources>

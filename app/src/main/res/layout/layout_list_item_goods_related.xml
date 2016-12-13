@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="170dp"
+    android:background="@android:color/white"
+    android:paddingBottom="@dimen/padding_size_medium"
+    android:paddingLeft="@dimen/padding_size_default"
+    android:paddingRight="@dimen/padding_size_default"
+    android:paddingTop="@dimen/padding_size_default"
     >
 
     <LinearLayout
@@ -14,9 +19,9 @@
             android:id="@+id/related_movies_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:text="推荐"
-            android:textStyle="bold"/>
+            android:paddingLeft="5dp"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/related_recyclerview"

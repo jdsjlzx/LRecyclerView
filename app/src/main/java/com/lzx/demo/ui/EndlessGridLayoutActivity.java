@@ -71,8 +71,6 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
-
-
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
