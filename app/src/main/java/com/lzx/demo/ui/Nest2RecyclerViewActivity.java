@@ -173,17 +173,6 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
                     view = mLayoutInflater.inflate(R.layout.layout_list_item_goods_related, parent, false);
                     customItemViewHolder = new RelatedGoodsViewHolder(view);
 
-                    final GridLayoutManager layoutManager = (GridLayoutManager) mRecyclerView.getLayoutManager();
-                    layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-
-                        @Override
-                        public int getSpanSize(int position) {
-                            //这里指定第一个位置为横向滑动列表，在实际项目中可以根据 mItemModels.get(position) instanceof XX 的结果来判断
-                            TLog.error("11 getSpanSize ");
-                           return layoutManager.getSpanCount();
-                        }
-                    });
-                    mRecyclerView.setLayoutManager(layoutManager);
                     break;
                 default:
                     break;
