@@ -33,4 +33,5 @@
     <color name="title_color">#2e2d2d</color>
     <color name="des_color">#404346</color>
     <color name="color_ff4a57">#ff4a57</color>
+    <color name="color_light_blue">#14acae</color>
 </resources>
