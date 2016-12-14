@@ -25,7 +25,7 @@ public class LuRecyclerViewStateUtils {
      * @param errorListener FooterView处于Error状态时的点击事件
      */
     public static void setFooterViewState(Activity instance, RecyclerView recyclerView, int pageSize, LoadingFooter.State state, View.OnClickListener errorListener) {
-        if(instance==null || instance.isFinishing()) {
+        if (instance == null || instance.isFinishing()) {
             return;
         }
 
@@ -35,17 +35,17 @@ public class LuRecyclerViewStateUtils {
             return;
         }
 
-        LuRecyclerViewAdapter LuRecyclerViewAdapter = (LuRecyclerViewAdapter) outerAdapter;
+        LuRecyclerViewAdapter luRecyclerViewAdapter = (LuRecyclerViewAdapter) outerAdapter;
 
-        //只有一页的时候，就别加什么FooterView了
-        if (LuRecyclerViewAdapter.getInnerAdapter().getItemCount() < pageSize) {
+        //只有一页，不显示FooterView
+        if (luRecyclerViewAdapter.getInnerAdapter().getItemCount() < pageSize) {
             return;
         }
 
         LoadingFooter footerView;
         //已经有footerView了
-        if (LuRecyclerViewAdapter.getFooterViewsCount() > 0) {
-            footerView = (LoadingFooter) LuRecyclerViewAdapter.getFooterView();
+        if (luRecyclerViewAdapter.getFooterViewsCount() > 0) {
+            footerView = (LoadingFooter) luRecyclerViewAdapter.getFooterView();
             footerView.setState(state);
             footerView.setVisibility(View.VISIBLE);
             if (state == LoadingFooter.State.NetWorkError) {
@@ -53,7 +53,7 @@ public class LuRecyclerViewStateUtils {
             }
 
         }
-
+        recyclerView.scrollToPosition(luRecyclerViewAdapter.getItemCount() - 1);
     }
 
     /**

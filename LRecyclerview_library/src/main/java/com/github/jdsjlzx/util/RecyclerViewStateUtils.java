@@ -26,7 +26,7 @@ public class RecyclerViewStateUtils {
      * @param errorListener FooterView处于Error状态时的点击事件
      */
     public static void setFooterViewState(Activity instance, RecyclerView recyclerView, int pageSize, LoadingFooter.State state, View.OnClickListener errorListener) {
-        if(instance==null || instance.isFinishing()) {
+        if (instance == null || instance.isFinishing()) {
             return;
         }
 
@@ -38,7 +38,7 @@ public class RecyclerViewStateUtils {
 
         LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) outerAdapter;
 
-        //只有一页的时候，就别加什么FooterView了
+        //只有一页，不显示FooterView
         if (lRecyclerViewAdapter.getInnerAdapter().getItemCount() < pageSize) {
             return;
         }
@@ -59,53 +59,6 @@ public class RecyclerViewStateUtils {
         }
         recyclerView.scrollToPosition(lRecyclerViewAdapter.getItemCount() - 1);
 
-    }
-
-    /**
-     * 设置LRecyclerViewAdapter的FooterView State
-     *
-     * @param instance      context
-     * @param recyclerView  recyclerView
-     * @param pageSize      分页展示时，recyclerView每一页的数量
-     * @param state         FooterView State
-     * @param errorListener FooterView处于Error状态时的点击事件
-     */
-    public static void setFooterViewState2(Activity instance, RecyclerView recyclerView, int pageSize, LoadingFooter.State state, View.OnClickListener errorListener) {
-
-        if(instance==null || instance.isFinishing()) {
-            return;
-        }
-
-        RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
-
-        if (outerAdapter == null || !(outerAdapter instanceof LRecyclerViewAdapter)) {
-            return;
-        }
-
-        LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) outerAdapter;
-
-        LoadingFooter footerView;
-
-        //已经有footerView了
-        if (lRecyclerViewAdapter.getFooterViewsCount() > 0) {
-            footerView = (LoadingFooter) lRecyclerViewAdapter.getFooterView();
-            footerView.setState(state);
-
-            if (state == LoadingFooter.State.NetWorkError) {
-                footerView.setOnClickListener(errorListener);
-            }
-            recyclerView.scrollToPosition(0);
-        } else {
-            footerView = new LoadingFooter(instance);
-            footerView.setState(state);
-
-            if (state == LoadingFooter.State.NetWorkError) {
-                footerView.setOnClickListener(errorListener);
-            }
-
-            lRecyclerViewAdapter.addFooterView(footerView);
-            recyclerView.scrollToPosition(0);
-        }
     }
 
     /**

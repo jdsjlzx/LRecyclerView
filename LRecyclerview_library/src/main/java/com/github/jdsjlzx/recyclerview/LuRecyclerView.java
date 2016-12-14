@@ -299,7 +299,7 @@ public class LuRecyclerView extends RecyclerView {
 
         if (mLoadMoreListener != null && mLoadMoreEnabled) {
 
-            if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE || currentScrollState == RecyclerView.SCROLL_STATE_SETTLING) {
+            if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE) {
                 RecyclerView.LayoutManager layoutManager = getLayoutManager();
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
