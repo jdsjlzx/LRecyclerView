@@ -18,16 +18,12 @@ package com.lzx.demo;
 import android.app.Application;
 
 public class AppContext extends Application {
-
-    private static AppContext instance;
+    private static AppContext instance ;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        if (instance == null) {
-            instance = this;
-        }
+        instance = this;
     }
 
     public static AppContext getInstance() {

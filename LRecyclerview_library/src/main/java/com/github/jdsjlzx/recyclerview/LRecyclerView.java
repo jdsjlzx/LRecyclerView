@@ -28,6 +28,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
 public class LRecyclerView extends RecyclerView {
     private boolean mPullRefreshEnabled = true;
     private boolean mLoadMoreEnabled = true;
+    private boolean flag = false;//标记是否setAdapter
     private OnRefreshListener mRefreshListener;
     private OnLoadMoreListener mLoadMoreListener;
     private LScrollListener mLScrollListener;
@@ -116,12 +117,18 @@ public class LRecyclerView extends RecyclerView {
         mFootView.setVisibility(GONE);
     }
 
+
     @Override
     public void setAdapter(Adapter adapter) {
         mWrapAdapter = (LRecyclerViewAdapter) adapter;
         super.setAdapter(mWrapAdapter);
 
+        if(flag) {
+            mWrapAdapter.getInnerAdapter().unregisterAdapterDataObserver(mDataObserver);
+        }
         mWrapAdapter.getInnerAdapter().registerAdapterDataObserver(mDataObserver);
+        flag = true;
+
         mDataObserver.onChanged();
 
         mWrapAdapter.setRefreshHeader(mRefreshHeader);
@@ -283,7 +290,11 @@ public class LRecyclerView extends RecyclerView {
     public void setLoadMoreEnabled(boolean enabled) {
         mLoadMoreEnabled = enabled;
         if (!enabled) {
-            if (mFootView instanceof LoadingFooter && null !=mWrapAdapter) {
+            //添加了footview
+            if(mWrapAdapter.getFooterViewsCount() > 0) {
+                mFootView = mWrapAdapter.getFooterView();
+            }
+            if (mFootView instanceof LoadingFooter && null != mWrapAdapter) {
                 mWrapAdapter.removeFooterView();
             } else {
                 mFootView.setVisibility(VISIBLE);
