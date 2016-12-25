@@ -1,4 +1,4 @@
-package com.lzx.demo;
+package com.lzx.demo.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,23 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.lzx.demo.multitype.MultiTypeActivity;
-import com.lzx.demo.ui.CommonActivity;
-import com.lzx.demo.ui.SectionCollectionActivity;
-import com.lzx.demo.ui.SwipeMenuActivity;
+import com.lzx.demo.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
-    private static final Class<?>[] ACTIVITY = {CommonActivity.class, MultiTypeActivity.class, SectionCollectionActivity.class, SwipeMenuActivity.class};
-    private static final String[] TITLE = {"CommonActivity","MultiTypeActivity", "SectionCollectionActivity","SwipeMenuActivity"};
+public abstract class BaseMainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView = null;
 
     private DataAdapter mDataAdapter = null;
     private ArrayList<ListItem> mDataList = null;
+
+    public abstract Class<?>[] getActivitys();
+    public abstract String[] getTitles();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mDataList = new ArrayList<>();
-        for (int i = 0; i < TITLE.length; i++) {
+        for (int i = 0; i < getActivitys().length; i++) {
 
             ListItem item = new ListItem();
-            item.title = TITLE[i];
-            item.activity = ACTIVITY[i];
+            item.title = getTitles()[i];
+            item.activity = getActivitys()[i];
             mDataList.add(item);
         }
 
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     ListItem listItem = mDataList.get(position);
-                    startActivity(new Intent(MainActivity.this, listItem.activity));
+                    startActivity(new Intent(BaseMainActivity.this, listItem.activity));
                 }
             });
         }

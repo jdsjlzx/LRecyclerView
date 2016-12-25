@@ -97,6 +97,9 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
 
         mRecyclerView.setRefreshing(true);
 
+        //是否允许嵌套滑动
+        mRecyclerView.setNestedScrollingEnabled(false);
+
     }
 
     private void initData() {

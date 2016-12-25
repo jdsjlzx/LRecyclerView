@@ -33,4 +33,5 @@
     <dimen name="padding_size_small">3dp</dimen>
     <dimen name="padding_size_default">8dp</dimen>
     <dimen name="padding_size_medium">6dp</dimen>
+
 </resources>
