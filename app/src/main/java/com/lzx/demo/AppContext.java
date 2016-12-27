@@ -17,6 +17,8 @@ package com.lzx.demo;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+
 public class AppContext extends Application {
     private static AppContext instance ;
 
@@ -24,6 +26,13 @@ public class AppContext extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     public static AppContext getInstance() {

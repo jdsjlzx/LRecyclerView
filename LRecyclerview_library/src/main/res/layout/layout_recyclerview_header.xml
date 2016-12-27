@@ -9,7 +9,7 @@
     <View
         android:layout_width="@dimen/dp_72"
         android:layout_height="@dimen/dp_066"
-        android:background="@color/color_00" />
+        android:background="@android:color/black" />
 
     <TextView
         android:id="@+id/person_video_list_honey_count"
@@ -25,6 +25,6 @@
     <View
         android:layout_width="@dimen/dp_72"
         android:layout_height="@dimen/dp_066"
-        android:background="@color/color_00" />
+        android:background="@android:color/black" />
 
 </LinearLayout>

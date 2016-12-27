@@ -108,11 +108,11 @@ public class LRecyclerView extends RecyclerView {
 
     private void init() {
         if (mPullRefreshEnabled) {
-            mRefreshHeader = new ArrowRefreshHeader(getContext());
+            mRefreshHeader = new ArrowRefreshHeader(getContext().getApplicationContext());
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
         }
 
-        LoadingFooter footView = new LoadingFooter(getContext());
+        LoadingFooter footView = new LoadingFooter(getContext().getApplicationContext());
         mFootView = footView;
         mFootView.setVisibility(GONE);
     }
@@ -290,7 +290,6 @@ public class LRecyclerView extends RecyclerView {
     public void setLoadMoreEnabled(boolean enabled) {
         mLoadMoreEnabled = enabled;
         if (!enabled) {
-            //添加了footview
             if(mWrapAdapter.getFooterViewsCount() > 0) {
                 mFootView = mWrapAdapter.getFooterView();
             }

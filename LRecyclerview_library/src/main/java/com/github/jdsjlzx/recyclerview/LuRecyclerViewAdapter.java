@@ -62,7 +62,7 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             throw new RuntimeException("footer is null");
         }
         if (getFooterViewsCount() > 0) {
-            removeFooterView(getFooterView());
+            removeFooterView();
         }
         mFooterViews.add(view);
     }
@@ -113,9 +113,12 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.notifyDataSetChanged();
     }
 
-    public void removeFooterView(View view) {
-        mFooterViews.remove(view);
-        this.notifyDataSetChanged();
+    public void removeFooterView() {
+        if (getFooterViewsCount() > 0) {
+            View footerView = getFooterView();
+            mFooterViews.remove(footerView);
+            this.notifyDataSetChanged();
+        }
     }
 
     public int getHeaderViewsCount() {

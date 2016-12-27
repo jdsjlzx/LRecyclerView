@@ -82,7 +82,7 @@ public class NestRecyclerViewActivity extends AppCompatActivity{
                     public void run() {
                         mRecyclerView.refreshComplete();
                     }
-                },1000);
+                },7000);
             }
         });
 
@@ -143,6 +143,7 @@ public class NestRecyclerViewActivity extends AppCompatActivity{
 
         private LayoutInflater mLayoutInflater;
         private List<Goods> mGoodsList = new ArrayList<>();
+
 
         public DataAdapter(Context context, List<Goods> goodsList) {
             mLayoutInflater = LayoutInflater.from(context);

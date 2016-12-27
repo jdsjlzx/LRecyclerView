@@ -47,7 +47,7 @@ public class LuRecyclerViewUtils {
         LuRecyclerViewAdapter luRecyclerViewAdapter = (LuRecyclerViewAdapter) outerAdapter;
 
         if (luRecyclerViewAdapter.getFooterViewsCount() > 0) {
-            luRecyclerViewAdapter.removeFooterView(luRecyclerViewAdapter.getFooterView());
+            luRecyclerViewAdapter.removeFooterView();
         }
         luRecyclerViewAdapter.addFooterView(view);
     }
@@ -65,8 +65,7 @@ public class LuRecyclerViewUtils {
 
             int footerViewCounter = ((LuRecyclerViewAdapter) outerAdapter).getFooterViewsCount();
             if (footerViewCounter > 0) {
-                View footerView = ((LuRecyclerViewAdapter) outerAdapter).getFooterView();
-                ((LuRecyclerViewAdapter) outerAdapter).removeFooterView(footerView);
+                ((LuRecyclerViewAdapter) outerAdapter).removeFooterView();
             }
         }
     }

@@ -1,51 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="#232323"
+		android:gravity="center_vertical"
+		android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#232323"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+		<TextView
+			android:layout_width="@dimen/dp_4"
+			android:layout_height="@dimen/activity_vertical_margin"
+			android:background="#f1d38f"/>
 
-            <TextView
-                android:layout_width="@dimen/dp_4"
-                android:layout_height="@dimen/activity_vertical_margin"
-                android:background="#f1d38f"/>
+		<TextView
+			android:id="@+id/info_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="15dp"
+			android:text="xx"
+			android:textColor="#f1d38f"
+			android:textSize="@dimen/sp_14"/>
 
-            <TextView
-                android:id="@+id/info_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="xx"
-                android:textColor="#f1d38f"
-                android:textSize="@dimen/sp_14"/>
+		<TextView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="@dimen/dp_10"
+			android:src="@mipmap/ic_arrow"/>
+	</LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp_10"
-                android:src="@mipmap/ic_arrow"/>
-        </LinearLayout>
-
-        <com.github.jdsjlzx.recyclerview.InnerRecyclerView
-            android:id="@+id/recyclerview_inner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+	<com.github.jdsjlzx.recyclerview.InnerRecyclerView
+		android:id="@+id/recyclerview_inner"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"/>
 </LinearLayout>

@@ -138,14 +138,13 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
 
         });
 
-
         mRecyclerView.setRefreshing(true);
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(EndlessLinearLayoutActivity.this, item.title);
+                AppToast.showShortText(getApplicationContext(), item.title);
             }
 
         });
@@ -154,7 +153,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             @Override
             public void onItemLongClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(EndlessLinearLayoutActivity.this, "onItemLongClick - " + item.title);
+                AppToast.showShortText(getApplicationContext(), "onItemLongClick - " + item.title);
             }
         });
 

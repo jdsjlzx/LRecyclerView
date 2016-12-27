@@ -22,6 +22,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
  */
 public class LuRecyclerView extends RecyclerView {
     private boolean mLoadMoreEnabled = true;
+    private boolean flag = false;//标记是否setAdapter
     private LScrollListener mLScrollListener;
     private OnLoadMoreListener mLoadMoreListener;
     private View mEmptyView;
@@ -45,11 +46,6 @@ public class LuRecyclerView extends RecyclerView {
      * 最后一个可见的item的位置
      */
     private int lastVisibleItemPosition;
-
-    /**
-     * 当前滑动的状态
-     */
-    private int currentScrollState = 0;
 
     /**
      * 触发在上下滑动监听器的容差距离
@@ -94,7 +90,7 @@ public class LuRecyclerView extends RecyclerView {
     }
 
     private void init() {
-        LoadingFooter footView = new LoadingFooter(getContext());
+        LoadingFooter footView = new LoadingFooter(getContext().getApplicationContext());
         mFootView = footView;
         mFootView.setVisibility(GONE);
     }
@@ -104,7 +100,12 @@ public class LuRecyclerView extends RecyclerView {
         mWrapAdapter = (LuRecyclerViewAdapter) adapter;
         super.setAdapter(mWrapAdapter);
 
+        if(flag) {
+            mWrapAdapter.getInnerAdapter().unregisterAdapterDataObserver(mDataObserver);
+        }
         mWrapAdapter.getInnerAdapter().registerAdapterDataObserver(mDataObserver);
+        flag = true;
+
         mDataObserver.onChanged();
 
         if(mLoadMoreEnabled) {
@@ -180,16 +181,6 @@ public class LuRecyclerView extends RecyclerView {
         return max;
     }
 
-    private int findMin(int[] firstPositions) {
-        int min = firstPositions[0];
-        for (int value : firstPositions) {
-            if (value < min) {
-                min = value;
-            }
-        }
-        return min;
-    }
-
 
     /**
      * set view when no content item
@@ -203,8 +194,13 @@ public class LuRecyclerView extends RecyclerView {
     public void setLoadMoreEnabled(boolean enabled) {
         mLoadMoreEnabled = enabled;
         if (!enabled) {
-            if (mFootView instanceof LoadingFooter) {
-                mWrapAdapter.removeFooterView(mFootView);
+            if(mWrapAdapter.getFooterViewsCount() > 0) {
+                mFootView = mWrapAdapter.getFooterView();
+            }
+            if (mFootView instanceof LoadingFooter && null != mWrapAdapter) {
+                mWrapAdapter.removeFooterView();
+            } else {
+                mFootView.setVisibility(VISIBLE);
             }
         }
     }
@@ -291,7 +287,7 @@ public class LuRecyclerView extends RecyclerView {
     @Override
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
-        currentScrollState = state;
+        int currentScrollState = state;
 
         if (mLScrollListener != null) {
             mLScrollListener.onScrollStateChanged(state);
@@ -352,7 +348,6 @@ public class LuRecyclerView extends RecyclerView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        //解决LRecyclerView与CollapsingToolbarLayout滑动冲突的问题
         AppBarLayout appBarLayout = null;
         ViewParent p = getParent();
         while (p != null) {
@@ -361,7 +356,7 @@ public class LuRecyclerView extends RecyclerView {
             }
             p = p.getParent();
         }
-        if(p instanceof CoordinatorLayout) {
+        if(p!=null && p instanceof CoordinatorLayout) {
             CoordinatorLayout coordinatorLayout = (CoordinatorLayout)p;
             final int childCount = coordinatorLayout.getChildCount();
             for (int i = childCount - 1; i >= 0; i--) {

@@ -57,13 +57,13 @@
                 android:layout_width="wrap_content"  
                 android:layout_height="wrap_content"  
                 android:text="@string/listview_header_hint_normal"  
-                android:textColor="#000000"/>  
+                android:textColor="#666666"/>
   
             <TextView  
                 android:id="@+id/head_lastUpdatedTextView"  
                 android:layout_width="wrap_content"  
                 android:layout_height="wrap_content" 
-                android:textColor="#000000"  
+                android:textColor="@android:color/black"
                 android:textSize="10sp" />  
               
         </LinearLayout>  
