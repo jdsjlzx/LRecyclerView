@@ -39,7 +39,7 @@ public class InnerRecyclerView extends RecyclerView {
         return super.onInterceptTouchEvent(event);
     }
 
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.e("lzx","onTouchEvent");
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -63,5 +63,5 @@ public class InnerRecyclerView extends RecyclerView {
             }
         }
         return super.onTouchEvent(event);
-    }
+    }*/
 }

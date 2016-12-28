@@ -10,6 +10,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewParent;
 
 import com.github.jdsjlzx.interfaces.BaseRefreshHeader;
@@ -43,6 +44,10 @@ public class LRecyclerView extends RecyclerView {
     private LRecyclerViewAdapter mWrapAdapter;
     private boolean isNoMore = false;
     private int mRefreshHeaderHeight;
+    private boolean mIsVpDragger;
+    private int mTouchSlop;
+    private float startY;
+    private float startX;
     //scroll variables begin
     /**
      * 当前RecyclerView类型
@@ -107,6 +112,7 @@ public class LRecyclerView extends RecyclerView {
     }
 
     private void init() {
+        mTouchSlop = ViewConfiguration.get(getContext().getApplicationContext()).getScaledTouchSlop();
         if (mPullRefreshEnabled) {
             mRefreshHeader = new ArrowRefreshHeader(getContext().getApplicationContext());
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
@@ -195,6 +201,49 @@ public class LRecyclerView extends RecyclerView {
             mWrapAdapter.notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1 + itemCount);
         }
 
+    }
+
+    /**
+     * 解决嵌套RecyclerView滑动冲突问题
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        int action = ev.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                // 记录手指按下的位置
+                startY = ev.getY();
+                startX = ev.getX();
+                // 初始化标记
+                mIsVpDragger = false;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                // 如果viewpager正在拖拽中，那么不拦截它的事件，直接return false；
+                if (mIsVpDragger) {
+                    return false;
+                }
+
+                // 获取当前手指位置
+                float endY = ev.getY();
+                float endX = ev.getX();
+                float distanceX = Math.abs(endX - startX);
+                float distanceY = Math.abs(endY - startY);
+                // 如果X轴位移大于Y轴位移，那么将事件交给viewPager处理。
+                if (distanceX > mTouchSlop && distanceX > distanceY) {
+                    mIsVpDragger = true;
+                    return false;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                // 初始化标记
+                mIsVpDragger = false;
+                break;
+        }
+        // 如果是Y轴位移大于X轴，事件交给swipeRefreshLayout处理。
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override
