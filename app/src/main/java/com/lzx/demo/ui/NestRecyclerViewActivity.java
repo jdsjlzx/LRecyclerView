@@ -170,7 +170,7 @@ public class NestRecyclerViewActivity extends AppCompatActivity{
         private class ViewHolder extends RecyclerView.ViewHolder {
 
             private TextView textView;
-            private InnerRecyclerView recyclerView;
+            private RecyclerView recyclerView;
 
             public ViewHolder(View itemView) {
                 super(itemView);

@@ -38,7 +38,7 @@
 			android:src="@mipmap/ic_arrow"/>
 	</LinearLayout>
 
-	<com.github.jdsjlzx.recyclerview.InnerRecyclerView
+	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recyclerview_inner"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"/>
