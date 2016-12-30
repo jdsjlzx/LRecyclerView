@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -22,7 +20,7 @@ import com.github.why168.listener.OnLoadImageViewListener;
 import com.github.why168.modle.BannerInfo;
 import com.github.why168.modle.LoopStyle;
 import com.lzx.demo.R;
-import com.lzx.demo.base.ListBaseAdapter;
+import com.lzx.demo.adapter.DataAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.imageloader.ImageLoader;
 import com.lzx.demo.imageloader.ImageLoaderUtil;
@@ -155,45 +153,6 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity{
     protected void onStop() {
         super.onStop();
         mLoopViewPagerLayout.stopLoop();
-    }
-
-    private class DataAdapter extends ListBaseAdapter<ItemModel> {
-
-        private LayoutInflater mLayoutInflater;
-
-        public DataAdapter(Context context) {
-            mLayoutInflater = LayoutInflater.from(context);
-        }
-
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(mLayoutInflater.inflate(R.layout.sample_item_text, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-            String item = mDataList.get(position).title;
-
-            ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.textView.setText(item);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mDataList.size();
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
-
-            private TextView textView;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                textView = (TextView) itemView.findViewById(R.id.info_text);
-            }
-        }
     }
 
     @Override

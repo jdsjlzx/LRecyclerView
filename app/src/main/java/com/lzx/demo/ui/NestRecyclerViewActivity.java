@@ -8,23 +8,21 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
-import com.github.jdsjlzx.recyclerview.InnerRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.GoodsAdapter;
 import com.lzx.demo.base.ListBaseAdapter;
+import com.lzx.demo.base.SuperViewHolder;
 import com.lzx.demo.bean.Goods;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
@@ -82,7 +80,7 @@ public class NestRecyclerViewActivity extends AppCompatActivity{
                     public void run() {
                         mRecyclerView.refreshComplete();
                     }
-                },7000);
+                },2000);
             }
         });
 
@@ -129,55 +127,33 @@ public class NestRecyclerViewActivity extends AppCompatActivity{
 
     }
 
-    private void notifyDataSetChanged() {
-        mLRecyclerViewAdapter.notifyDataSetChanged();
-    }
-
-    private void addItems(ArrayList<ItemModel> list) {
-
-        mDataAdapter.addAll(list);
-
-    }
-
     private class DataAdapter extends ListBaseAdapter<ItemModel> {
 
-        private LayoutInflater mLayoutInflater;
         private List<Goods> mGoodsList = new ArrayList<>();
 
 
         public DataAdapter(Context context, List<Goods> goodsList) {
-            mLayoutInflater = LayoutInflater.from(context);
-            mContext = context;
+            super(context);
             this.mGoodsList = goodsList;
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(mLayoutInflater.inflate(R.layout.layout_list_item_nest_wrapper, parent, false));
+        public int getLayoutId() {
+            return R.layout.layout_list_item_nest_wrapper;
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        public void onBindItemHolder(SuperViewHolder holder, int position) {
+            TextView textView = holder.getView(R.id.info_text);
+            RecyclerView recyclerView = holder.getView(R.id.recyclerview_inner);
+
             ItemModel item = mDataList.get(position);
 
-            ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.textView.setText(item.title);
-
-            viewHolder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-            viewHolder.recyclerView.setAdapter(new GoodsAdapter(mContext, mGoodsList));
+            textView.setText(item.title);
+            recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
+            recyclerView.setAdapter(new GoodsAdapter(mContext, mGoodsList));
         }
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
-
-            private TextView textView;
-            private RecyclerView recyclerView;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                textView = (TextView) itemView.findViewById(R.id.info_text);
-                recyclerView = (InnerRecyclerView) itemView.findViewById(R.id.recyclerview_inner);
-            }
-        }
     }
 
     @Override

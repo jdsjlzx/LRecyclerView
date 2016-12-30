@@ -1,14 +1,11 @@
 package com.lzx.demo.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
+import com.lzx.demo.base.SuperViewHolder;
 import com.lzx.demo.bean.Goods;
 
 import java.util.List;
@@ -19,34 +16,20 @@ import java.util.List;
 
 public class GoodsAdapter extends ListBaseAdapter<Goods> {
 
-    private LayoutInflater mLayoutInflater;
-
     public GoodsAdapter(Context context, List<Goods> list) {
-        mLayoutInflater = LayoutInflater.from(context);
-        mContext = context;
+        super(context);
         setDataList(list);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mLayoutInflater.inflate(R.layout.layout_list_item_nest_inner, parent, false));
+    public int getLayoutId() {
+        return R.layout.layout_list_item_nest_inner;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-
-        ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.titleTextView.setText(getDataList().get(position).title);
-
+    public void onBindItemHolder(SuperViewHolder holder, int position) {
+        TextView titleTextView = holder.getView(R.id.title);
+        titleTextView.setText(getDataList().get(position).title);
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView titleTextView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            titleTextView = (TextView) itemView.findViewById(R.id.title);
-        }
-    }
 }

@@ -1,21 +1,15 @@
 package com.lzx.demo.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
@@ -27,8 +21,8 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
-import com.lzx.demo.base.ListBaseAdapter;
-import com.lzx.demo.bean.ItemModel;
+import com.lzx.demo.adapter.MultipleItemAdapter;
+import com.lzx.demo.bean.MultipleItem;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.NetworkUtils;
 import com.lzx.demo.view.SampleHeader;
@@ -53,7 +47,7 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
 
     private LRecyclerView mRecyclerView = null;
 
-    private DataAdapter mDataAdapter = null;
+    private MultipleItemAdapter mMultipleItemAdapter = null;
 
     private PreviewHandler mHandler = new PreviewHandler(this);
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
@@ -70,8 +64,8 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
-        mDataAdapter = new DataAdapter(this);
-        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
+        mMultipleItemAdapter = new MultipleItemAdapter(this);
+        mLRecyclerViewAdapter = new LRecyclerViewAdapter(mMultipleItemAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,7 +79,7 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
             @Override
             public void onRefresh() {
                 RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
-                mDataAdapter.clear();
+                mMultipleItemAdapter.clear();
                 mLRecyclerViewAdapter.notifyDataSetChanged();//fix bug:crapped or attached views may not be recycled. isScrap:false isAttached:true
                 mCurrentCounter = 0;
                 isRefresh = true;
@@ -142,16 +136,16 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(MulItemLinearLayoutActivity.this, item.title);
+                MultipleItem item = mMultipleItemAdapter.getDataList().get(position);
+                AppToast.showShortText(MulItemLinearLayoutActivity.this, item.getTitle());
             }
         });
 
         mLRecyclerViewAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(MulItemLinearLayoutActivity.this, "onItemLongClick - " + item.title);
+                MultipleItem item = mMultipleItemAdapter.getDataList().get(position);
+                AppToast.showShortText(MulItemLinearLayoutActivity.this, "onItemLongClick - " + item.getTitle());
             }
         });
 
@@ -162,9 +156,9 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         mLRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private void addItems(ArrayList<ItemModel> list) {
+    private void addItems(ArrayList<MultipleItem> list) {
 
-        mDataAdapter.addAll(list);
+        mMultipleItemAdapter.addAll(list);
         mCurrentCounter += list.size();
 
     }
@@ -187,22 +181,26 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
 
                 case -1:
                     if(activity.isRefresh){
-                        activity.mDataAdapter.clear();
+                        activity.mMultipleItemAdapter.clear();
                         mCurrentCounter = 0;
                     }
 
-                    int currentSize = activity.mDataAdapter.getItemCount();
+                    int currentSize = activity.mMultipleItemAdapter.getItemCount();
 
                     //模拟组装10个数据
-                    ArrayList<ItemModel> newList = new ArrayList<>();
+                    ArrayList<MultipleItem> newList = new ArrayList<>();
                     for (int i = 0; i < 10; i++) {
                         if (newList.size() + currentSize >= TOTAL_COUNTER) {
                             break;
                         }
 
-                        ItemModel item = new ItemModel();
-                        item.id = currentSize + i;
-                        item.title = "item" + (item.id);
+                        MultipleItem item ;
+                        if(i == 2){
+                            item = new MultipleItem(MultipleItem.IMG);
+                        }else {
+                            item = new MultipleItem(MultipleItem.TEXT);
+                        }
+                        item.setTitle("item"+(currentSize+i));
 
                         newList.add(item);
                     }
@@ -268,80 +266,6 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
                 }
             }
         }.start();
-    }
-
-    private class DataAdapter extends ListBaseAdapter<ItemModel> {
-        private static final int TYPE_ITEM = 0; //普通类型
-        private static final int TYPE_PHOTO_ITEM = 1; //图文类型
-
-        private LayoutInflater mLayoutInflater;
-
-        public DataAdapter(Context context) {
-            mLayoutInflater = LayoutInflater.from(context);
-            mContext = context;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            if (position %2 == 0) {
-                return TYPE_PHOTO_ITEM;
-            } else {
-                return TYPE_ITEM;
-            }
-
-
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-            switch (viewType) {
-                case TYPE_PHOTO_ITEM://图文类型
-                    return new PhotoViewHolder(mLayoutInflater.inflate(R.layout.list_item_pic, parent, false));
-                default:
-                    return new TextViewHolder(mLayoutInflater.inflate(R.layout.list_item_text, parent, false));
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            ItemModel item = mDataList.get(position);
-
-            int itemViewType = getItemViewType(position);
-            switch (itemViewType) {
-                case TYPE_PHOTO_ITEM:
-                    PhotoViewHolder photoViewHolder = (PhotoViewHolder) holder;
-                    photoViewHolder.textView.setText(item.title);
-                    photoViewHolder.avatarImage.setImageResource(R.mipmap.icon);
-                    break;
-                default:
-                    TextViewHolder viewHolder = (TextViewHolder) holder;
-                    viewHolder.textView.setText(item.title);
-                    break;
-            }
-
-        }
-
-        private class TextViewHolder extends RecyclerView.ViewHolder {
-
-            private TextView textView;
-
-            public TextViewHolder(View itemView) {
-                super(itemView);
-                textView = (TextView) itemView.findViewById(R.id.info_text);
-            }
-        }
-        private class PhotoViewHolder extends RecyclerView.ViewHolder {
-
-            private TextView textView;
-            private ImageView avatarImage;
-
-            public PhotoViewHolder(View itemView) {
-                super(itemView);
-                textView = (TextView) itemView.findViewById(R.id.info_text);
-                avatarImage = (ImageView) itemView.findViewById(R.id.avatar_image);
-            }
-        }
     }
 
     @Override

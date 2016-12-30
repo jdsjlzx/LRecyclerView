@@ -1,16 +1,14 @@
 package com.lzx.demo.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
+import com.lzx.demo.base.SuperViewHolder;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.view.SwipeMenuView;
@@ -20,31 +18,33 @@ import com.lzx.demo.view.SwipeMenuView;
  */
 
 public class SwipeMenuAdapter extends ListBaseAdapter<ItemModel> {
-    private Context mContext;
-    private LayoutInflater mInfalter;
 
     public SwipeMenuAdapter(Context context) {
-        mContext = context;
-        mInfalter = LayoutInflater.from(context);
+        super(context);
     }
 
     @Override
-    public SwipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new SwipeViewHolder(mInfalter.inflate(R.layout.list_item_swipe, parent, false));
+    public int getLayoutId() {
+        return R.layout.list_item_swipe;
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        SwipeViewHolder viewHolder = (SwipeViewHolder) holder;
+    public void onBindItemHolder(SuperViewHolder holder, final int position) {
+        View contentView = holder.getView(R.id.swipe_content);
+        TextView title = holder.getView(R.id.title);
+        Button btnDelete = holder.getView(R.id.btnDelete);
+        Button btnUnRead = holder.getView(R.id.btnUnRead);
+        Button btnTop = holder.getView(R.id.btnTop);
+
         //这句话关掉IOS阻塞式交互效果 并依次打开左滑右滑
-        ((SwipeMenuView) viewHolder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);
+        ((SwipeMenuView)holder.itemView).setIos(false).setLeftSwipe(position % 2 == 0 ? true : false);
 
-        viewHolder.title.setText(getDataList().get(position).title + (position % 2 == 0 ? "我只能右滑动" : "我只能左滑动"));
+        title.setText(getDataList().get(position).title + (position % 2 == 0 ? "我只能右滑动" : "我只能左滑动"));
 
         //隐藏控件
-        viewHolder.btnUnRead.setVisibility(position % 3 == 0 ? View.GONE : View.VISIBLE);
+        btnUnRead.setVisibility(position % 3 == 0 ? View.GONE : View.VISIBLE);
 
-        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+        btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mOnSwipeListener) {
@@ -56,7 +56,7 @@ public class SwipeMenuAdapter extends ListBaseAdapter<ItemModel> {
             }
         });
         //注意事项，设置item点击，不能对整个holder.itemView设置咯，只能对第一个子View，即原来的content设置，这算是局限性吧。
-        (viewHolder.contentView).setOnClickListener(new View.OnClickListener() {
+        contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppToast.makeShortToast(mContext, getDataList().get(position).title);
@@ -64,7 +64,7 @@ public class SwipeMenuAdapter extends ListBaseAdapter<ItemModel> {
             }
         });
         //置顶：
-        viewHolder.btnTop.setOnClickListener(new View.OnClickListener() {
+        btnTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null!=mOnSwipeListener){
@@ -90,21 +90,6 @@ public class SwipeMenuAdapter extends ListBaseAdapter<ItemModel> {
         this.mOnSwipeListener = mOnDelListener;
     }
 
-    private class SwipeViewHolder extends RecyclerView.ViewHolder {
-        View contentView;
-        TextView title;
-        Button btnDelete;
-        Button btnUnRead;
-        Button btnTop;
 
-         SwipeViewHolder(View itemView) {
-            super(itemView);
-            contentView = itemView.findViewById(R.id.swipe_content);
-            title = (TextView) itemView.findViewById(R.id.title);
-            btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
-            btnUnRead = (Button) itemView.findViewById(R.id.btnUnRead);
-            btnTop = (Button) itemView.findViewById(R.id.btnTop);
-        }
-    }
 }
 

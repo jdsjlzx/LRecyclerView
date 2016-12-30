@@ -1,6 +1,7 @@
 package com.github.jdsjlzx.util;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -65,9 +66,9 @@ public class LuRecyclerViewStateUtils {
      * @param state         FooterView State
      * @param errorListener FooterView处于Error状态时的点击事件
      */
-    public static void setFooterViewState2(Activity instance, RecyclerView recyclerView, int pageSize, LoadingFooter.State state, View.OnClickListener errorListener) {
+    public static void setFooterViewState(Fragment instance, RecyclerView recyclerView, int pageSize, LoadingFooter.State state, View.OnClickListener errorListener) {
 
-        if(instance==null || instance.isFinishing()) {
+        if (instance == null || instance.isDetached()) {
             return;
         }
 
@@ -77,30 +78,25 @@ public class LuRecyclerViewStateUtils {
             return;
         }
 
-        LuRecyclerViewAdapter LuRecyclerViewAdapter = (LuRecyclerViewAdapter) outerAdapter;
+        LuRecyclerViewAdapter luRecyclerViewAdapter = (LuRecyclerViewAdapter) outerAdapter;
+
+        //只有一页，不显示FooterView
+        if (luRecyclerViewAdapter.getInnerAdapter().getItemCount() < pageSize) {
+            return;
+        }
 
         LoadingFooter footerView;
-
         //已经有footerView了
-        if (LuRecyclerViewAdapter.getFooterViewsCount() > 0) {
-            footerView = (LoadingFooter) LuRecyclerViewAdapter.getFooterView();
+        if (luRecyclerViewAdapter.getFooterViewsCount() > 0) {
+            footerView = (LoadingFooter) luRecyclerViewAdapter.getFooterView();
             footerView.setState(state);
-
-            if (state == LoadingFooter.State.NetWorkError) {
-                footerView.setOnClickListener(errorListener);
-            }
-            recyclerView.scrollToPosition(0);
-        } else {
-            footerView = new LoadingFooter(instance);
-            footerView.setState(state);
-
+            footerView.setVisibility(View.VISIBLE);
             if (state == LoadingFooter.State.NetWorkError) {
                 footerView.setOnClickListener(errorListener);
             }
 
-            LuRecyclerViewAdapter.addFooterView(footerView);
-            recyclerView.scrollToPosition(0);
         }
+        recyclerView.scrollToPosition(luRecyclerViewAdapter.getItemCount() - 1);
     }
 
     /**

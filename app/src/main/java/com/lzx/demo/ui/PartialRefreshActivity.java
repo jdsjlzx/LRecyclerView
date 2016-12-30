@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +19,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
+import com.lzx.demo.base.SuperViewHolder;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.imageloader.ImageLoader;
 import com.lzx.demo.imageloader.ImageLoaderUtil;
@@ -103,54 +103,46 @@ public class PartialRefreshActivity extends AppCompatActivity {
 
     private class DataAdapter extends ListBaseAdapter<ItemModel> {
 
-        private LayoutInflater mLayoutInflater;
-
         public DataAdapter(Context context) {
-            mLayoutInflater = LayoutInflater.from(context);
+            super(context);
         }
 
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            mContext = parent.getContext();
-            return new ViewHolder(mLayoutInflater.inflate(R.layout.list_item_pic, parent, false));
+        public int getLayoutId() {
+            return R.layout.list_item_pic;
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindItemHolder(SuperViewHolder holder, int position) {
             bind(holder,position);
         }
 
-        //局部刷新关键：带payload的这个onBindViewHolder方法必须实现
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
+        public void onBindItemHolder(SuperViewHolder holder, int position, List<Object> payloads) {
+            super.onBindItemHolder(holder, position, payloads);
 
-            if (payloads.isEmpty()) {
-                onBindViewHolder(holder,position);
-            } else {
+            //注意：payloads的size总是1
+            String payload = (String)payloads.get(0);
+            TLog.error("payload = " + payload);
 
-                //注意：payloads的size总是1
-                String payload = (String)payloads.get(0);
-                TLog.error("payload = " + payload);
-
-                //需要更新的控件
-                ItemModel itemModel = mDataList.get(position);
-                ViewHolder viewHolder = (ViewHolder) holder;
-                viewHolder.textView.setText(itemModel.title);
-
-            }
+            TextView textView = holder.getView(R.id.info_text);
+            //需要更新的控件
+            ItemModel itemModel = mDataList.get(position);
+            textView.setText(itemModel.title);
         }
 
-        private void bind(RecyclerView.ViewHolder holder, int position) {
+        private void bind(SuperViewHolder holder, int position) {
             ItemModel itemModel = mDataList.get(position);
 
-            ViewHolder viewHolder = (ViewHolder) holder;
+            TextView textView = holder.getView(R.id.info_text);
+            ImageView avatarImage = holder.getView(R.id.avatar_image);
 
-            viewHolder.textView.setText(itemModel.title);
+            textView.setText(itemModel.title);
 
             ImageLoaderUtil imageLoaderUtil = new ImageLoaderUtil();
             ImageLoader imageLoader = new ImageLoader.Builder()
-                    .imgView(viewHolder.avatarImage)
+                    .imgView(avatarImage)
                     .url(itemModel.imgUrl)
                     //.strategy(ImageLoaderUtil.LOAD_STRATEGY_ONLY_WIFI) 可以不写
                     .build();
@@ -158,22 +150,6 @@ public class PartialRefreshActivity extends AppCompatActivity {
             imageLoaderUtil.loadImage(mContext, imageLoader);
         }
 
-        @Override
-        public int getItemCount() {
-            return mDataList.size();
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
-
-            private TextView textView;
-            private ImageView avatarImage;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                textView = (TextView) itemView.findViewById(R.id.info_text);
-                avatarImage = (ImageView) itemView.findViewById(R.id.avatar_image);
-            }
-        }
     }
 
     @Override

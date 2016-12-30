@@ -1,29 +1,48 @@
 package com.lzx.demo.base;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.lzx.demo.bean.MultiItemEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class ListBaseAdapter<T> extends RecyclerView.Adapter<SuperViewHolder> {
+public abstract class MultiAdapter<T extends MultiItemEntity> extends RecyclerView.Adapter<SuperViewHolder> {
     protected Context mContext;
     private LayoutInflater mInflater;
 
+    /**
+     * layouts indexed with their types
+     */
+    private SparseArray<Integer> layouts;
+    private static final int DEFAULT_VIEW_TYPE = -0xff;
+
     protected List<T> mDataList = new ArrayList<>();
 
-    public ListBaseAdapter(Context context) {
+    public MultiAdapter(Context context) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
+    public int getItemViewType(int position) {
+        Object item = getDataList().get(position);
+        if(item instanceof MultiItemEntity) {
+            return ((MultiItemEntity) item).getItemType();
+        }
+        return DEFAULT_VIEW_TYPE;
+    }
+
+    @Override
     public SuperViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(getLayoutId(), parent, false);
+        View itemView = mInflater.inflate(getLayoutId(viewType), parent, false);
         return new SuperViewHolder(itemView);
     }
 
@@ -36,14 +55,24 @@ public abstract class ListBaseAdapter<T> extends RecyclerView.Adapter<SuperViewH
     @Override
     public void onBindViewHolder(SuperViewHolder holder, int position, List<Object> payloads) {
         if (payloads.isEmpty()) {
-            onBindViewHolder(holder, position);
+            onBindItemHolder(holder, position);
         } else {
             onBindItemHolder(holder, position, payloads);
         }
 
     }
 
-    public abstract int getLayoutId();
+    //根据ViewType获取LayoutId
+    public int getLayoutId(int viewType) {
+        return layouts.get(viewType);
+    }
+
+    protected void addItemType(int type, @LayoutRes int layoutResId) {
+        if (layouts == null) {
+            layouts = new SparseArray<>();
+        }
+        layouts.put(type, layoutResId);
+    }
 
     public abstract void onBindItemHolder(SuperViewHolder holder, int position);
 

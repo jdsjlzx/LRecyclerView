@@ -7,13 +7,10 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -24,6 +21,7 @@ import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
+import com.lzx.demo.base.SuperViewHolder;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.NetworkUtils;
 import com.lzx.demo.view.SampleHeader;
@@ -221,49 +219,33 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
 
     private class DataAdapter  extends ListBaseAdapter<ItemModel> {
 
-        private LayoutInflater mLayoutInflater;
         private int largeCardHeight, smallCardHeight;
 
         public DataAdapter(Context context) {
-            mLayoutInflater = LayoutInflater.from(context);
+            super(context);
             largeCardHeight = (int)context.getResources().getDisplayMetrics().density * 300;
             smallCardHeight = (int)context.getResources().getDisplayMetrics().density * 200;
         }
 
+
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(mLayoutInflater.inflate(R.layout.sample_item_card, parent, false));
+        public int getLayoutId() {
+            return R.layout.sample_item_card;
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindItemHolder(SuperViewHolder holder, int position) {
+            CardView cardView =  holder.getView(R.id.card_view);
+            TextView textView = holder.getView(R.id.info_text);
 
             ItemModel itemModel = mDataList.get(position);
 
-            ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.textView.setText(itemModel.title);
+            textView.setText(itemModel.title);
 
             //修改高度，模拟交错效果
-            viewHolder.cardView.getLayoutParams().height = position % 2 != 0 ? largeCardHeight : smallCardHeight;
+            cardView.getLayoutParams().height = position % 2 != 0 ? largeCardHeight : smallCardHeight;
         }
 
-        @Override
-        public int getItemCount() {
-            return mDataList.size();
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
-
-            private CardView cardView;
-            private TextView textView;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                cardView = (CardView) itemView.findViewById(R.id.card_view);
-                textView = (TextView) itemView.findViewById(R.id.info_text);
-
-            }
-        }
     }
 
     @Override
