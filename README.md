@@ -370,7 +370,7 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 ```
 
-2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突，如果你实在想用，请参考SwipeRefreshLayoutActivity类的实现。
+2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突，为了更好的满足广大用户，新增了LuRecyclerView类，可以与SwipeRefreshLayout搭配使用，详细请参考SwipeRefreshLayoutActivity类的实现。
 
 ##Thanks
 
