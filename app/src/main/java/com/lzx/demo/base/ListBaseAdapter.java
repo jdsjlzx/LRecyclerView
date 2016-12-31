@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 封装adapter（注意：仅供参考，根据需要选择使用demo中提供的封装adapter）
+ * @param <T>
+ */
 public abstract class ListBaseAdapter<T> extends RecyclerView.Adapter<SuperViewHolder> {
     protected Context mContext;
     private LayoutInflater mInflater;

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 public class EndlessGridLayoutActivity extends AppCompatActivity {
 
     /**服务器端一共多少条数据*/
-    private static final int TOTAL_COUNTER = 34;
+    private static final int TOTAL_COUNTER = 54;
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;
@@ -58,13 +59,22 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
         //setLayoutManager must before setAdapter
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        GridLayoutManager manager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(manager);
 
         mDataAdapter = new DataAdapter(this);
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+
+        DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.split)
+                .build();
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(divider);
 
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
@@ -136,7 +146,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
                     //模拟组装10个数据
                     ArrayList<ItemModel> newList = new ArrayList<>();
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < 40; i++) {
                         if (newList.size() + currentSize >= TOTAL_COUNTER) {
                             break;
                         }

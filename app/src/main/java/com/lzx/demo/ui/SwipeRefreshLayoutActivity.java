@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.ItemDecoration.LuDividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -76,17 +77,25 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
             mSwipeRefreshLayout.setOnRefreshListener(this);
         }
 
-
         mDataAdapter = new DataAdapter(this);
 
         mLuRecyclerViewAdapter = new LuRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLuRecyclerViewAdapter);
 
+        LuDividerDecoration divider = new LuDividerDecoration.Builder(this,mLuRecyclerViewAdapter)
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.split)
+                .build();
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(divider);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mLuRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
-        //如果使用了下拉刷新，就不要添加FooterView了
+        //如果使用了自动加载更多，就不要添加FooterView了
         //mLuRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
         mLuRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {

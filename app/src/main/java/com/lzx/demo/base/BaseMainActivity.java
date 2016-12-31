@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.lzx.demo.ItemDecoration.DividerDecoration;
 import com.lzx.demo.R;
 
 import java.util.ArrayList;
@@ -53,6 +54,11 @@ public abstract class BaseMainActivity extends AppCompatActivity {
         mDataAdapter = new DataAdapter(this);
         mDataAdapter.setData(mDataList);
         mRecyclerView.setAdapter(mDataAdapter);
+
+        DividerDecoration divider = new DividerDecoration.Builder(this)
+                .setColorResource(R.color.divider)
+                .build();
+        mRecyclerView.addItemDecoration(divider);
 
     }
 

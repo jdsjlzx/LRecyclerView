@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -38,7 +39,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
     private static final String TAG = "lzx";
 
     /**服务器端一共多少条数据*/
-    private static final int TOTAL_COUNTER = 64;
+    private static final int TOTAL_COUNTER = 34;//如果服务器没有返回总数据或者总页数，这里设置为最大值比如10000，什么时候没有数据了根据接口返回判断
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;
@@ -65,10 +66,19 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
-
         mDataAdapter = new DataAdapter(this);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+
+        DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.split)
+                .build();
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(divider);
+
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

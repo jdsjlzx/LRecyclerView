@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -67,6 +68,14 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         mMultipleItemAdapter = new MultipleItemAdapter(this);
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mMultipleItemAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+
+        DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.split)
+                .build();
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(divider);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

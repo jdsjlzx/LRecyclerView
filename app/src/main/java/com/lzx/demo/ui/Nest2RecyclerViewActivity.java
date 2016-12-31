@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -59,6 +60,15 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mShopAdapter.addAll(mItemModels);
 
+        DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.split)
+                .build();
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(divider);
+
         mLRecyclerViewAdapter.setSpanSizeLookup(new LRecyclerViewAdapter.SpanSizeLookup() {
             @Override
             public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
@@ -94,7 +104,7 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
     }
 
     private void initData() {
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 22; i++) {
             MultipleItem item ;
             if(i == 2){
                 item = new MultipleItem(MultipleItem.LIST);

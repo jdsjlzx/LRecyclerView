@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 
 public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
     /**服务器端一共多少条数据*/
-    private static final int TOTAL_COUNTER = 64;
+    private static final int TOTAL_COUNTER = 34;
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;
@@ -73,6 +74,15 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
+
+        DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.split)
+                .build();
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(divider);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

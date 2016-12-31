@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.lzx.demo"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
 

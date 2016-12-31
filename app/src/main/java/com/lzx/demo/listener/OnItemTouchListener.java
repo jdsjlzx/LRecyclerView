@@ -210,8 +210,6 @@ public class OnItemTouchListener<T> implements RecyclerView.OnItemTouchListener 
             mTmpBounds = null;
         }
 
-        // Log.e("TAG", "OnRecyclerItemTouchListener-110行-judge(): " + (mIntercept ? "屏蔽" : "不屏蔽"));
-
     }
 
 }
