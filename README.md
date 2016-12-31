@@ -323,12 +323,14 @@ mRecyclerView.setEmptyView(view);
 
 ##关于添加分割线
 
-尽量不要使用Decoration,可以在Item布局的底部添加一条线，如下所示：
-```groovy
-<View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#dddddd" />
+经过不断优化，LRecyclerView支持了ItemDecoration，使用如下所示：
+```java
+DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.split)
+                .build();
+mRecyclerView.addItemDecoration(divider);
 ```
 
 ##滑动删除
