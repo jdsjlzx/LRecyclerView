@@ -1,17 +1,17 @@
-package com.github.jdsjlzx.progressindicator.indicator;
+package com.github.jdsjlzx.progressindicator.indicators;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.github.jdsjlzx.progressindicator.Indicator;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jack on 2015/10/19.
  */
-public class BallPulseSyncIndicator extends BaseIndicatorController {
+public class BallPulseSyncIndicator extends Indicator {
 
     float[] translateYFloats=new float[3];
 
@@ -30,28 +30,28 @@ public class BallPulseSyncIndicator extends BaseIndicatorController {
     }
 
     @Override
-    public List<Animator> createAnimation() {
-        List<Animator> animators=new ArrayList<>();
+    public ArrayList<ValueAnimator> onCreateAnimators() {
+        ArrayList<ValueAnimator> animators=new ArrayList<>();
         float circleSpacing=4;
         float radius=(getWidth()-circleSpacing*2)/6;
         int[] delays=new int[]{70,140,210};
         for (int i = 0; i < 3; i++) {
             final int index=i;
-            ValueAnimator scaleAnim=ValueAnimator.ofFloat(getHeight()/2,getHeight()/2-radius*2,getHeight()/2);
+            ValueAnimator scaleAnim= ValueAnimator.ofFloat(getHeight()/2,getHeight()/2-radius*2,getHeight()/2);
             scaleAnim.setDuration(600);
             scaleAnim.setRepeatCount(-1);
             scaleAnim.setStartDelay(delays[i]);
-            scaleAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            addUpdateListener(scaleAnim,new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     translateYFloats[index] = (float) animation.getAnimatedValue();
                     postInvalidate();
                 }
             });
-            scaleAnim.start();
             animators.add(scaleAnim);
         }
         return animators;
     }
+
 
 }

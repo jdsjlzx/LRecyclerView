@@ -1,19 +1,19 @@
-package com.github.jdsjlzx.progressindicator.indicator;
+package com.github.jdsjlzx.progressindicator.indicators;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.animation.LinearInterpolator;
 
+import com.github.jdsjlzx.progressindicator.Indicator;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jack on 2015/10/16.
  */
-public class PacmanIndicator extends BaseIndicatorController{
+public class PacmanIndicator extends Indicator {
 
     private float translateX;
 
@@ -27,7 +27,7 @@ public class PacmanIndicator extends BaseIndicatorController{
         drawCircle(canvas,paint);
     }
 
-    private void drawPacman(Canvas canvas,Paint paint){
+    private void drawPacman(Canvas canvas, Paint paint){
         float x=getWidth()/2;
         float y=getHeight()/2;
 
@@ -58,57 +58,53 @@ public class PacmanIndicator extends BaseIndicatorController{
     }
 
     @Override
-    public List<Animator> createAnimation() {
-        List<Animator> animators=new ArrayList<>();
+    public ArrayList<ValueAnimator> onCreateAnimators() {
+        ArrayList<ValueAnimator> animators=new ArrayList<>();
         float startT=getWidth()/11;
-        ValueAnimator translationAnim=ValueAnimator.ofFloat(getWidth()-startT,getWidth()/2);
+        ValueAnimator translationAnim= ValueAnimator.ofFloat(getWidth()-startT,getWidth()/2);
         translationAnim.setDuration(650);
         translationAnim.setInterpolator(new LinearInterpolator());
         translationAnim.setRepeatCount(-1);
-        translationAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        addUpdateListener(translationAnim,new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 translateX = (float) animation.getAnimatedValue();
                 postInvalidate();
             }
         });
-        translationAnim.start();
 
-        ValueAnimator alphaAnim=ValueAnimator.ofInt(255,122);
+        ValueAnimator alphaAnim= ValueAnimator.ofInt(255,122);
         alphaAnim.setDuration(650);
         alphaAnim.setRepeatCount(-1);
-        alphaAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        addUpdateListener(alphaAnim,new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 alpha = (int) animation.getAnimatedValue();
                 postInvalidate();
             }
         });
-        alphaAnim.start();
 
-        ValueAnimator rotateAnim1=ValueAnimator.ofFloat(0, 45, 0);
+        ValueAnimator rotateAnim1= ValueAnimator.ofFloat(0, 45, 0);
         rotateAnim1.setDuration(650);
         rotateAnim1.setRepeatCount(-1);
-        rotateAnim1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        addUpdateListener(rotateAnim1,new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 degrees1 = (float) animation.getAnimatedValue();
                 postInvalidate();
             }
         });
-        rotateAnim1.start();
 
-        ValueAnimator rotateAnim2=ValueAnimator.ofFloat(0,-45,0);
+        ValueAnimator rotateAnim2= ValueAnimator.ofFloat(0,-45,0);
         rotateAnim2.setDuration(650);
         rotateAnim2.setRepeatCount(-1);
-        rotateAnim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        addUpdateListener(rotateAnim2,new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 degrees2 = (float) animation.getAnimatedValue();
                 postInvalidate();
             }
         });
-        rotateAnim2.start();
 
         animators.add(translationAnim);
         animators.add(alphaAnim);

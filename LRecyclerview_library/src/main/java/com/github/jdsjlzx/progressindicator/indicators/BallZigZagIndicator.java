@@ -1,18 +1,18 @@
-package com.github.jdsjlzx.progressindicator.indicator;
+package com.github.jdsjlzx.progressindicator.indicators;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.animation.LinearInterpolator;
 
+import com.github.jdsjlzx.progressindicator.Indicator;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jack on 2015/10/19.
  */
-public class BallZigZagIndicator extends BaseIndicatorController {
+public class BallZigZagIndicator extends Indicator {
 
     float[] translateX=new float[2],translateY=new float[2];
 
@@ -28,44 +28,42 @@ public class BallZigZagIndicator extends BaseIndicatorController {
     }
 
     @Override
-    public List<Animator> createAnimation() {
-        List<Animator> animators=new ArrayList<>();
+    public ArrayList<ValueAnimator> onCreateAnimators() {
+        ArrayList<ValueAnimator> animators=new ArrayList<>();
         float startX=getWidth()/6;
         float startY=getWidth()/6;
         for (int i = 0; i < 2; i++) {
             final int index=i;
-            ValueAnimator translateXAnim=ValueAnimator.ofFloat(startX,getWidth()-startX,getWidth()/2,startX);
+            ValueAnimator translateXAnim= ValueAnimator.ofFloat(startX,getWidth()-startX,getWidth()/2,startX);
             if (i==1){
-                translateXAnim=ValueAnimator.ofFloat(getWidth()-startX,startX,getWidth()/2,getWidth()-startX);
+                translateXAnim= ValueAnimator.ofFloat(getWidth()-startX,startX,getWidth()/2,getWidth()-startX);
             }
-            ValueAnimator translateYAnim=ValueAnimator.ofFloat(startY,startY,getHeight()/2,startY);
+            ValueAnimator translateYAnim= ValueAnimator.ofFloat(startY,startY,getHeight()/2,startY);
             if (i==1){
-                translateYAnim=ValueAnimator.ofFloat(getHeight()-startY,getHeight()-startY,getHeight()/2,getHeight()-startY);
+                translateYAnim= ValueAnimator.ofFloat(getHeight()-startY,getHeight()-startY,getHeight()/2,getHeight()-startY);
             }
 
             translateXAnim.setDuration(1000);
             translateXAnim.setInterpolator(new LinearInterpolator());
             translateXAnim.setRepeatCount(-1);
-            translateXAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            addUpdateListener(translateXAnim,new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     translateX[index] = (float) animation.getAnimatedValue();
                     postInvalidate();
                 }
             });
-            translateXAnim.start();
 
             translateYAnim.setDuration(1000);
             translateYAnim.setInterpolator(new LinearInterpolator());
             translateYAnim.setRepeatCount(-1);
-            translateYAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            addUpdateListener(translateYAnim,new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     translateY[index] = (float) animation.getAnimatedValue();
                     postInvalidate();
                 }
             });
-            translateYAnim.start();
             animators.add(translateXAnim);
             animators.add(translateYAnim);
         }

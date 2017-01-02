@@ -3,6 +3,7 @@ package com.github.jdsjlzx.view;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -56,8 +57,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     private void initView() {
         // 初始情况，设置下拉刷新view高度为0
-        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(
-                R.layout.listview_header, null);
+        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.listview_header, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 0, 0, 0);
         this.setLayoutParams(lp);
@@ -72,10 +72,9 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         //init the progress view
         mProgressBar = (SimpleViewSwitcher)findViewById(R.id.listview_header_progressbar);
         AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(getContext());
-        progressView.setIndicatorColor(0xffB5B5B5);
         progressView.setIndicatorId(ProgressStyle.BallSpinFadeLoader);
+        progressView.setIndicatorColor(R.color.colorAccent);
         mProgressBar.setView(progressView);
-
 
         mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -92,12 +91,13 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     }
 
     public void setProgressStyle(int style) {
-        if(style == ProgressStyle.SysProgress){
-            mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
-        }else{
-            AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(this.getContext());
-            progressView.setIndicatorColor(0xffB5B5B5);
+        if (style == ProgressStyle.SysProgress) {
+            ProgressBar progressBar = new ProgressBar(getContext(), null, android.R.attr.progressBarStyle);
+            mProgressBar.setView(progressBar);
+        } else {
+            AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(this.getContext());
             progressView.setIndicatorId(style);
+            progressView.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
             mProgressBar.setView(progressView);
         }
     }

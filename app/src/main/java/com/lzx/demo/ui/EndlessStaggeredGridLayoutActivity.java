@@ -10,10 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -98,7 +98,7 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
                     requestData();
                 } else {
                     //the end
-                    RecyclerViewStateUtils.setFooterViewState(EndlessStaggeredGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
+                    RecyclerViewStateUtils.setFooterViewState(EndlessStaggeredGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NoMore, null);
 
                 }
             }
@@ -118,7 +118,7 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private static class PreviewHandler extends Handler {
+    private class PreviewHandler extends Handler {
 
         private WeakReference<EndlessStaggeredGridLayoutActivity> ref;
 
@@ -135,7 +135,7 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
 
             switch (msg.what) {
                 case -1:
-                    if(activity.isRefresh){
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mDataAdapter.clear();
                         mCurrentCounter = 0;
                     }
@@ -158,37 +158,32 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
 
                     activity.addItems(newList);
 
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
                         activity.notifyDataSetChanged();
                     }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+                        activity.mRecyclerView.loadMoreComplete();
                     }
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
                         activity.notifyDataSetChanged();
                     }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                        activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                            @Override
+                            public void reload() {
+                                requestData();
+                            }
+                        });
                     }
                     break;
             }
         }
     }
-
-    private View.OnClickListener mFooterClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            RecyclerViewStateUtils.setFooterViewState(EndlessStaggeredGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-            requestData();
-        }
-    };
 
     /**
      * 模拟请求网络

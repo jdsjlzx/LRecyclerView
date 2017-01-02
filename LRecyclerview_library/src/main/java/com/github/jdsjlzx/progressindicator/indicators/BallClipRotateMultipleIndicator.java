@@ -1,18 +1,18 @@
-package com.github.jdsjlzx.progressindicator.indicator;
+package com.github.jdsjlzx.progressindicator.indicators;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.github.jdsjlzx.progressindicator.Indicator;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jack on 2015/10/17.
  */
-public class BallClipRotateMultipleIndicator extends BaseIndicatorController{
+public class BallClipRotateMultipleIndicator extends Indicator {
 
     float scaleFloat=1,degrees;
 
@@ -52,31 +52,29 @@ public class BallClipRotateMultipleIndicator extends BaseIndicatorController{
     }
 
     @Override
-    public List<Animator> createAnimation() {
-        List<Animator> animators=new ArrayList<>();
-        ValueAnimator scaleAnim=ValueAnimator.ofFloat(1,0.6f,1);
+    public ArrayList<ValueAnimator> onCreateAnimators() {
+        ArrayList<ValueAnimator> animators=new ArrayList<>();
+        ValueAnimator scaleAnim= ValueAnimator.ofFloat(1,0.6f,1);
         scaleAnim.setDuration(1000);
         scaleAnim.setRepeatCount(-1);
-        scaleAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        addUpdateListener(scaleAnim,new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 scaleFloat = (float) animation.getAnimatedValue();
                 postInvalidate();
             }
         });
-        scaleAnim.start();
 
-        ValueAnimator rotateAnim=ValueAnimator.ofFloat(0, 180,360);
+        ValueAnimator rotateAnim= ValueAnimator.ofFloat(0, 180,360);
         rotateAnim.setDuration(1000);
         rotateAnim.setRepeatCount(-1);
-        rotateAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        addUpdateListener(rotateAnim,new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 degrees = (float) animation.getAnimatedValue();
                 postInvalidate();
             }
         });
-        rotateAnim.start();
         animators.add(scaleAnim);
         animators.add(rotateAnim);
         return animators;

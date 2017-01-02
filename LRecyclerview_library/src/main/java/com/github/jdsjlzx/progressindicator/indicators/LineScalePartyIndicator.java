@@ -1,22 +1,22 @@
-package com.github.jdsjlzx.progressindicator.indicator;
+package com.github.jdsjlzx.progressindicator.indicators;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.github.jdsjlzx.progressindicator.Indicator;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jack on 2015/10/19.
  */
-public class LineScaleIndicator extends BaseIndicatorController {
+public class LineScalePartyIndicator extends Indicator {
 
     public static final float SCALE=1.0f;
 
-    float[] scaleYFloats=new float[]{SCALE,
+    float[] scaleFloats=new float[]{SCALE,
             SCALE,
             SCALE,
             SCALE,
@@ -24,39 +24,41 @@ public class LineScaleIndicator extends BaseIndicatorController {
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        float translateX=getWidth()/11;
+        float translateX=getWidth()/9;
         float translateY=getHeight()/2;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             canvas.save();
             canvas.translate((2 + i * 2) * translateX - translateX / 2, translateY);
-            canvas.scale(SCALE, scaleYFloats[i]);
+            canvas.scale(scaleFloats[i], scaleFloats[i]);
             RectF rectF=new RectF(-translateX/2,-getHeight()/2.5f,translateX/2,getHeight()/2.5f);
-            canvas.drawRoundRect(rectF, 5, 5, paint);
+            canvas.drawRoundRect(rectF,5,5,paint);
             canvas.restore();
         }
     }
 
+
     @Override
-    public List<Animator> createAnimation() {
-        List<Animator> animators=new ArrayList<>();
-        long[] delays=new long[]{100,200,300,400,500};
-        for (int i = 0; i < 5; i++) {
+    public ArrayList<ValueAnimator> onCreateAnimators() {
+        ArrayList<ValueAnimator> animators=new ArrayList<>();
+        long[] durations=new long[]{1260, 430, 1010, 730};
+        long[] delays=new long[]{770, 290, 280, 740};
+        for (int i = 0; i < 4; i++) {
             final int index=i;
-            ValueAnimator scaleAnim=ValueAnimator.ofFloat(1, 0.4f, 1);
-            scaleAnim.setDuration(1000);
+            ValueAnimator scaleAnim= ValueAnimator.ofFloat(1,0.4f,1);
+            scaleAnim.setDuration(durations[i]);
             scaleAnim.setRepeatCount(-1);
             scaleAnim.setStartDelay(delays[i]);
-            scaleAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            addUpdateListener(scaleAnim,new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    scaleYFloats[index] = (float) animation.getAnimatedValue();
+                    scaleFloats[index] = (float) animation.getAnimatedValue();
                     postInvalidate();
                 }
             });
-            scaleAnim.start();
             animators.add(scaleAnim);
         }
         return animators;
     }
+
 
 }

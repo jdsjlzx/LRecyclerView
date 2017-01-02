@@ -1,17 +1,17 @@
-package com.github.jdsjlzx.progressindicator.indicator;
+package com.github.jdsjlzx.progressindicator.indicators;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.github.jdsjlzx.progressindicator.Indicator;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jack on 2015/10/16.
  */
-public class BallGridPulseIndicator extends BaseIndicatorController{
+public class BallGridPulseIndicator extends Indicator {
 
     public static final int ALPHA=255;
 
@@ -61,43 +61,40 @@ public class BallGridPulseIndicator extends BaseIndicatorController{
     }
 
     @Override
-    public List<Animator> createAnimation() {
-        List<Animator> animators=new ArrayList<>();
+    public ArrayList<ValueAnimator> onCreateAnimators() {
+        ArrayList<ValueAnimator> animators=new ArrayList<>();
         int[] durations={720, 1020, 1280, 1420, 1450, 1180, 870, 1450, 1060};
         int[] delays= {-60, 250, -170, 480, 310, 30, 460, 780, 450};
 
         for (int i = 0; i < 9; i++) {
             final int index=i;
-            ValueAnimator scaleAnim=ValueAnimator.ofFloat(1,0.5f,1);
+            ValueAnimator scaleAnim= ValueAnimator.ofFloat(1,0.5f,1);
             scaleAnim.setDuration(durations[i]);
             scaleAnim.setRepeatCount(-1);
             scaleAnim.setStartDelay(delays[i]);
-            scaleAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            addUpdateListener(scaleAnim,new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     scaleFloats[index] = (float) animation.getAnimatedValue();
                     postInvalidate();
                 }
             });
-            scaleAnim.start();
 
-            ValueAnimator alphaAnim=ValueAnimator.ofInt(255, 210, 122, 255);
+            ValueAnimator alphaAnim= ValueAnimator.ofInt(255, 210, 122, 255);
             alphaAnim.setDuration(durations[i]);
             alphaAnim.setRepeatCount(-1);
             alphaAnim.setStartDelay(delays[i]);
-            alphaAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            addUpdateListener(alphaAnim,new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     alphas[index] = (int) animation.getAnimatedValue();
                     postInvalidate();
                 }
             });
-            alphaAnim.start();
             animators.add(scaleAnim);
             animators.add(alphaAnim);
         }
         return animators;
     }
-
 
 }

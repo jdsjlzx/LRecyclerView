@@ -15,6 +15,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
  * @author lizhixian
  * @time 16/9/10 09:56
  */
+@Deprecated
 public class RecyclerViewStateUtils {
 
     /**
@@ -53,7 +54,7 @@ public class RecyclerViewStateUtils {
 
             if (state == LoadingFooter.State.NetWorkError) {
                 footerView.setOnClickListener(errorListener);
-            } else if (state == LoadingFooter.State.TheEnd){
+            } else if (state == LoadingFooter.State.NoMore){
                 ((LRecyclerView)recyclerView).setNoMore(true);
             }
 
@@ -98,7 +99,7 @@ public class RecyclerViewStateUtils {
 
             if (state == LoadingFooter.State.NetWorkError) {
                 footerView.setOnClickListener(errorListener);
-            } else if (state == LoadingFooter.State.TheEnd){
+            } else if (state == LoadingFooter.State.NoMore){
                 ((LRecyclerView)recyclerView).setNoMore(true);
             }
 

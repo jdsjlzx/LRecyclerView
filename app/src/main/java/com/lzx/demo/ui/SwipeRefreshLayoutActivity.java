@@ -17,6 +17,7 @@ import com.github.jdsjlzx.ItemDecoration.LuDividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
 import com.github.jdsjlzx.util.LuRecyclerViewStateUtils;
@@ -118,20 +119,12 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
         mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                LoadingFooter.State state = LuRecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-                if(state == LoadingFooter.State.Loading) {
-                    Log.d(TAG, "the state is Loading, just wait..");
-                    return;
-                }
-
                 if (mCurrentCounter < TOTAL_COUNTER) {
                     // loading more
-                    LuRecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
                     requestData();
                 } else {
                     //the end
-                    LuRecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
-
+                    mRecyclerView.setNoMore(true);
                 }
             }
         });
@@ -158,7 +151,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
     }
 
-    private static class PreviewHandler extends Handler {
+    private class PreviewHandler extends Handler {
 
         private WeakReference<SwipeRefreshLayoutActivity> ref;
 
@@ -202,9 +195,12 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
                     if(activity.isRefresh){
                         activity.isRefresh = false;
                         activity.mSwipeRefreshLayout.setRefreshing(false);
+                        activity.notifyDataSetChanged();
+                    } else {
+                        activity.mRecyclerView.loadMoreComplete();
                     }
                     LuRecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
-                    activity.notifyDataSetChanged();
+
 
                     break;
                 case -2:
@@ -215,9 +211,17 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
                     if(activity.isRefresh){
                         activity.isRefresh = false;
                         activity.mSwipeRefreshLayout.setRefreshing(false);
+                        activity.notifyDataSetChanged();
+                    } else {
+                        activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                            @Override
+                            public void reload() {
+                                requestData();
+                            }
+                        });
                     }
                     LuRecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
-                    activity.notifyDataSetChanged();
+
 
                     break;
                 default:

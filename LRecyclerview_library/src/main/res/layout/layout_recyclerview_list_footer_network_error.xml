@@ -12,7 +12,7 @@
         android:src="@drawable/ic_tip" />
 
     <TextView
-        android:id="@+id/loading_text"
+        android:id="@+id/network_error_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_4"

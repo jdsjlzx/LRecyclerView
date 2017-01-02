@@ -111,7 +111,7 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
                     requestData();
                 } else {
                     //the end
-                    RecyclerViewStateUtils.setFooterViewState(MulItemLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
+                    RecyclerViewStateUtils.setFooterViewState(MulItemLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NoMore, null);
 
                 }
             }

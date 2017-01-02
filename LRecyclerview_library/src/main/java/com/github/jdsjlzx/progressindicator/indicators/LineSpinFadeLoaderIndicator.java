@@ -1,4 +1,4 @@
-package com.github.jdsjlzx.progressindicator.indicator;
+package com.github.jdsjlzx.progressindicator.indicators;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

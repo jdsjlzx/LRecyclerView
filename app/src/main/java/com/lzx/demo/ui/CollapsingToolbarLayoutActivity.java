@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -43,8 +44,6 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 
     private PreviewHandler mHandler = new PreviewHandler(this);
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
-
-    private boolean isRefresh = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,11 +88,6 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
-                mDataAdapter.clear();
-                mLRecyclerViewAdapter.notifyDataSetChanged();//fix bug:crapped or attached views may not be recycled. isScrap:false isAttached:true
-                mCurrentCounter = 0;
-                isRefresh = true;
                 requestData();
             }
         });
@@ -112,7 +106,7 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
                     requestData();
                 } else {
                     //the end
-                    RecyclerViewStateUtils.setFooterViewState(CollapsingToolbarLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
+                    RecyclerViewStateUtils.setFooterViewState(CollapsingToolbarLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NoMore, null);
 
                 }
             }
@@ -131,7 +125,7 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 
     }
 
-    private static class PreviewHandler extends Handler {
+    private class PreviewHandler extends Handler {
 
         private WeakReference<CollapsingToolbarLayoutActivity> ref;
 
@@ -148,7 +142,7 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
             switch (msg.what) {
 
                 case -1:
-                    if(activity.isRefresh){
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mDataAdapter.clear();
                         mCurrentCounter = 0;
                     }
@@ -172,12 +166,11 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
 
                     activity.addItems(newList);
 
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
                         activity.notifyDataSetChanged();
                     }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+                        activity.mRecyclerView.loadMoreComplete();
                     }
 
                     break;
@@ -185,12 +178,16 @@ public class CollapsingToolbarLayoutActivity extends AppCompatActivity {
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
                         activity.notifyDataSetChanged();
                     }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                        activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                            @Override
+                            public void reload() {
+                                requestData();
+                            }
+                        });
                     }
                     break;
                 default:

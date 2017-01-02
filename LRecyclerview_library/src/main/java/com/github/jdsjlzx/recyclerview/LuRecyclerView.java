@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewParent;
 
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.view.LoadingFooter;
 
 /**
@@ -171,16 +172,54 @@ public class LuRecyclerView extends RecyclerView {
 
     }
 
-    private int findMax(int[] lastPositions) {
-        int max = lastPositions[0];
-        for (int value : lastPositions) {
-            if (value > max) {
-                max = value;
-            }
+    public void setNoMore(boolean noMore){
+        if(noMore) {
+            setFooterViewState(LoadingFooter.State.NoMore,true);
         }
-        return max;
     }
 
+    public void loadMoreComplete() {
+        setFooterViewState(LoadingFooter.State.Normal,false);
+    }
+
+    private void setFooterViewState(LoadingFooter.State state,boolean isScroolUp) {
+
+        if (mFootView instanceof LoadingFooter) {
+            mFootView.setVisibility(VISIBLE);
+            ((LoadingFooter) mFootView).setState(state);
+        }
+        if(isScroolUp) {
+            scrollToPosition(mWrapAdapter.getItemCount() - 1);
+        }
+
+    }
+
+    public void setOnNetWorkErrorListener(final OnNetWorkErrorListener listener) {
+        final LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
+        loadingFooter.setState(LoadingFooter.State.NetWorkError);
+        loadingFooter.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFooterViewState(LoadingFooter.State.Loading,false);
+                listener.reload();
+            }
+        });
+    }
+
+    public void setFootViewHint(String loading, String noMore,String noNetWork) {
+        if(mFootView instanceof LoadingFooter){
+            LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
+            loadingFooter.setLoadingHint(loading);
+            loadingFooter.setNoMoreHint(noMore);
+            loadingFooter.setNoNetWorkHint(noNetWork);
+        }
+    }
+
+    public void setLoadingMoreProgressStyle(int style) {
+        if (mFootView instanceof LoadingFooter) {
+            ((LoadingFooter) mFootView).setProgressStyle(style);
+        }
+    }
 
     /**
      * set view when no content item
@@ -337,6 +376,16 @@ public class LuRecyclerView extends RecyclerView {
         if ((mIsScrollDown && dy > 0) || (!mIsScrollDown && dy < 0)) {
             mDistance += dy;
         }
+    }
+
+    private int findMax(int[] lastPositions) {
+        int max = lastPositions[0];
+        for (int value : lastPositions) {
+            if (value > max) {
+                max = value;
+            }
+        }
+        return max;
     }
 
     public enum LayoutManagerType {

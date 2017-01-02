@@ -7,15 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.jdsjlzx.util.RecyclerViewStateUtils;
-import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.DataAdapter;
 import com.lzx.demo.bean.ItemModel;
@@ -45,7 +43,6 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
     private PreviewHandler mHandler = new PreviewHandler(this);
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
-    private boolean isRefresh = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +79,6 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 mCurrentCounter = 0;
-                isRefresh = true;
                 requestData();
             }
         });
@@ -90,19 +86,12 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-                if(state == LoadingFooter.State.Loading) {
-                    return;
-                }
-
                 if (mCurrentCounter < TOTAL_COUNTER) {
                     // loading more
-                    RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
                     requestData();
                 } else {
                     //the end
-                    RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
-
+                    mRecyclerView.setNoMore(true);
                 }
             }
         });
@@ -120,7 +109,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mCurrentCounter += list.size();
     }
 
-    private static class PreviewHandler extends Handler {
+    private class PreviewHandler extends Handler {
 
         private WeakReference<EndlessGridLayoutActivity> ref;
 
@@ -137,7 +126,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
             switch (msg.what) {
                 case -1:
-                    if(activity.isRefresh){
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mDataAdapter.clear();
                         mCurrentCounter = 0;
                     }
@@ -160,37 +149,34 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
                     activity.addItems(newList);
 
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
                         activity.notifyDataSetChanged();
                     }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+                        activity.mRecyclerView.loadMoreComplete();
                     }
+
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
                         activity.notifyDataSetChanged();
                     }else {
-                        RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+                        activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                            @Override
+                            public void reload() {
+                                requestData();
+                            }
+                        });
                     }
+
                     break;
             }
         }
     }
-
-    private View.OnClickListener mFooterClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            RecyclerViewStateUtils.setFooterViewState(EndlessGridLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-            requestData();
-        }
-    };
 
     /**
      * 模拟请求网络

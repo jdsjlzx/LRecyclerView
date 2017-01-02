@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 public class SimpleViewSwitcher extends ViewGroup {
 
@@ -53,7 +54,8 @@ public class SimpleViewSwitcher extends ViewGroup {
         if (this.getChildCount() != 0){
             this.removeViewAt(0);
         }
-        this.addView(view,0);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(64, 64);
+        this.addView(view,params);
     }
 
 }

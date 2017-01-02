@@ -17,12 +17,11 @@ import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
-import com.github.jdsjlzx.util.RecyclerViewStateUtils;
-import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.DataAdapter;
 import com.lzx.demo.bean.ItemModel;
@@ -54,9 +53,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
     private PreviewHandler mHandler = new PreviewHandler(this);
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
 
-    private boolean isRefresh = false;
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample_ll_activity);
@@ -93,11 +89,9 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             @Override
             public void onRefresh() {
 
-                RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
                 mDataAdapter.clear();
                 mLRecyclerViewAdapter.notifyDataSetChanged();//fix bug:crapped or attached views may not be recycled. isScrap:false isAttached:true
                 mCurrentCounter = 0;
-                isRefresh = true;
                 requestData();
             }
         });
@@ -105,20 +99,13 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
         mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-                if(state == LoadingFooter.State.Loading) {
-                    Log.d(TAG, "the state is Loading, just wait..");
-                    return;
-                }
 
                 if (mCurrentCounter < TOTAL_COUNTER) {
                     // loading more
-                    RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
                     requestData();
                 } else {
                     //the end
-                    RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.TheEnd, null);
-
+                    mRecyclerView.setNoMore(true);
                 }
             }
         });
@@ -164,6 +151,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             }
         });
 
+        mRecyclerView.setFootViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
     }
 
     private void notifyDataSetChanged() {
@@ -177,7 +165,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
 
     }
 
-    private static class PreviewHandler extends Handler {
+    private class PreviewHandler extends Handler {
 
         private WeakReference<EndlessLinearLayoutActivity> ref;
 
@@ -194,7 +182,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             switch (msg.what) {
 
                 case -1:
-                    if(activity.isRefresh){
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mDataAdapter.clear();
                         mCurrentCounter = 0;
                     }
@@ -215,41 +203,38 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                         newList.add(item);
                     }
 
-
                     activity.addItems(newList);
 
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
+                        activity.notifyDataSetChanged();
+                    }else {
+                        activity.mRecyclerView.loadMoreComplete();
                     }
 
-                    RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
-                    activity.notifyDataSetChanged();
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
+                        activity.notifyDataSetChanged();
+                    }else {
+                        activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                            @Override
+                            public void reload() {
+                                requestData();
+                            }
+                        });
                     }
-                    activity.notifyDataSetChanged();
-                    RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
+
                     break;
                 default:
                     break;
             }
         }
     }
-
-    private View.OnClickListener mFooterClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            RecyclerViewStateUtils.setFooterViewState(EndlessLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-            requestData();
-        }
-    };
 
     /**
      * 模拟请求网络
@@ -263,7 +248,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                 super.run();
 
                 try {
-                    Thread.sleep(800);
+                    Thread.sleep(2200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
