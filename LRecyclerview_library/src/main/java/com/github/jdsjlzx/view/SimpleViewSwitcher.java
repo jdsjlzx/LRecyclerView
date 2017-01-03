@@ -55,7 +55,7 @@ public class SimpleViewSwitcher extends ViewGroup {
             this.removeViewAt(0);
         }
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(64, 64);
-        this.addView(view,params);
+        this.addView(view);
     }
 
 }

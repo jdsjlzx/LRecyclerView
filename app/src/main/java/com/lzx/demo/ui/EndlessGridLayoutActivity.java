@@ -71,7 +71,6 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
 
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
-        mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
         //设置span，自己可以体验效果
         /*mLRecyclerViewAdapter.setSpanSizeLookup(new LRecyclerViewAdapter.SpanSizeLookup() {

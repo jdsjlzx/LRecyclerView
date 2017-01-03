@@ -71,10 +71,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
         //init the progress view
         mProgressBar = (SimpleViewSwitcher)findViewById(R.id.listview_header_progressbar);
-        AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(getContext());
-        progressView.setIndicatorId(ProgressStyle.BallSpinFadeLoader);
-        progressView.setIndicatorColor(R.color.colorAccent);
-        mProgressBar.setView(progressView);
+        mProgressBar.setView(initIndicatorView(ProgressStyle.BallSpinFadeLoader));
 
         mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -95,11 +92,15 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             ProgressBar progressBar = new ProgressBar(getContext(), null, android.R.attr.progressBarStyle);
             mProgressBar.setView(progressBar);
         } else {
-            AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(this.getContext());
-            progressView.setIndicatorId(style);
-            progressView.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
-            mProgressBar.setView(progressView);
+            mProgressBar.setView(initIndicatorView(style));
         }
+    }
+
+    private View initIndicatorView(int style) {
+        AVLoadingIndicatorView progressView = (AVLoadingIndicatorView) LayoutInflater.from(getContext()).inflate(R.layout.layout_indicator_view, null);
+        progressView.setIndicatorId(style);
+        progressView.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
+        return progressView;
     }
 
     public void setArrowImageView(int resid){
