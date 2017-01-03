@@ -8,7 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -18,7 +18,6 @@ import com.lzx.demo.R;
 import com.lzx.demo.adapter.DataAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.NetworkUtils;
-import com.lzx.demo.view.SampleHeader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 public class EndlessGridLayoutActivity extends AppCompatActivity {
 
     /**服务器端一共多少条数据*/
-    private static final int TOTAL_COUNTER = 54;
+    private static final int TOTAL_COUNTER = 64;
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;
@@ -64,16 +63,25 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
-        DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
-                .setHeight(R.dimen.default_divider_height)
-                .setPadding(R.dimen.default_divider_padding)
-                .setColorResource(R.color.split)
-                .build();
+        int spacing = getResources().getDimensionPixelSize(R.dimen.dp_10);
+        mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount()));
 
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(divider);
 
-        mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
+        //mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
+
+        mLRecyclerViewAdapter.setSpanSizeLookup(new LRecyclerViewAdapter.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
+                if (position % 4 == 0) {
+                    return gridLayoutManager.getSpanCount();
+                } else {
+                    return 1;
+                }
+
+            }
+        });
+
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override

@@ -15,12 +15,11 @@ import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
-import com.github.jdsjlzx.util.RecyclerViewStateUtils;
-import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.MultipleItemAdapter;
 import com.lzx.demo.bean.MultipleItem;
@@ -53,8 +52,6 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
     private PreviewHandler mHandler = new PreviewHandler(this);
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
 
-    private boolean isRefresh = false;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +66,7 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mMultipleItemAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
-        DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
+        DividerDecoration divider = new DividerDecoration.Builder(this)
                 .setHeight(R.dimen.default_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.split)
@@ -87,11 +84,9 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
                 mMultipleItemAdapter.clear();
                 mLRecyclerViewAdapter.notifyDataSetChanged();//fix bug:crapped or attached views may not be recycled. isScrap:false isAttached:true
                 mCurrentCounter = 0;
-                isRefresh = true;
                 requestData();
             }
         });
@@ -99,20 +94,12 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(mRecyclerView);
-                if(state == LoadingFooter.State.Loading) {
-                    Log.d(TAG, "the state is Loading, just wait..");
-                    return;
-                }
-
                 if (mCurrentCounter < TOTAL_COUNTER) {
                     // loading more
-                    RecyclerViewStateUtils.setFooterViewState(MulItemLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
                     requestData();
                 } else {
                     //the end
-                    RecyclerViewStateUtils.setFooterViewState(MulItemLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NoMore, null);
-
+                    mRecyclerView.setNoMore(true);
                 }
             }
         });
@@ -172,7 +159,7 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
 
     }
 
-    private static class PreviewHandler extends Handler {
+    private class PreviewHandler extends Handler {
 
         private WeakReference<MulItemLinearLayoutActivity> ref;
 
@@ -189,7 +176,7 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
             switch (msg.what) {
 
                 case -1:
-                    if(activity.isRefresh){
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mMultipleItemAdapter.clear();
                         mCurrentCounter = 0;
                     }
@@ -217,24 +204,28 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
 
                     activity.addItems(newList);
 
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
+                        activity.notifyDataSetChanged();
+                    }else {
+                        activity.mRecyclerView.loadMoreComplete();
                     }
-
-                    RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
-                    activity.notifyDataSetChanged();
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
+                    if(activity.mRecyclerView.isPulldownToRefresh()){
                         activity.mRecyclerView.refreshComplete();
+                        activity.notifyDataSetChanged();
+                    }else {
+                        activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                            @Override
+                            public void reload() {
+                                requestData();
+                            }
+                        });
                     }
-                    activity.notifyDataSetChanged();
-                    RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
                     break;
                 default:
                     break;
@@ -242,13 +233,6 @@ public class MulItemLinearLayoutActivity extends AppCompatActivity{
         }
     }
 
-    private View.OnClickListener mFooterClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            RecyclerViewStateUtils.setFooterViewState(MulItemLinearLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-            requestData();
-        }
-    };
 
     /**
      * 模拟请求网络

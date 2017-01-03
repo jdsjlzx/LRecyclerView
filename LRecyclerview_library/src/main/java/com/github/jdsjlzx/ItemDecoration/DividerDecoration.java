@@ -25,15 +25,13 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
     private int mLPadding;
     private int mRPadding;
     private Paint mPaint;
-    private LRecyclerViewAdapter mRecyclerViewAdapter;
 
-    private DividerDecoration(int height, int lPadding, int rPadding, int colour, LRecyclerViewAdapter adapter) {
+    private DividerDecoration(int height, int lPadding, int rPadding, int colour) {
         mHeight = height;
         mLPadding = lPadding;
         mRPadding = rPadding;
         mPaint = new Paint();
         mPaint.setColor(colour);
-        mRecyclerViewAdapter = adapter;
     }
 
     /**
@@ -41,6 +39,15 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
      */
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+
+        RecyclerView.Adapter adapter = parent.getAdapter();
+
+        LRecyclerViewAdapter lRecyclerViewAdapter;
+        if (adapter instanceof LRecyclerViewAdapter) {
+            lRecyclerViewAdapter = (LRecyclerViewAdapter) adapter;
+        } else {
+            throw new RuntimeException("the adapter must be LRecyclerViewAdapter");
+        }
 
         int count = parent.getChildCount();
 
@@ -56,7 +63,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
 
             c.save();
 
-            if (mRecyclerViewAdapter.isRefreshHeader(position) || mRecyclerViewAdapter. isHeader(position) || mRecyclerViewAdapter.isFooter(position)) {
+            if (lRecyclerViewAdapter.isRefreshHeader(position) || lRecyclerViewAdapter. isHeader(position) || lRecyclerViewAdapter.isFooter(position)) {
                 c.drawRect(0, 0, 0, 0, mPaint);
             }else {
                 c.drawRect(left, top, right, bottom, mPaint);
@@ -71,9 +78,18 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
      */
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        RecyclerView.Adapter adapter = parent.getAdapter();
+
+        LRecyclerViewAdapter lRecyclerViewAdapter;
+        if (adapter instanceof LRecyclerViewAdapter) {
+            lRecyclerViewAdapter = (LRecyclerViewAdapter) adapter;
+        } else {
+            throw new RuntimeException("the adapter must be LRecyclerViewAdapter");
+        }
+
         int position = parent.getChildAdapterPosition(view);
 
-        if (mRecyclerViewAdapter.isRefreshHeader(position) || mRecyclerViewAdapter. isHeader(position) || mRecyclerViewAdapter.isFooter(position)) {
+        if (lRecyclerViewAdapter.isRefreshHeader(position) || lRecyclerViewAdapter. isHeader(position) || lRecyclerViewAdapter.isFooter(position)) {
             outRect.bottom = mHeight;
         }
 
@@ -90,15 +106,13 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
         private int mLPadding;
         private int mRPadding;
         private int mColour;
-        private LRecyclerViewAdapter mRecyclerViewAdapter;
 
-        public Builder(Context context,LRecyclerViewAdapter adapter) {
+        public Builder(Context context) {
             mResources = context.getResources();
             mHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 1f, context.getResources().getDisplayMetrics());
             mLPadding = 0;
             mRPadding = 0;
             mColour = Color.BLACK;
-            mRecyclerViewAdapter = adapter;
         }
 
         /**
@@ -215,7 +229,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
          * @return a properly initialized DividerDecoration instance
          */
         public DividerDecoration build() {
-            return new DividerDecoration(mHeight, mLPadding, mRPadding, mColour,mRecyclerViewAdapter);
+            return new DividerDecoration(mHeight, mLPadding, mRPadding, mColour);
         }
     }
 }

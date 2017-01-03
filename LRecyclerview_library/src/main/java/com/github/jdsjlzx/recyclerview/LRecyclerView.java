@@ -17,7 +17,6 @@ import com.github.jdsjlzx.interfaces.BaseRefreshHeader;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
-import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.ArrowRefreshHeader;
 import com.github.jdsjlzx.view.LoadingFooter;
 
@@ -461,8 +460,9 @@ public class LRecyclerView extends RecyclerView {
 
     public void forceToRefresh() {
 
-        if (mWrapAdapter.getFooterView() instanceof  LoadingFooter) {
-            LoadingFooter.State state = RecyclerViewStateUtils.getFooterViewState(this);
+        if (mFootView instanceof LoadingFooter) {
+            LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
+            LoadingFooter.State state = loadingFooter.getState();
             if(state == LoadingFooter.State.Loading) {
                 return;
             }

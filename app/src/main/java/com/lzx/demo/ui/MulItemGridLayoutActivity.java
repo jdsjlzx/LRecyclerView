@@ -56,7 +56,7 @@ public class MulItemGridLayoutActivity extends AppCompatActivity{
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
         mMultipleItemAdapter.addAll(mItemModels);
 
-        DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
+        DividerDecoration divider = new DividerDecoration.Builder(this)
                 .setHeight(R.dimen.default_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.split)

@@ -56,7 +56,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
-        DividerDecoration divider = new DividerDecoration.Builder(this, mLRecyclerViewAdapter)
+        DividerDecoration divider = new DividerDecoration.Builder(this)
                 .setHeight(R.dimen.default_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.split)
