@@ -75,7 +75,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(divider);
 
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);

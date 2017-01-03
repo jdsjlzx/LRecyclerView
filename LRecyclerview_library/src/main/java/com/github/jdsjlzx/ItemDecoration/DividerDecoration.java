@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
@@ -101,6 +102,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
      * A basic builder for divider decorations. The default builder creates a 1px thick black divider decoration.
      */
     public static class Builder {
+        private Context mContext;
         private Resources mResources;
         private int mHeight;
         private int mLPadding;
@@ -108,6 +110,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
         private int mColour;
 
         public Builder(Context context) {
+            mContext = context;
             mResources = context.getResources();
             mHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 1f, context.getResources().getDisplayMetrics());
             mLPadding = 0;
@@ -209,7 +212,8 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
          * @return the current instance of the Builder
          */
         public Builder setColorResource(@ColorRes int resource) {
-            setColor(mResources.getColor(resource));
+            setColor(ContextCompat.getColor(mContext,resource));
+
             return this;
         }
 

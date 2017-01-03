@@ -1,9 +1,13 @@
 package com.github.jdsjlzx.ItemDecoration;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
 /**
  * Adds spaces (between) between Item views.
@@ -22,7 +26,9 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
     private final int verticalSpacing;
 
-    public static SpacesItemDecoration newInstance(int horizontalSpacing, int verticalSpacing, int spanCount) {
+    private Paint mPaint;
+
+    public static SpacesItemDecoration newInstance(int horizontalSpacing, int verticalSpacing, int spanCount, int color) {
         int maxNumberOfSpaces = spanCount - 1;
         int totalSpaceToSplitBetweenItems = maxNumberOfSpaces * horizontalSpacing;
 
@@ -30,25 +36,106 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         int itemSplitMarginLarge = totalSpaceToSplitBetweenItems / spanCount;
         int itemSplitMarginSmall = horizontalSpacing - itemSplitMarginLarge;
 
-        return new SpacesItemDecoration(itemSplitMarginEven, itemSplitMarginLarge, itemSplitMarginSmall, verticalSpacing);
+        return new SpacesItemDecoration(itemSplitMarginEven, itemSplitMarginLarge, itemSplitMarginSmall, verticalSpacing, color);
     }
 
-    private SpacesItemDecoration(int itemSplitMarginEven, int itemSplitMarginLarge, int itemSplitMarginSmall, int verticalSpacing) {
+    private SpacesItemDecoration(int itemSplitMarginEven, int itemSplitMarginLarge, int itemSplitMarginSmall, int verticalSpacing, int color) {
         this.itemSplitMarginEven = itemSplitMarginEven;
         this.itemSplitMarginLarge = itemSplitMarginLarge;
         this.itemSplitMarginSmall = itemSplitMarginSmall;
         this.verticalSpacing = verticalSpacing;
+        mPaint = new Paint();
+        mPaint.setColor(color);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+
+        RecyclerView.Adapter adapter = parent.getAdapter();
+
+        LRecyclerViewAdapter lRecyclerViewAdapter;
+        if (adapter instanceof LRecyclerViewAdapter) {
+            lRecyclerViewAdapter = (LRecyclerViewAdapter) adapter;
+        } else {
+            throw new RuntimeException("the adapter must be LRecyclerViewAdapter");
+        }
+
+        drawHorizontal(c,parent,lRecyclerViewAdapter);
+        drawVertical(c,parent,lRecyclerViewAdapter);
+    }
+
+    public void drawHorizontal(Canvas c, RecyclerView parent,LRecyclerViewAdapter adapter) {
+        int count = parent.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            final View child = parent.getChildAt(i);
+            final int top = child.getBottom();
+            final int bottom = top + verticalSpacing;
+
+            int left = child.getLeft() ;
+            int right = child.getRight();
+
+            int position = parent.getChildAdapterPosition(child);
+
+            c.save();
+
+            if (adapter.isRefreshHeader(position) || adapter. isHeader(position) || adapter.isFooter(position)) {
+                c.drawRect(0, 0, 0, 0, mPaint);
+            }else {
+                c.drawRect(left, top, right, bottom, mPaint);
+            }
+
+            c.restore();
+        }
+    }
+
+    public void drawVertical(Canvas c, RecyclerView parent,LRecyclerViewAdapter adapter) {
+        int count = parent.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            final View child = parent.getChildAt(i);
+            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            final int top = child.getTop();
+            //final int bottom = child.getBottom() + params.bottomMargin;
+            final int bottom = child.getBottom() + verticalSpacing; //这里使用verticalSpacing 代替 params.bottomMargin
+            final int left = child.getRight() + params.rightMargin;
+            final int right = left + itemSplitMarginEven*2;
+
+            int position = parent.getChildAdapterPosition(child);
+
+            c.save();
+
+            if (adapter.isRefreshHeader(position) || adapter. isHeader(position) || adapter.isFooter(position)) {
+                c.drawRect(0, 0, 0, 0, mPaint);
+            }else {
+                c.drawRect(left, top, right, bottom, mPaint);
+            }
+
+            c.restore();
+        }
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        RecyclerView.Adapter adapter = parent.getAdapter();
+
+        LRecyclerViewAdapter lRecyclerViewAdapter;
+        if (adapter instanceof LRecyclerViewAdapter) {
+            lRecyclerViewAdapter = (LRecyclerViewAdapter) adapter;
+        } else {
+            throw new RuntimeException("the adapter must be LRecyclerViewAdapter");
+        }
+
         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
-        int itemPosition = layoutParams.getViewPosition();
+        int itemPosition = layoutParams.getViewLayoutPosition();
         int childCount = parent.getAdapter().getItemCount();
 
         SpanLookup spanLookup = getSpanLookup(view, parent);
         applyItemHorizontalOffsets(spanLookup, itemPosition, outRect);
-        applyItemVerticalOffsets(outRect, itemPosition, childCount, spanLookup.getSpanCount(), spanLookup);
+        applyItemVerticalOffsets(outRect, itemPosition, childCount, spanLookup.getSpanCount(), spanLookup,lRecyclerViewAdapter);
     }
 
     protected SpanLookup getSpanLookup(View view, RecyclerView parent) {
@@ -59,9 +146,9 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         return SpanLookupFactory.singleSpan();
     }
 
-    private void applyItemVerticalOffsets(Rect outRect, int itemPosition, int childCount, int spanCount, SpanLookup spanLookup) {
-        outRect.top = getItemTopSpacing(spanLookup, verticalSpacing, itemPosition, spanCount, childCount);
-        outRect.bottom = getItemBottomSpacing(spanLookup, verticalSpacing, itemPosition, childCount);
+    private void applyItemVerticalOffsets(Rect outRect, int itemPosition, int childCount, int spanCount, SpanLookup spanLookup,LRecyclerViewAdapter adapter) {
+        outRect.top = getItemTopSpacing(spanLookup, verticalSpacing, itemPosition, spanCount, childCount,adapter);
+        outRect.bottom = getItemBottomSpacing(spanLookup, verticalSpacing, itemPosition, childCount,adapter);
     }
 
     private void applyItemHorizontalOffsets(SpanLookup spanLookup, int itemPosition, Rect offsets) {
@@ -116,12 +203,17 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         return spanLookup.getSpanIndex(itemPosition) + spanLookup.getSpanSize(itemPosition) == spanLookup.getSpanCount();
     }
 
-    private static int getItemTopSpacing(SpanLookup spanLookup, int verticalSpacing, int itemPosition, int spanCount, int childCount) {
-        if (itemIsOnTheTopRow(spanLookup, itemPosition, spanCount, childCount)) {
+    private static int getItemTopSpacing(SpanLookup spanLookup, int verticalSpacing, int itemPosition, int spanCount, int childCount, LRecyclerViewAdapter adapter) {
+        if(adapter.isHeader(itemPosition) || adapter.isRefreshHeader(itemPosition) || adapter.isFooter(itemPosition)) {
             return 0;
         } else {
-            return (int) (.5f * verticalSpacing);
+            if (itemIsOnTheTopRow(spanLookup, itemPosition, spanCount, childCount)) {
+                return 0;
+            } else {
+                return (int) (.5f * verticalSpacing);
+            }
         }
+
     }
 
     private static boolean itemIsOnTheTopRow(SpanLookup spanLookup, int itemPosition, int spanCount, int childCount) {
@@ -136,12 +228,18 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         return itemPosition <= latestCheckedPosition;
     }
 
-    private static int getItemBottomSpacing(SpanLookup spanLookup, int verticalSpacing, int itemPosition, int childCount) {
-        if (itemIsOnTheBottomRow(spanLookup, itemPosition, childCount)) {
+    private static int getItemBottomSpacing(SpanLookup spanLookup, int verticalSpacing, int itemPosition, int childCount, LRecyclerViewAdapter adapter) {
+
+        if(adapter.isHeader(itemPosition) || adapter.isRefreshHeader(itemPosition) || adapter.isFooter(itemPosition)) {
             return 0;
         } else {
-            return (int) (.5f * verticalSpacing);
+            if (itemIsOnTheBottomRow(spanLookup, itemPosition, childCount)) {
+                return 0;
+            } else {
+                return (int) (.5f * verticalSpacing);
+            }
         }
+
     }
 
     private static boolean itemIsOnTheBottomRow(SpanLookup spanLookup, int itemPosition, int childCount) {

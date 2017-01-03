@@ -1,5 +1,6 @@
 package com.lzx.demo.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,7 @@ import com.lzx.demo.R;
 import com.lzx.demo.adapter.DataAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.NetworkUtils;
+import com.lzx.demo.view.SampleHeader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -64,13 +66,15 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         int spacing = getResources().getDimensionPixelSize(R.dimen.dp_10);
-        mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount()));
+        mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
 
         mRecyclerView.setHasFixedSize(true);
 
-        //mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
+        mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
+        mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
-        mLRecyclerViewAdapter.setSpanSizeLookup(new LRecyclerViewAdapter.SpanSizeLookup() {
+        //设置span，自己可以体验效果
+        /*mLRecyclerViewAdapter.setSpanSizeLookup(new LRecyclerViewAdapter.SpanSizeLookup() {
             @Override
             public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
                 if (position % 4 == 0) {
@@ -80,7 +84,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
 
 
         mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
