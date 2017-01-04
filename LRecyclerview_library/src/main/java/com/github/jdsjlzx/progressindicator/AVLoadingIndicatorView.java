@@ -503,10 +503,10 @@ public class AVLoadingIndicatorView extends View {
                 indicatorName = "BallBeatIndicator";
                 break;
             case LineScalePulseOut:
-                indicatorName = "LineScaleIndicator";
+                indicatorName = "LineScalePulseOutIndicator";
                 break;
             case LineScalePulseOutRapid:
-                indicatorName = "LineScalePartyIndicator";
+                indicatorName = "LineScalePulseOutRapidIndicator";
                 break;
             case BallScaleRipple:
                 indicatorName = "BallScaleRippleIndicator";
