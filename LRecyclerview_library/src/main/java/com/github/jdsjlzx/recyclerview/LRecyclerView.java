@@ -3,6 +3,7 @@ package com.github.jdsjlzx.recyclerview;
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -272,7 +273,7 @@ public class LRecyclerView extends RecyclerView {
                 if (isOnTop() && mPullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
                     if (mRefreshHeader.releaseAction()) {
                         if (mRefreshListener != null) {
-                            setFooterViewState(LoadingFooter.State.Normal,false);
+                            mFootView.setVisibility(GONE);
                             mRefreshListener.onRefresh();
                             isPulldownToRefresh = true;
 
@@ -423,12 +424,27 @@ public class LRecyclerView extends RecyclerView {
         });
     }
 
-    public void setFootViewHint(String loading, String noMore,String noNetWork) {
+    public void setFootViewHint(String loading, String noMore, String noNetWork) {
         if(mFootView instanceof LoadingFooter){
             LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
             loadingFooter.setLoadingHint(loading);
             loadingFooter.setNoMoreHint(noMore);
             loadingFooter.setNoNetWorkHint(noNetWork);
+        }
+    }
+
+    /**
+     * 指定底部颜色
+     * @param indicatorColor
+     * @param hintColor
+     * @param backgroundColor
+     */
+    public void setFootViewColor(int indicatorColor, int hintColor, int backgroundColor) {
+        if(mFootView instanceof LoadingFooter){
+            LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
+            loadingFooter.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
+            loadingFooter.setHintTextColor(hintColor);
+            loadingFooter.setViewBackgroundColor(backgroundColor);
         }
     }
 
@@ -452,7 +468,7 @@ public class LRecyclerView extends RecyclerView {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
             mRefreshHeaderHeight = mRefreshHeader.getMeasuredHeight();
             mRefreshHeader.onMove(mRefreshHeaderHeight);
-            setFooterViewState(LoadingFooter.State.Normal,false);
+            mFootView.setVisibility(GONE);
             mRefreshListener.onRefresh();
             isPulldownToRefresh = true;
         }
@@ -472,9 +488,9 @@ public class LRecyclerView extends RecyclerView {
             scrollToPosition(0);
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
             mRefreshHeader.onMove(mRefreshHeaderHeight);
+            mFootView.setVisibility(GONE);
             mRefreshListener.onRefresh();
             isPulldownToRefresh = true;
-            setFooterViewState(LoadingFooter.State.Normal,false);
         }
     }
 

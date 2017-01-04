@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/AVLoadingIndicatorView.Small"
-        android:layout_marginRight="@dimen/dp_4"
         app:indicatorColor="@color/colorAccent"
         />
 
@@ -20,7 +19,7 @@
         android:id="@+id/loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_4"
+        android:layout_marginLeft="@dimen/dp_10"
         android:text="@string/list_footer_loading"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/sp_14" />

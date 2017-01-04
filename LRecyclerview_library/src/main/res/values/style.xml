@@ -5,23 +5,23 @@
         <item name="maxWidth">48dip</item>
         <item name="minHeight">48dip</item>
         <item name="maxHeight">48dip</item>
-        <item name="indicatorName">LineSpinFadeLoader</item>
+        <item name="indicatorName">LineSpinFadeLoaderIndicator</item>
     </style>
 
     <style name="AVLoadingIndicatorView.Large">
-        <item name="minWidth">76dip</item>
-        <item name="maxWidth">76dip</item>
-        <item name="minHeight">76dip</item>
-        <item name="maxHeight">76dip</item>
-        <item name="indicatorName">LineSpinFadeLoader</item>
+        <item name="minWidth">72dip</item>
+        <item name="maxWidth">72dip</item>
+        <item name="minHeight">72dip</item>
+        <item name="maxHeight">72dip</item>
+        <item name="indicatorName">LineSpinFadeLoaderIndicator</item>
     </style>
 
     <style name="AVLoadingIndicatorView.Small">
-        <item name="minWidth">24dip</item>
-        <item name="maxWidth">24dip</item>
-        <item name="minHeight">24dip</item>
-        <item name="maxHeight">24dip</item>
-        <item name="indicatorName">LineSpinFadeLoader</item>
+        <item name="minWidth">36dip</item>
+        <item name="maxWidth">36dip</item>
+        <item name="minHeight">36dip</item>
+        <item name="maxHeight">36dip</item>
+        <item name="indicatorName">LineSpinFadeLoaderIndicator</item>
     </style>
 
 </resources>

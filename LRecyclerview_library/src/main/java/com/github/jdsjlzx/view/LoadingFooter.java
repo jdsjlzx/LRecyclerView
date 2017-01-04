@@ -1,6 +1,7 @@
 package com.github.jdsjlzx.view;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -24,6 +25,8 @@ public class LoadingFooter extends RelativeLayout {
     private String loadingHint;
     private String noMoreHint;
     private String noNetWorkHint;
+    private int indicatorColor ;
+    private int hintColor = R.color.colorAccent;
 
     public LoadingFooter(Context context) {
         super(context);
@@ -46,18 +49,35 @@ public class LoadingFooter extends RelativeLayout {
         setOnClickListener(null);
 
         setState(State.Normal, true);
+
+        indicatorColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
     }
 
     public void setLoadingHint(String hint) {
-        loadingHint = hint;
+        this.loadingHint = hint;
     }
 
     public void setNoMoreHint(String hint) {
-        noMoreHint = hint;
+        this.noMoreHint = hint;
     }
 
     public void setNoNetWorkHint(String hint) {
-        noNetWorkHint = hint;
+        this.noNetWorkHint = hint;
+    }
+
+    public void setIndicatorColor(int color) {
+        this.indicatorColor = color;
+        if(null != mLoadingProgress){
+            mLoadingProgress.setIndicatorColor(indicatorColor);
+        }
+    }
+
+    public void setHintTextColor(int color) {
+        this.hintColor = color;
+    }
+
+    public void setViewBackgroundColor(int color) {
+        this.setBackgroundColor(ContextCompat.getColor(getContext(), color));
     }
 
     public void setProgressStyle(int style) {
@@ -126,7 +146,9 @@ public class LoadingFooter extends RelativeLayout {
                 mLoadingView.setVisibility(showView ? VISIBLE : GONE);
 
                 mLoadingProgress.setVisibility(View.VISIBLE);
+                mLoadingProgress.setIndicatorColor(indicatorColor);
                 mLoadingText.setText(TextUtils.isEmpty(loadingHint) ? getResources().getString(R.string.list_footer_loading) : loadingHint);
+                mLoadingText.setTextColor(ContextCompat.getColor(getContext(), hintColor));
 
                 break;
             case NoMore:
@@ -150,6 +172,7 @@ public class LoadingFooter extends RelativeLayout {
 
                 mTheEndView.setVisibility(showView ? VISIBLE : GONE);
                 mNoMoreText.setText(TextUtils.isEmpty(noMoreHint) ? getResources().getString(R.string.list_footer_end) : noMoreHint);
+                mNoMoreText.setTextColor(ContextCompat.getColor(getContext(), hintColor));
                 break;
             case NetWorkError:
 
@@ -171,7 +194,7 @@ public class LoadingFooter extends RelativeLayout {
 
                 mNetworkErrorView.setVisibility(showView ? VISIBLE : GONE);
                 mNoNetWorkText.setText(TextUtils.isEmpty(noNetWorkHint) ? getResources().getString(R.string.list_footer_network_error) : noNetWorkHint);
-
+                mNoNetWorkText.setTextColor(ContextCompat.getColor(getContext(), hintColor));
                 break;
             default:
                 break;

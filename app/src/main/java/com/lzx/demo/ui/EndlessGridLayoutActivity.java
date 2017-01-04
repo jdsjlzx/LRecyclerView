@@ -65,6 +65,8 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
+        //mRecyclerView.setFootViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+
         int spacing = getResources().getDimensionPixelSize(R.dimen.dp_10);
         mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
 
