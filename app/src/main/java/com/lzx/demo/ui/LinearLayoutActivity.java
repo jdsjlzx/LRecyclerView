@@ -61,7 +61,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.split)
                 .build();
-        mRecyclerView.setHasFixedSize(true);
+        //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(divider);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

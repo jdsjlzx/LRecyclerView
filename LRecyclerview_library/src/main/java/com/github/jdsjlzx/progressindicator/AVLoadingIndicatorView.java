@@ -15,34 +15,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 
 import com.github.jdsjlzx.R;
-import com.github.jdsjlzx.progressindicator.indicators.BallBeatIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallClipRotateIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallClipRotateMultipleIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallClipRotatePulseIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallGridBeatIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallGridPulseIndicator;
 import com.github.jdsjlzx.progressindicator.indicators.BallPulseIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallPulseRiseIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallPulseSyncIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallRotateIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallScaleIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallScaleMultipleIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallScaleRippleIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallScaleRippleMultipleIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallSpinFadeLoaderIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallTrianglePathIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallZigZagDeflectIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.BallZigZagIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.CubeTransitionIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.LineScaleIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.LineScalePartyIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.LineScalePulseOutIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.LineScalePulseOutRapidIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.LineSpinFadeLoaderIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.PacmanIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.SemiCircleSpinIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.SquareSpinIndicator;
-import com.github.jdsjlzx.progressindicator.indicators.TriangleSkewSpinIndicator;
 
 import static com.github.jdsjlzx.recyclerview.ProgressStyle.BallBeat;
 import static com.github.jdsjlzx.recyclerview.ProgressStyle.BallClipRotate;
@@ -473,93 +446,97 @@ public class AVLoadingIndicatorView extends View {
     }
 
     public void setIndicatorId(int indicatorId) {
+        String indicatorName = null;
         switch (indicatorId) {
             case BallPulse:
-                mIndicator = new BallPulseIndicator();
+                indicatorName = "BallPulseIndicator";
                 break;
             case BallGridPulse:
-                mIndicator = new BallGridPulseIndicator();
+                indicatorName = "BallGridPulseIndicator";
                 break;
             case BallClipRotate:
-                mIndicator = new BallClipRotateIndicator();
+                indicatorName = "BallClipRotateIndicator";
                 break;
             case BallClipRotatePulse:
-                mIndicator = new BallClipRotatePulseIndicator();
+                indicatorName = "BallClipRotatePulseIndicator";
                 break;
             case SquareSpin:
-                mIndicator = new SquareSpinIndicator();
+                indicatorName = "SquareSpinIndicator";
                 break;
             case BallClipRotateMultiple:
-                mIndicator = new BallClipRotateMultipleIndicator();
+                indicatorName = "BallClipRotateMultipleIndicator";
                 break;
             case BallPulseRise:
-                mIndicator = new BallPulseRiseIndicator();
+                indicatorName = "BallPulseRiseIndicator";
                 break;
             case BallRotate:
-                mIndicator = new BallRotateIndicator();
+                indicatorName = "BallRotateIndicator";
                 break;
             case CubeTransition:
-                mIndicator = new CubeTransitionIndicator();
+                indicatorName = "CubeTransitionIndicator";
                 break;
             case BallZigZag:
-                mIndicator = new BallZigZagIndicator();
+                indicatorName = "BallZigZagIndicator";
                 break;
             case BallZigZagDeflect:
-                mIndicator = new BallZigZagDeflectIndicator();
+                indicatorName = "BallZigZagDeflectIndicator";
                 break;
             case BallTrianglePath:
-                mIndicator = new BallTrianglePathIndicator();
+                indicatorName = "BallTrianglePathIndicator";
                 break;
             case BallScale:
-                mIndicator = new BallScaleIndicator();
+                indicatorName = "BallScaleIndicator";
                 break;
             case LineScale:
-                mIndicator = new LineScaleIndicator();
+                indicatorName = "LineScaleIndicator";
                 break;
             case LineScaleParty:
-                mIndicator = new LineScalePartyIndicator();
+                indicatorName = "LineScalePartyIndicator";
                 break;
             case BallScaleMultiple:
-                mIndicator = new BallScaleMultipleIndicator();
+                indicatorName = "BallScaleMultipleIndicator";
                 break;
             case BallPulseSync:
-                mIndicator = new BallPulseSyncIndicator();
+                indicatorName = "BallPulseSyncIndicator";
                 break;
             case BallBeat:
-                mIndicator = new BallBeatIndicator();
+                indicatorName = "BallBeatIndicator";
                 break;
             case LineScalePulseOut:
-                mIndicator = new LineScalePulseOutIndicator();
+                indicatorName = "LineScaleIndicator";
                 break;
             case LineScalePulseOutRapid:
-                mIndicator = new LineScalePulseOutRapidIndicator();
+                indicatorName = "LineScalePartyIndicator";
                 break;
             case BallScaleRipple:
-                mIndicator = new BallScaleRippleIndicator();
+                indicatorName = "BallScaleRippleIndicator";
                 break;
             case BallScaleRippleMultiple:
-                mIndicator = new BallScaleRippleMultipleIndicator();
+                indicatorName = "BallScaleRippleMultipleIndicator";
                 break;
             case BallSpinFadeLoader:
-                mIndicator = new BallSpinFadeLoaderIndicator();
+                indicatorName = "BallSpinFadeLoaderIndicator";
                 break;
             case LineSpinFadeLoader:
-                mIndicator = new LineSpinFadeLoaderIndicator();
+                indicatorName = "LineSpinFadeLoaderIndicator";
                 break;
             case TriangleSkewSpin:
-                mIndicator = new TriangleSkewSpinIndicator();
+                indicatorName = "TriangleSkewSpinIndicator";
                 break;
             case Pacman:
-                mIndicator = new PacmanIndicator();
+                indicatorName = "PacmanIndicator";
                 break;
             case BallGridBeat:
-                mIndicator = new BallGridBeatIndicator();
+                indicatorName = "BallGridBeatIndicator";
                 break;
             case SemiCircleSpin:
-                mIndicator = new SemiCircleSpinIndicator();
+                indicatorName = "SemiCircleSpinIndicator";
+                break;
+            default:
+                indicatorName = "BallPulseIndicator";
                 break;
         }
-        setIndicator(mIndicator);
+        setIndicator(indicatorName);
     }
 
 

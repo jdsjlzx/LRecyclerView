@@ -20,8 +20,6 @@ import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
-import com.github.jdsjlzx.util.LuRecyclerViewStateUtils;
-import com.github.jdsjlzx.view.LoadingFooter;
 import com.lzx.demo.R;
 import com.lzx.demo.base.ListBaseAdapter;
 import com.lzx.demo.base.SuperViewHolder;
@@ -193,13 +191,11 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
                     activity.addItems(newList);
 
                     if(activity.isRefresh){
-                        activity.isRefresh = false;
                         activity.mSwipeRefreshLayout.setRefreshing(false);
                         activity.notifyDataSetChanged();
-                    } else {
+                    }else {
                         activity.mRecyclerView.loadMoreComplete();
                     }
-                    LuRecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
 
 
                     break;
@@ -209,10 +205,9 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
                     break;
                 case -3:
                     if(activity.isRefresh){
-                        activity.isRefresh = false;
                         activity.mSwipeRefreshLayout.setRefreshing(false);
                         activity.notifyDataSetChanged();
-                    } else {
+                    }else {
                         activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
                             @Override
                             public void reload() {
@@ -220,23 +215,12 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
                             }
                         });
                     }
-                    LuRecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
-
-
                     break;
                 default:
                     break;
             }
         }
     }
-
-    private View.OnClickListener mFooterClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            LuRecyclerViewStateUtils.setFooterViewState(SwipeRefreshLayoutActivity.this, mRecyclerView, REQUEST_COUNT, LoadingFooter.State.Loading, null);
-            requestData();
-        }
-    };
 
     /**
      * 模拟请求网络

@@ -2,8 +2,8 @@ package com.github.jdsjlzx.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -99,7 +99,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     private View initIndicatorView(int style) {
         AVLoadingIndicatorView progressView = (AVLoadingIndicatorView) LayoutInflater.from(getContext()).inflate(R.layout.layout_indicator_view, null);
         progressView.setIndicatorId(style);
-        progressView.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
+        progressView.setIndicatorColor(Color.GRAY);
         return progressView;
     }
 

@@ -24,6 +24,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
 public class LuRecyclerView extends RecyclerView {
     private boolean mLoadMoreEnabled = true;
     private boolean flag = false;//标记是否setAdapter
+    private boolean isNoMore = false;
     private LScrollListener mLScrollListener;
     private OnLoadMoreListener mLoadMoreListener;
     private View mEmptyView;
@@ -173,8 +174,11 @@ public class LuRecyclerView extends RecyclerView {
     }
 
     public void setNoMore(boolean noMore){
-        if(noMore) {
+        isNoMore = noMore;
+        if(isNoMore) {
             setFooterViewState(LoadingFooter.State.NoMore,true);
+        } else {
+            setFooterViewState(LoadingFooter.State.Normal,true);
         }
     }
 

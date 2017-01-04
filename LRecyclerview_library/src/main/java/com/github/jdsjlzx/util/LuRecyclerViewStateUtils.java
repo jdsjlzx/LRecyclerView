@@ -14,6 +14,7 @@ import com.github.jdsjlzx.view.LoadingFooter;
  * @author lizhixian
  * @time 16/9/10 09:56
  */
+@Deprecated
 public class LuRecyclerViewStateUtils {
 
     /**

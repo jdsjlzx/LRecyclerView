@@ -30,4 +30,6 @@ public class ProgressStyle {
     public static final int Pacman = 25;
     public static final int BallGridBeat = 26;
     public static final int SemiCircleSpin = 27;
+
+
 }

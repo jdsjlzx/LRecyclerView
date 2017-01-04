@@ -72,12 +72,12 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                 .setColorResource(R.color.split)
                 .build();
 
-        mRecyclerView.setHasFixedSize(true);
+        //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(divider);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
         mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
 
         //add a HeaderView
@@ -131,6 +131,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
 
         });
 
+        mRecyclerView.setFootViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
+
         mRecyclerView.setRefreshing(true);
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -150,7 +152,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             }
         });
 
-        mRecyclerView.setFootViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
+
     }
 
     private void notifyDataSetChanged() {
