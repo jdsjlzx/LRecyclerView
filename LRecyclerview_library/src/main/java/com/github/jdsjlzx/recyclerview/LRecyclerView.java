@@ -398,7 +398,6 @@ public class LRecyclerView extends RecyclerView {
     private void setFooterViewState(LoadingFooter.State state,boolean isScroolUp) {
 
         if (mFootView instanceof LoadingFooter) {
-            mFootView.setVisibility(VISIBLE);
             ((LoadingFooter) mFootView).setState(state);
         }
         if(isScroolUp) {
