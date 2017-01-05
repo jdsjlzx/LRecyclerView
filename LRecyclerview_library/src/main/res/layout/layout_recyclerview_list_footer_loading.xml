@@ -7,13 +7,11 @@
     android:gravity="center"
     android:orientation="horizontal">
 
-    <com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView
-        android:id="@+id/loading_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/AVLoadingIndicatorView.Small"
-        app:indicatorColor="@color/colorAccent"
-        />
+    <com.github.jdsjlzx.view.SimpleViewSwitcher
+        android:id="@+id/loading_progressbar"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/loading_text"

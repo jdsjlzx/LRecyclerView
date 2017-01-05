@@ -39,6 +39,7 @@ public class LRecyclerView extends RecyclerView {
     private View mEmptyView;
     private View mFootView;
     private int mRefreshProgressStyle = ProgressStyle.SysProgress;
+    private int mLoadingMoreProgressStyle = ProgressStyle.SysProgress;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private float mLastY = -1;
     private static final float DRAG_RATE = 2.2f;
@@ -121,6 +122,7 @@ public class LRecyclerView extends RecyclerView {
         }
 
         LoadingFooter footView = new LoadingFooter(getContext().getApplicationContext());
+        footView.setProgressStyle(mLoadingMoreProgressStyle);
         mFootView = footView;
         mFootView.setVisibility(GONE);
     }
@@ -352,7 +354,7 @@ public class LRecyclerView extends RecyclerView {
         }
     }
 
-    public void setRefreshHeader(BaseRefreshHeader refreshHeader) {
+    private void setRefreshHeader(BaseRefreshHeader refreshHeader) {
         mRefreshHeader = (ArrowRefreshHeader) refreshHeader;
     }
 
@@ -387,6 +389,7 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void setLoadingMoreProgressStyle(int style) {
+        mLoadingMoreProgressStyle = style;
         if (mFootView instanceof LoadingFooter) {
             ((LoadingFooter) mFootView).setProgressStyle(style);
         }
@@ -424,7 +427,7 @@ public class LRecyclerView extends RecyclerView {
         });
     }
 
-    public void setFootViewHint(String loading, String noMore, String noNetWork) {
+    public void setFooterViewHint(String loading, String noMore, String noNetWork) {
         if(mFootView instanceof LoadingFooter){
             LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
             loadingFooter.setLoadingHint(loading);
@@ -434,18 +437,31 @@ public class LRecyclerView extends RecyclerView {
     }
 
     /**
-     * 指定底部颜色
+     * 设置Footer文字颜色
      * @param indicatorColor
      * @param hintColor
      * @param backgroundColor
      */
-    public void setFootViewColor(int indicatorColor, int hintColor, int backgroundColor) {
+    public void setFooterViewColor(int indicatorColor, int hintColor, int backgroundColor) {
         if(mFootView instanceof LoadingFooter){
             LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
             loadingFooter.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
             loadingFooter.setHintTextColor(hintColor);
             loadingFooter.setViewBackgroundColor(backgroundColor);
         }
+    }
+
+    /**
+     * 设置颜色
+     * @param indicatorColor Only call the method setRefreshProgressStyle(int style) to take effect
+     * @param hintColor
+     * @param backgroundColor
+     */
+    public void setHeaderViewColor(int indicatorColor, int hintColor, int backgroundColor) {
+        mRefreshHeader.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
+        mRefreshHeader.setHintTextColor(hintColor);
+        mRefreshHeader.setViewBackgroundColor(backgroundColor);
+
     }
 
     public void setLScrollListener(LScrollListener listener) {

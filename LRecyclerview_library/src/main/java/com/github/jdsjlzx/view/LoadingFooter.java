@@ -4,13 +4,17 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.R;
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
+import com.github.jdsjlzx.recyclerview.ProgressStyle;
 
 public class LoadingFooter extends RelativeLayout {
 
@@ -18,13 +22,14 @@ public class LoadingFooter extends RelativeLayout {
     private View mLoadingView;
     private View mNetworkErrorView;
     private View mTheEndView;
-    private AVLoadingIndicatorView mLoadingProgress;
+    private SimpleViewSwitcher mProgressView;
     private TextView mLoadingText;
     private TextView mNoMoreText;
     private TextView mNoNetWorkText;
     private String loadingHint;
     private String noMoreHint;
     private String noNetWorkHint;
+    private int style;
     private int indicatorColor ;
     private int hintColor = R.color.colorAccent;
 
@@ -51,6 +56,7 @@ public class LoadingFooter extends RelativeLayout {
         setState(State.Normal, true);
 
         indicatorColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
+        style = ProgressStyle.BallPulse;
     }
 
     public void setLoadingHint(String hint) {
@@ -67,9 +73,6 @@ public class LoadingFooter extends RelativeLayout {
 
     public void setIndicatorColor(int color) {
         this.indicatorColor = color;
-        if(null != mLoadingProgress){
-            mLoadingProgress.setIndicatorColor(indicatorColor);
-        }
     }
 
     public void setHintTextColor(int color) {
@@ -81,9 +84,7 @@ public class LoadingFooter extends RelativeLayout {
     }
 
     public void setProgressStyle(int style) {
-        if(null != mLoadingProgress){
-            mLoadingProgress.setIndicatorId(style);
-        }
+        this.style = style;
     }
 
     public State getState() {
@@ -92,6 +93,18 @@ public class LoadingFooter extends RelativeLayout {
 
     public void setState(State status ) {
         setState(status, true);
+    }
+
+    private View initIndicatorView(int style) {
+        if(style == ProgressStyle.SysProgress) {
+            return new ProgressBar(getContext(), null, android.R.attr.progressBarStyle);
+        } else {
+            AVLoadingIndicatorView progressView = (AVLoadingIndicatorView) LayoutInflater.from(getContext()).inflate(R.layout.layout_indicator_view, null);
+            progressView.setIndicatorId(style);
+            progressView.setIndicatorColor(indicatorColor);
+            return progressView;
+        }
+
     }
 
     /**
@@ -132,21 +145,26 @@ public class LoadingFooter extends RelativeLayout {
                 if (mNetworkErrorView != null) {
                     mNetworkErrorView.setVisibility(GONE);
                 }
-
+                Log.e("lzx","mLoadingView == null  " + (mLoadingView == null));
                 if (mLoadingView == null) {
                     ViewStub viewStub = (ViewStub) findViewById(R.id.loading_viewstub);
                     mLoadingView = viewStub.inflate();
 
-                    mLoadingProgress = (AVLoadingIndicatorView) mLoadingView.findViewById(R.id.loading_progress);
+                    mProgressView = (SimpleViewSwitcher) mLoadingView.findViewById(R.id.loading_progressbar);
                     mLoadingText = (TextView) mLoadingView.findViewById(R.id.loading_text);
                 } else {
                     mLoadingView.setVisibility(VISIBLE);
                 }
-
+                Log.e("lzx","showView =  "  + showView);
                 mLoadingView.setVisibility(showView ? VISIBLE : GONE);
 
-                mLoadingProgress.setVisibility(View.VISIBLE);
-                mLoadingProgress.setIndicatorColor(indicatorColor);
+                mProgressView.setVisibility(View.VISIBLE);
+                Log.e("lzx","mLoadingView.getVisibility() =  "  + mLoadingView.getVisibility());
+                Log.e("lzx","mProgressView.getVisibility() =  "  + mProgressView.getVisibility());
+                Log.e("lzx","setIndicatorId " + style);
+
+                mProgressView.addView(initIndicatorView(style));
+
                 mLoadingText.setText(TextUtils.isEmpty(loadingHint) ? getResources().getString(R.string.list_footer_loading) : loadingHint);
                 mLoadingText.setTextColor(ContextCompat.getColor(getContext(), hintColor));
 

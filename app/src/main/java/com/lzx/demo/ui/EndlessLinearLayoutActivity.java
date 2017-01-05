@@ -79,7 +79,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
         mRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
-        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallPulse);
+        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
 
         //add a HeaderView
         final View header = LayoutInflater.from(this).inflate(R.layout.sample_header,(ViewGroup)findViewById(android.R.id.content), false);
@@ -132,8 +132,12 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
 
         });
 
-        mRecyclerView.setFootViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
-        mRecyclerView.setFootViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
+        //设置头部加载颜色
+        mRecyclerView.setHeaderViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+        //设置底部加载颜色
+        mRecyclerView.setFooterViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+        //设置底部加载文字提示
+        mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
 
         mRecyclerView.setRefreshing(true);
 

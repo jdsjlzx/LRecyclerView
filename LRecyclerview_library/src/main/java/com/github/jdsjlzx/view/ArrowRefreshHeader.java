@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,6 +41,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     private static final int ROTATE_ANIM_DURATION = 180;
 
     public int mMeasuredHeight;
+
+    private int hintColor;
 
     public ArrowRefreshHeader(Context context) {
         super(context);
@@ -85,6 +88,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         mHeaderTimeView = (TextView)findViewById(R.id.last_refresh_time);
         measure(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         mMeasuredHeight = getMeasuredHeight();
+        hintColor = android.R.color.darker_gray;
     }
 
     public void setProgressStyle(int style) {
@@ -101,6 +105,21 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         progressView.setIndicatorId(style);
         progressView.setIndicatorColor(Color.GRAY);
         return progressView;
+    }
+
+    public void setIndicatorColor(int color) {
+        if(mProgressBar.getChildAt(0) instanceof AVLoadingIndicatorView){
+            AVLoadingIndicatorView progressView = (AVLoadingIndicatorView) mProgressBar.getChildAt(0);
+            progressView.setIndicatorColor(color);
+        }
+    }
+
+    public void setHintTextColor(int color) {
+        this.hintColor = color;
+    }
+
+    public void setViewBackgroundColor(int color) {
+        this.setBackgroundColor(ContextCompat.getColor(getContext(), color));
     }
 
     public void setArrowImageView(int resid){
@@ -122,6 +141,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             mArrowImageView.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.INVISIBLE);
         }
+
+        mStatusTextView.setTextColor(ContextCompat.getColor(getContext(), hintColor));
 
         switch(state){
             case STATE_NORMAL:
