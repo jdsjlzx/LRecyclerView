@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.R;
@@ -44,7 +45,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
         //init data
         ArrayList<ItemModel> dataList = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 6; i++) {
             ItemModel itemModel = new ItemModel();
             itemModel.title = "item" + i;
             dataList.add(itemModel);
@@ -88,7 +89,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
         });
 
         //禁用下拉刷新功能
-        mRecyclerView.setPullRefreshEnabled(false);
+        //mRecyclerView.setPullRefreshEnabled(false);
 
         //禁用自动加载更多功能
         mRecyclerView.setLoadMoreEnabled(false);
@@ -96,6 +97,14 @@ public class LinearLayoutActivity extends AppCompatActivity {
         //add a FooterView
         mLRecyclerViewAdapter.addFooterView(sampleFooter);
 
+        //删除item
+        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                mDataAdapter.remove(position);
+            }
+
+        });
     }
 
     @Override

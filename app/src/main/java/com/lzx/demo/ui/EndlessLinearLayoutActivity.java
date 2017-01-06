@@ -146,6 +146,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             public void onItemClick(View view, int position) {
                 ItemModel item = mDataAdapter.getDataList().get(position);
                 AppToast.showShortText(getApplicationContext(), item.title);
+                mDataAdapter.remove(position);
             }
 
         });
@@ -157,6 +158,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                 AppToast.showShortText(getApplicationContext(), "onItemLongClick - " + item.title);
             }
         });
+
 
 
     }

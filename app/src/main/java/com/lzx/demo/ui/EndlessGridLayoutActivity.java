@@ -1,6 +1,5 @@
 package com.lzx.demo.ui;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,7 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
+import com.github.jdsjlzx.ItemDecoration.DividerGridItemDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -68,7 +67,8 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         //mRecyclerView.setFootViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
 
         int spacing = getResources().getDimensionPixelSize(R.dimen.dp_10);
-        mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
+        //mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
+        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));
 
         mRecyclerView.setHasFixedSize(true);
 

@@ -307,7 +307,7 @@ public class LRecyclerView extends RecyclerView {
         return min;
     }
 
-    private boolean isOnTop() {
+    public boolean isOnTop() {
         if (mPullRefreshEnabled && mRefreshHeader.getParent() != null) {
             return true;
         } else {
