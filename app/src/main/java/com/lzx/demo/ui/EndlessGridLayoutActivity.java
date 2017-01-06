@@ -8,7 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.github.jdsjlzx.ItemDecoration.DividerGridItemDecoration;
+import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -68,7 +68,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
         int spacing = getResources().getDimensionPixelSize(R.dimen.dp_10);
         //mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
-        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));
+        mRecyclerView.addItemDecoration(new GridItemDecoration(this));
 
         mRecyclerView.setHasFixedSize(true);
 

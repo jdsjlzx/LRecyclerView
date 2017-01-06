@@ -16,12 +16,12 @@ import android.view.View;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
-public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
+public class GridItemDecoration extends RecyclerView.ItemDecoration {
 
     private Context mContext;
     private Paint mPaint;
 
-    public DividerGridItemDecoration(Context context) {
+    public GridItemDecoration(Context context) {
         mContext = context;
         mPaint = new Paint();
         mPaint.setColor(Color.BLUE);
