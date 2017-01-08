@@ -1,30 +1,37 @@
 package com.github.jdsjlzx.ItemDecoration;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.RecyclerView.State;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
 public class GridItemDecoration extends RecyclerView.ItemDecoration {
-
-    private Context mContext;
+    private int V_Space;
+    private int H_Space;
     private Paint mPaint;
 
-    public GridItemDecoration(Context context) {
-        mContext = context;
+    public GridItemDecoration(int H_Space, int V_Space, int colour) {
+        this.H_Space = H_Space;
+        this.V_Space = V_Space;
         mPaint = new Paint();
-        mPaint.setColor(Color.BLUE);
+        mPaint.setColor(colour);
     }
 
 
@@ -52,13 +59,13 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         LRecyclerViewAdapter adapter = (LRecyclerViewAdapter) parent.getAdapter();
         for (int i = 0; i < childCount; i++) {
             if ((recyclerView.isOnTop() && (adapter.isHeader(i) || adapter.isRefreshHeader(i))) || adapter.isFooter(i)) {
-                Log.d("horizontal---no-->", String.valueOf(i)+"----"+childCount);
+                Log.d("horizontal---no-->", String.valueOf(i) + "----" + childCount);
                 c.drawRect(0, 0, 0, 0, mPaint);
             } else {
                 Log.d("horizontal---yes-->", String.valueOf(i));
                 final View child = parent.getChildAt(i);
                 final int top = child.getBottom();
-                final int bottom = top + 20;
+                final int bottom = top + V_Space;
                 int left = child.getLeft();
                 int right = child.getRight();
                 c.drawRect(left, top, right, bottom, mPaint);
@@ -77,10 +84,9 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
                 final View child = parent.getChildAt(i);
                 final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
                 final int top = child.getTop();
-                //final int bottom = child.getBottom() + params.bottomMargin;
-                final int bottom = child.getBottom() + 20; //这里使用verticalSpacing 代替 params// .bottomMargin
+                final int bottom = child.getBottom() + V_Space;
                 final int left = child.getRight() + params.rightMargin;
-                final int right = left + 20;
+                final int right = left + H_Space;
                 c.drawRect(left, top, right, bottom, mPaint);
             }
 
@@ -95,12 +101,12 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
      */
     private boolean isLastRaw(RecyclerView parent, int pos, int spanCount, int childCount) {
         LayoutManager layoutManager = parent.getLayoutManager();
+        LRecyclerViewAdapter adapter = (LRecyclerViewAdapter) parent.getAdapter();
         if (layoutManager instanceof GridLayoutManager) {
             int leftCount = childCount - childCount % spanCount;//3
             Log.d("left--->", String.valueOf(leftCount));
             //leftCount:若childCount能被span整除为childCount否则为去掉最后一行的item总数
-            if (pos > leftCount)// 如果是最后一行，则不需要绘制底部
-            {
+            if ((pos - adapter.getHeaderViews().size() + 1) > leftCount) {
                 Log.d("no_draw------->", String.valueOf(pos));
                 return true;
             }
@@ -108,11 +114,12 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         return false;
     }
 
-    private boolean isLastColumn(RecyclerView parent, int pos, int spanCount, int total) {
-        Log.d("column---->", pos + "----" + spanCount);
+    private boolean isLastColumn(RecyclerView parent, int pos, int spanCount) {
         LayoutManager layoutManager = parent.getLayoutManager();
+        LRecyclerViewAdapter adapter = (LRecyclerViewAdapter) parent.getAdapter();
         if (layoutManager instanceof GridLayoutManager) {
-            if (pos % spanCount == 0 || pos == total)// 如果是最后一列，则不需要绘制右边
+            if ((pos - adapter.getHeaderViews().size()) % spanCount == 0)
+                // 如果是最后一列，则不需要绘制右边
                 return true;
         }
         return false;
@@ -127,37 +134,119 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         int childCount = parent.getAdapter().getItemCount();
         Log.d("position------->", String.valueOf(itemPosition));
         LRecyclerViewAdapter adapter = (LRecyclerViewAdapter) parent.getAdapter();
-        if (adapter.isFooter(itemPosition)|| adapter.isHeader(itemPosition)||adapter
-                .isRefreshHeader(itemPosition)) {
+        if (adapter.isFooter(itemPosition) || adapter.isHeader(itemPosition) || adapter.isRefreshHeader(itemPosition)) {
+            //header，footer不进行绘制
             outRect.set(0, 0, 0, 0);
         } else {
             if (!(parent.getLayoutManager() instanceof GridLayoutManager)) {
+                //LinearLayoutManager
                 Log.d("manager--------->", "LinearLayoutManager: ");
-                if (itemPosition == (childCount - 2))
+                if (itemPosition == (childCount - 2 - adapter.getHeaderViews().size()))
                     outRect.set(0, 0, 0, 0);
                 else
-                    outRect.set(0, 0, 0, 20);
+                    outRect.set(0, 0, 0, V_Space);
             } else {
-                Log.d("manager--------->", "GridManager: ");
-                if (isLastRaw(parent, itemPosition, spanCount, childCount - 2) && isLastColumn(parent, itemPosition, spanCount, childCount - 2)) {
-                    outRect.set(0, 0, 20, 20);
-                    return;
+                //GridLayoutManager
+                if (isLastRaw(parent, itemPosition, spanCount, childCount - 2 - adapter.getHeaderViews().size())) {
+                    //最后一行
+                    if (isLastColumn(parent, itemPosition, spanCount)) {
+                        // 最后一行最后一列
+                        outRect.set(0, 0, 0, V_Space);
+                    } else {
+                        // 最后一行不是最后一列
+                        outRect.set(0, 0, H_Space, V_Space);
+                    }
+                } else {
+                    //最后一列
+                    if (isLastColumn(parent, itemPosition, spanCount)) {
+                        // 最后一列最后一行
+                        outRect.set(0, 0, 0, V_Space);
+                    } else {
+                        // 最后一列非最后一行
+                        outRect.set(0, 0, H_Space, V_Space);
+                    }
                 }
-//                if (isLastRaw(parent, itemPosition, spanCount, childCount - 2))// 最后一行，无需绘制底部
-//                {
-//                    outRect.set(0, 0, 20, 0);
-//                    return;
-//                }
-                if (isLastColumn(parent, itemPosition, spanCount, childCount - 2))//最后一列无需绘制右边
-                {
-                    outRect.set(0, 0, 0, 20);
-                    return;
-                }
-                outRect.set(0, 0, 20, 20);
+
 
             }
 
         }
 
     }
+
+    public static class Builder {
+        private Context mContext;
+        private Resources mResources;
+        private int mHorizontal;
+        private int mVertical;
+
+
+        private int mColour;
+
+        public Builder(Context context) {
+            mContext = context;
+            mResources = context.getResources();
+            mHorizontal = 0;
+            mVertical = 0;
+            mColour = Color.BLACK;
+        }
+
+
+        /**
+         * Sets the divider colour
+         *
+         * @param resource the colour resource id
+         * @return the current instance of the Builder
+         */
+        public Builder setColorResource(@ColorRes int resource) {
+            setColor(ContextCompat.getColor(mContext, resource));
+            return this;
+        }
+
+        /**
+         * Sets the divider colour
+         *
+         * @param color the colour
+         * @return the current instance of the Builder
+         */
+        public Builder setColor(@ColorInt int color) {
+            mColour = color;
+            return this;
+        }
+
+
+        //通过dp设置垂直间距
+        public Builder setmVertical(@DimenRes int mVertical) {
+            this.mVertical = mResources.getDimensionPixelSize(mVertical);
+            return this;
+        }
+
+        //通过px设置垂直间距
+        public Builder setmVertical(float mVertical) {
+            this.mVertical = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mVertical, mResources.getDisplayMetrics());
+            return this;
+        }
+
+        //通过dp设置水平间距
+        public Builder setmHorizontal(@DimenRes int mHorizontal) {
+            this.mHorizontal = mResources.getDimensionPixelSize(mHorizontal);
+            return this;
+        }
+
+        //通过px设置水平间距
+        public Builder setmHorizontal(float mHorizontal) {
+            this.mHorizontal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mHorizontal, mResources.getDisplayMetrics());
+            return this;
+        }
+
+        /**
+         * Instantiates a DividerDecoration with the specified parameters.
+         *
+         * @return a properly initialized DividerDecoration instance
+         */
+        public GridItemDecoration build() {
+            return new GridItemDecoration(mHorizontal, mVertical, mColour);
+        }
+    }
+
 }
