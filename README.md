@@ -188,7 +188,16 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 
 拷贝LRecyclerview_library中的文件文件layout_recyclerview_list_footer_loading.xml到你的工程中，修改后即可。
 
+###设置下拉刷新Header和Footer文字内容和颜色
 
+```java
+//设置头部加载颜色
+mRecyclerView.setHeaderViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+//设置底部加载颜色
+mRecyclerView.setFooterViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+//设置底部加载文字提示
+mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
+```
 ###开启和禁止下拉刷新功能
 
 ```java
@@ -324,6 +333,9 @@ mRecyclerView.setEmptyView(view);
 ##关于添加分割线
 
 经过不断优化，LRecyclerView支持了ItemDecoration，使用如下所示：
+
+LinearLayoutManager布局设置如下：
+
 ```java
 DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAdapter)
                 .setHeight(R.dimen.default_divider_height)
@@ -332,6 +344,22 @@ DividerDecoration divider = new DividerDecoration.Builder(this,mLRecyclerViewAda
                 .build();
 mRecyclerView.addItemDecoration(divider);
 ```
+
+GridLayoutManager布局设置如下：
+
+```java
+int spacing = getResources().getDimensionPixelSize(R.dimen.dp_4);
+mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
+
+//根据需要选择使用GridItemDecoration还是SpacesItemDecoration
+GridItemDecoration divider = new GridItemDecoration.Builder(this)
+        .setHorizontal(R.dimen.default_divider_padding)
+        .setVertical(R.dimen.default_divider_padding)
+        .setColorResource(R.color.split)
+        .build();
+//mRecyclerView.addItemDecoration(divider);
+```
+根据需要选择使用GridItemDecoration还是SpacesItemDecoration，SpacesItemDecoration（支持多类型布局）
 
 ##滑动删除
 
