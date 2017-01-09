@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.RecyclerView.State;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -23,13 +22,13 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
 public class GridItemDecoration extends RecyclerView.ItemDecoration {
-    private int V_Space;
-    private int H_Space;
+    private int verticalSpace;
+    private int horizontalSpace;
     private Paint mPaint;
 
-    public GridItemDecoration(int H_Space, int V_Space, int colour) {
-        this.H_Space = H_Space;
-        this.V_Space = V_Space;
+    public GridItemDecoration(int horizontalSpace, int verticalSpace, int colour) {
+        this.horizontalSpace = horizontalSpace;
+        this.verticalSpace = verticalSpace;
         mPaint = new Paint();
         mPaint.setColor(colour);
     }
@@ -59,13 +58,11 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         LRecyclerViewAdapter adapter = (LRecyclerViewAdapter) parent.getAdapter();
         for (int i = 0; i < childCount; i++) {
             if ((recyclerView.isOnTop() && (adapter.isHeader(i) || adapter.isRefreshHeader(i))) || adapter.isFooter(i)) {
-                Log.d("horizontal---no-->", String.valueOf(i) + "----" + childCount);
                 c.drawRect(0, 0, 0, 0, mPaint);
             } else {
-                Log.d("horizontal---yes-->", String.valueOf(i));
                 final View child = parent.getChildAt(i);
                 final int top = child.getBottom();
-                final int bottom = top + V_Space;
+                final int bottom = top + verticalSpace;
                 int left = child.getLeft();
                 int right = child.getRight();
                 c.drawRect(left, top, right, bottom, mPaint);
@@ -84,9 +81,9 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
                 final View child = parent.getChildAt(i);
                 final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
                 final int top = child.getTop();
-                final int bottom = child.getBottom() + V_Space;
+                final int bottom = child.getBottom() + verticalSpace;
                 final int left = child.getRight() + params.rightMargin;
-                final int right = left + H_Space;
+                final int right = left + horizontalSpace;
                 c.drawRect(left, top, right, bottom, mPaint);
             }
 
@@ -104,10 +101,8 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         LRecyclerViewAdapter adapter = (LRecyclerViewAdapter) parent.getAdapter();
         if (layoutManager instanceof GridLayoutManager) {
             int leftCount = childCount - childCount % spanCount;//3
-            Log.d("left--->", String.valueOf(leftCount));
             //leftCount:若childCount能被span整除为childCount否则为去掉最后一行的item总数
             if ((pos - adapter.getHeaderViews().size() + 1) > leftCount) {
-                Log.d("no_draw------->", String.valueOf(pos));
                 return true;
             }
         }
@@ -132,7 +127,6 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         int itemPosition = parent.getChildAdapterPosition(view);
         int spanCount = getSpanCount(parent);
         int childCount = parent.getAdapter().getItemCount();
-        Log.d("position------->", String.valueOf(itemPosition));
         LRecyclerViewAdapter adapter = (LRecyclerViewAdapter) parent.getAdapter();
         if (adapter.isFooter(itemPosition) || adapter.isHeader(itemPosition) || adapter.isRefreshHeader(itemPosition)) {
             //header，footer不进行绘制
@@ -140,30 +134,29 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         } else {
             if (!(parent.getLayoutManager() instanceof GridLayoutManager)) {
                 //LinearLayoutManager
-                Log.d("manager--------->", "LinearLayoutManager: ");
                 if (itemPosition == (childCount - 2 - adapter.getHeaderViews().size()))
                     outRect.set(0, 0, 0, 0);
                 else
-                    outRect.set(0, 0, 0, V_Space);
+                    outRect.set(0, 0, 0, verticalSpace);
             } else {
                 //GridLayoutManager
                 if (isLastRaw(parent, itemPosition, spanCount, childCount - 2 - adapter.getHeaderViews().size())) {
                     //最后一行
                     if (isLastColumn(parent, itemPosition, spanCount)) {
                         // 最后一行最后一列
-                        outRect.set(0, 0, 0, V_Space);
+                        outRect.set(0, 0, 0, verticalSpace);
                     } else {
                         // 最后一行不是最后一列
-                        outRect.set(0, 0, H_Space, V_Space);
+                        outRect.set(0, 0, horizontalSpace, verticalSpace);
                     }
                 } else {
                     //最后一列
                     if (isLastColumn(parent, itemPosition, spanCount)) {
                         // 最后一列最后一行
-                        outRect.set(0, 0, 0, V_Space);
+                        outRect.set(0, 0, 0, verticalSpace);
                     } else {
                         // 最后一列非最后一行
-                        outRect.set(0, 0, H_Space, V_Space);
+                        outRect.set(0, 0, horizontalSpace, verticalSpace);
                     }
                 }
 
@@ -216,26 +209,26 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
 
 
         //通过dp设置垂直间距
-        public Builder setmVertical(@DimenRes int mVertical) {
-            this.mVertical = mResources.getDimensionPixelSize(mVertical);
+        public Builder setVertical(@DimenRes int vertical) {
+            this.mVertical = mResources.getDimensionPixelSize(vertical);
             return this;
         }
 
         //通过px设置垂直间距
-        public Builder setmVertical(float mVertical) {
+        public Builder setVertical(float mVertical) {
             this.mVertical = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mVertical, mResources.getDisplayMetrics());
             return this;
         }
 
         //通过dp设置水平间距
-        public Builder setmHorizontal(@DimenRes int mHorizontal) {
-            this.mHorizontal = mResources.getDimensionPixelSize(mHorizontal);
+        public Builder setHorizontal(@DimenRes int horizontal) {
+            this.mHorizontal = mResources.getDimensionPixelSize(horizontal);
             return this;
         }
 
         //通过px设置水平间距
-        public Builder setmHorizontal(float mHorizontal) {
-            this.mHorizontal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mHorizontal, mResources.getDisplayMetrics());
+        public Builder setHorizontal(float horizontal) {
+            this.mHorizontal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, horizontal, mResources.getDisplayMetrics());
             return this;
         }
 

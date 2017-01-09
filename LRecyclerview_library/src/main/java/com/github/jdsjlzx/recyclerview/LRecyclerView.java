@@ -363,6 +363,9 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void setLoadMoreEnabled(boolean enabled) {
+        if(mWrapAdapter == null){
+            throw new NullPointerException("mWrapAdapter cannot be null, please make sure the variable mWrapAdapter have been initialized.");
+        }
         mLoadMoreEnabled = enabled;
         if (!enabled) {
             if(mWrapAdapter.getFooterViewsCount() > 0) {

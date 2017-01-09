@@ -1,5 +1,6 @@
 package com.lzx.demo.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
+import com.github.jdsjlzx.ItemDecoration.SpacesItemDecoration;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -66,9 +68,16 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
         //mRecyclerView.setFootViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
 
-        int spacing = getResources().getDimensionPixelSize(R.dimen.dp_10);
-        //mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
-        mRecyclerView.addItemDecoration(new GridItemDecoration(this));
+        int spacing = getResources().getDimensionPixelSize(R.dimen.dp_4);
+        mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
+
+        //根据需要选择使用GridItemDecoration还是SpacesItemDecoration
+        GridItemDecoration divider = new GridItemDecoration.Builder(this)
+                .setHorizontal(R.dimen.default_divider_padding)
+                .setVertical(R.dimen.default_divider_padding)
+                .setColorResource(R.color.split)
+                .build();
+        //mRecyclerView.addItemDecoration(divider);
 
         mRecyclerView.setHasFixedSize(true);
 
