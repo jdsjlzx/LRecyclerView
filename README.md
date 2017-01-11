@@ -234,7 +234,6 @@ mLRecyclerViewAdapter.notifyDataSetChanged();
 ```java
 @Override
 public void onRefresh() {
-    RecyclerViewStateUtils.setFooterViewState(mRecyclerView,LoadingFooter.State.Normal);
     mDataAdapter.clear();
     mCurrentCounter = 0;
     isRefresh = true;
@@ -280,7 +279,6 @@ RecyclerViewStateUtils.setFooterViewState(getActivity(), mRecyclerView, getPageS
 private View.OnClickListener mFooterClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            RecyclerViewStateUtils.setFooterViewState(getActivity(), mRecyclerView, getPageSize(), LoadingFooter.State.Loading, null);
             requestData();
         }
     };
