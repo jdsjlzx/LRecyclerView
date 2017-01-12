@@ -152,17 +152,11 @@ public class LoadingFooter extends RelativeLayout {
 
                     mProgressView = (SimpleViewSwitcher) mLoadingView.findViewById(R.id.loading_progressbar);
                     mLoadingText = (TextView) mLoadingView.findViewById(R.id.loading_text);
-                } else {
-                    mLoadingView.setVisibility(VISIBLE);
                 }
-                Log.e("lzx","showView =  "  + showView);
+
                 mLoadingView.setVisibility(showView ? VISIBLE : GONE);
 
                 mProgressView.setVisibility(View.VISIBLE);
-                Log.e("lzx","mLoadingView.getVisibility() =  "  + mLoadingView.getVisibility());
-                Log.e("lzx","mProgressView.getVisibility() =  "  + mProgressView.getVisibility());
-                Log.e("lzx","setIndicatorId " + style);
-
                 mProgressView.addView(initIndicatorView(style));
 
                 mLoadingText.setText(TextUtils.isEmpty(loadingHint) ? getResources().getString(R.string.list_footer_loading) : loadingHint);

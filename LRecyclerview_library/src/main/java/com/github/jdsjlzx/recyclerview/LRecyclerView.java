@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -43,6 +44,7 @@ public class LRecyclerView extends RecyclerView {
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private float mLastY = -1;
     private static final float DRAG_RATE = 2.2f;
+    private int mPageSize = 10; //一次网络请求默认数量
 
     private LRecyclerViewAdapter mWrapAdapter;
     private boolean isNoMore = false;
@@ -153,7 +155,7 @@ public class LRecyclerView extends RecyclerView {
         @Override
         public void onChanged() {
             Adapter<?> adapter = getAdapter();
-
+            Log.e("lzx","onChanged");
             if (adapter instanceof LRecyclerViewAdapter) {
                 LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) adapter;
                 if (lRecyclerViewAdapter.getInnerAdapter() != null && mEmptyView != null) {
@@ -180,6 +182,9 @@ public class LRecyclerView extends RecyclerView {
 
             if (mWrapAdapter != null) {
                 mWrapAdapter.notifyDataSetChanged();
+                if(mWrapAdapter.getInnerAdapter().getItemCount() < mPageSize ) {
+                    mFootView.setVisibility(GONE);
+                }
             }
 
         }
@@ -197,6 +202,10 @@ public class LRecyclerView extends RecyclerView {
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
             mWrapAdapter.notifyItemRangeRemoved(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+            if(mWrapAdapter.getInnerAdapter().getItemCount() < mPageSize ) {
+                mFootView.setVisibility(GONE);
+            }
+
         }
 
         @Override
@@ -297,16 +306,6 @@ public class LRecyclerView extends RecyclerView {
         return max;
     }
 
-    private int findMin(int[] firstPositions) {
-        int min = firstPositions[0];
-        for (int value : firstPositions) {
-            if (value < min) {
-                min = value;
-            }
-        }
-        return min;
-    }
-
     public boolean isOnTop() {
         if (mPullRefreshEnabled && mRefreshHeader.getParent() != null) {
             return true;
@@ -357,6 +356,7 @@ public class LRecyclerView extends RecyclerView {
     private void setRefreshHeader(BaseRefreshHeader refreshHeader) {
         mRefreshHeader = (ArrowRefreshHeader) refreshHeader;
     }
+
 
     public void setPullRefreshEnabled(boolean enabled) {
         mPullRefreshEnabled = enabled;
@@ -464,6 +464,14 @@ public class LRecyclerView extends RecyclerView {
         mRefreshHeader.setHintTextColor(hintColor);
         mRefreshHeader.setViewBackgroundColor(backgroundColor);
 
+    }
+
+    /**
+     * 设置一次网络请求默认数量，在总数不足一页时使用该方法，隐藏底部的footview
+     * @param size
+     */
+    public void setPageSize(int size) {
+        this.mPageSize = size;
     }
 
     public void setLScrollListener(LScrollListener listener) {

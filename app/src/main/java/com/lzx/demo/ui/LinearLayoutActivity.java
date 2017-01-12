@@ -45,7 +45,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
         //init data
         ArrayList<ItemModel> dataList = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 10; i++) {
             ItemModel itemModel = new ItemModel();
             itemModel.title = "item" + i;
             dataList.add(itemModel);
@@ -92,10 +92,10 @@ public class LinearLayoutActivity extends AppCompatActivity {
         //mRecyclerView.setPullRefreshEnabled(false);
 
         //禁用自动加载更多功能
-        mRecyclerView.setLoadMoreEnabled(false);
+        //mRecyclerView.setLoadMoreEnabled(false);
 
         //add a FooterView
-        mLRecyclerViewAdapter.addFooterView(sampleFooter);
+        //mLRecyclerViewAdapter.addFooterView(sampleFooter);
 
         //删除item
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
