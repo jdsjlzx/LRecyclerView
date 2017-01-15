@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -155,7 +154,6 @@ public class LRecyclerView extends RecyclerView {
         @Override
         public void onChanged() {
             Adapter<?> adapter = getAdapter();
-            Log.e("lzx","onChanged");
             if (adapter instanceof LRecyclerViewAdapter) {
                 LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) adapter;
                 if (lRecyclerViewAdapter.getInnerAdapter() != null && mEmptyView != null) {

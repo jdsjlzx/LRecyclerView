@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- *
+ * BetterAdapter的运用
+ * http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/1125/6806.html
  */
 public class BilibiliActivity extends AppCompatActivity {
 

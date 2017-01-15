@@ -1,4 +1,4 @@
-package com.lzx.demo.ui;
+package com.lzx.demo.multitype;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,26 +10,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzx.demo.R;
-import com.lzx.demo.adapter.DataAdapter;
-import com.lzx.demo.bean.ItemModel;
-import com.lzx.demo.view.SampleFooter;
+import com.lzx.demo.adapter.ExpandableItemAdapter;
+import com.lzx.demo.bean.Level0Item;
+import com.lzx.demo.bean.Level1Item;
+import com.lzx.demo.bean.MultiItemEntity;
+import com.lzx.demo.bean.Person;
 import com.lzx.demo.view.SampleHeader;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
  * 带HeaderView、FooterView的LinearLayout RecyclerView
  */
-public class LinearLayoutActivity extends AppCompatActivity {
+public class ExpandableActivity extends AppCompatActivity {
 
     private LRecyclerView mRecyclerView = null;
 
-    private DataAdapter mDataAdapter = null;
+    private ExpandableItemAdapter mDataAdapter = null;
 
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
 
@@ -43,16 +45,9 @@ public class LinearLayoutActivity extends AppCompatActivity {
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
-        //init data
-        ArrayList<ItemModel> dataList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            ItemModel itemModel = new ItemModel();
-            itemModel.title = "item" + i;
-            dataList.add(itemModel);
-        }
 
-        mDataAdapter = new DataAdapter(this);
-        mDataAdapter.setDataList(dataList);
+        mDataAdapter = new ExpandableItemAdapter(this);
+        mDataAdapter.setDataList(generateData());
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
@@ -73,21 +68,6 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter.addHeaderView(header);
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
-        SampleFooter sampleFooter = new SampleFooter(this);
-        sampleFooter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 加载更多
-                ArrayList<ItemModel> dataList = new ArrayList<>();
-                for (int i = 0; i < 10; i++) {
-                    ItemModel itemModel = new ItemModel();
-                    itemModel.title = "item" + (i + mDataAdapter.getItemCount());
-                    dataList.add(itemModel);
-                }
-                mDataAdapter.addAll(dataList);
-            }
-        });
-
         //禁用下拉刷新功能
         mRecyclerView.setPullRefreshEnabled(false);
 
@@ -95,16 +75,8 @@ public class LinearLayoutActivity extends AppCompatActivity {
         //mRecyclerView.setLoadMoreEnabled(false);
 
         //add a FooterView
-        mLRecyclerViewAdapter.addFooterView(sampleFooter);
+        //mLRecyclerViewAdapter.addFooterView(sampleFooter);
 
-        //删除item
-        mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                mDataAdapter.remove(position);
-            }
-
-        });
     }
 
     @Override
@@ -113,6 +85,29 @@ public class LinearLayoutActivity extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    private ArrayList<MultiItemEntity> generateData() {
+        int lv0Count = 9;
+        int lv1Count = 3;
+        int personCount = 5;
+
+        String[] nameList = {"Bob", "Andy", "Lily", "Brown", "Bruce"};
+        Random random = new Random();
+
+        ArrayList<MultiItemEntity> res = new ArrayList<>();
+        for (int i = 0; i < lv0Count; i++) {
+            Level0Item lv0 = new Level0Item("This is " + i + "th item in Level 0", "subtitle of " + i);
+            for (int j = 0; j < lv1Count; j++) {
+                Level1Item lv1 = new Level1Item("Level 1 item: " + j, "(no animation)");
+                for (int k = 0; k < personCount; k++) {
+                    lv1.addSubItem(new Person(nameList[k], random.nextInt(40)));
+                }
+                lv0.addSubItem(lv1);
+            }
+            res.add(lv0);
+        }
+        return res;
     }
 
 }

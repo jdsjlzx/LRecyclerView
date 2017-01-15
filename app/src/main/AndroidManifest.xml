@@ -46,6 +46,7 @@
         <activity android:name=".ui.ListDragMenuActivity" />
         <activity android:name=".multitype.MultiTypeActivity" />
         <activity android:name=".multitype.BilibiliActivity" />
+        <activity android:name=".multitype.ExpandableActivity" />
     </application>
 
 </manifest>

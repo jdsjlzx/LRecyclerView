@@ -15,7 +15,6 @@
         android:gravity="left"
         android:paddingLeft="@dimen/dp_10"
         android:textColor="@color/color_00"
-        android:text="3333"
         android:textSize="@dimen/dp_14"/>
 
 </LinearLayout>

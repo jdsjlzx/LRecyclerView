@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lzx.demo.R;
-import com.lzx.demo.base.MultiAdapter;
+import com.lzx.demo.base.BaseMultiAdapter;
 import com.lzx.demo.base.SuperViewHolder;
 import com.lzx.demo.bean.MultipleItem;
 
@@ -13,7 +13,7 @@ import com.lzx.demo.bean.MultipleItem;
  * Created by Lzx on 2016/12/30.
  */
 
-public class MultipleItemAdapter extends MultiAdapter<MultipleItem> {
+public class MultipleItemAdapter extends BaseMultiAdapter<MultipleItem> {
 
     public MultipleItemAdapter(Context context) {
         super(context);

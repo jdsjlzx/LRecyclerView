@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.lzx.demo.R;
-import com.lzx.demo.base.MultiAdapter;
+import com.lzx.demo.base.BaseMultiAdapter;
 import com.lzx.demo.base.SuperViewHolder;
 import com.lzx.demo.bean.Goods;
 import com.lzx.demo.bean.MultipleItem;
@@ -19,11 +19,11 @@ import java.util.List;
  * Created by Lzx on 2016/12/30.
  */
 
-public class ShopAdapter extends MultiAdapter<MultipleItem> {
+public class ShopAdapterBase extends BaseMultiAdapter<MultipleItem> {
 
     private List<Goods> goodsList = new ArrayList<>();
 
-    public ShopAdapter(Context context, List<Goods> goodsList) {
+    public ShopAdapterBase(Context context, List<Goods> goodsList) {
         super(context);
         addItemType(MultipleItem.TEXT, R.layout.list_item_text);
         addItemType(MultipleItem.LIST, R.layout.layout_list_item_goods_related);

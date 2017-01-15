@@ -16,6 +16,7 @@ public class SuperViewHolder extends RecyclerView.ViewHolder {
         this.views = new SparseArray<>();
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends View> T getView(int viewId) {
         View view = views.get(viewId);
         if (view == null) {

@@ -14,4 +14,7 @@
 
     <string name="expand_all">Expand All</string>
     <string name="collapse_all">Collapse All</string>
+
+    <string name="expanded">expanded</string>
+    <string name="collapsed">collapsed</string>
 </resources>
