@@ -48,7 +48,20 @@ https://jitpack.io/com/github/jdsjlzx/LRecyclerView/1.3.3/javadoc/
 ### 注意：
 1. EndlessLinearLayoutActivity.java类里面有标准完整的使用方法，请尽量在这个界面看效果；
 2. 本着解耦的原则，能在demo中实现的就尽量不在libray中实现。
-
+3. libray中的sdk版本都是最新版本，如果你不想处理申请权限的问题，可以在你本地的app的build.gradle中如下设置：
+```groovy
+compileSdkVersion 25
+buildToolsVersion '25.0.2'
+    
+defaultConfig {
+        applicationId "com.github.jdsjlzx"
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 4
+        versionName "0.5.3"
+}
+```
+targetSdkVersion设置为22即可。
 
 
 ##Demo下载
