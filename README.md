@@ -211,6 +211,13 @@ mRecyclerView.setFooterViewColor(R.color.colorAccent, R.color.dark ,android.R.co
 //设置底部加载文字提示
 mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
 ```
+
+记得设置ProgressStyle：
+```java
+mRecyclerView.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
+mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
+```
+
 ###开启和禁止下拉刷新功能
 
 ```java
