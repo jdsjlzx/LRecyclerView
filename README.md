@@ -197,9 +197,6 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 
 ![这里写图片描述](http://img.blog.csdn.net/20160701173404897)
 
-###设置加载更多样式
-
-拷贝LRecyclerview_library中的文件文件layout_recyclerview_list_footer_loading.xml到你的工程中，修改后即可。
 
 ###设置下拉刷新Header和Footer文字内容和颜色
 
