@@ -255,8 +255,9 @@ mLRecyclerViewAdapter.notifyDataSetChanged();
 @Override
 public void onRefresh() {
     mDataAdapter.clear();
-    mCurrentCounter = 0;
-    isRefresh = true;
+    mLRecyclerViewAdapter.notifyDataSetChanged();//必须调用此方法
+    mCurrentCounter = 0;
+    isRefresh = true;
     requestData();
 }
 ```
