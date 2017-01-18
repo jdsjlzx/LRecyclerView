@@ -249,7 +249,7 @@ mLRecyclerViewAdapter.notifyDataSetChanged();
 ```
 
 ###下拉刷新清空数据
-有的时候，需要下拉的时候情况数据并更新UI，可以这么做：
+有的时候，需要下拉的时候清空数据并更新UI，可以这么做：
 
 ```java
 @Override
@@ -260,7 +260,7 @@ public void onRefresh() {
     requestData();
 }
 ```
-如果不需要下拉的时候情况数据并更新UI，如下即可：
+如果不需要下拉的时候清空数据并更新UI，如下即可：
 
 ```java
 @Override
