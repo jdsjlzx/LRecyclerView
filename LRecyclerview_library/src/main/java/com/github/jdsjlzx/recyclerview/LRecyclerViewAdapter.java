@@ -6,9 +6,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.jdsjlzx.interfaces.IRefreshHeader;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
-import com.github.jdsjlzx.view.ArrowRefreshHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int HEADER_INIT_INDEX = 10002;
     private static List<Integer> mHeaderTypes = new ArrayList<>();
 
-    private ArrowRefreshHeader mRefreshHeader;
+    private IRefreshHeader mRefreshHeader;
 
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -45,7 +45,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.mInnerAdapter = innerAdapter;
     }
 
-    public void setRefreshHeader(ArrowRefreshHeader refreshHeader){
+    public void setRefreshHeader(IRefreshHeader refreshHeader){
         mRefreshHeader = refreshHeader;
     }
 
@@ -157,7 +157,7 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_REFRESH_HEADER) {
-            return new ViewHolder(mRefreshHeader);
+            return new ViewHolder(mRefreshHeader.getHeaderView());
         } else if (isHeaderType(viewType)) {
             return new ViewHolder(getHeaderViewByType(viewType));
         } else if (viewType == TYPE_FOOTER_VIEW) {

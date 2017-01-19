@@ -18,14 +18,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.R;
-import com.github.jdsjlzx.interfaces.BaseRefreshHeader;
+import com.github.jdsjlzx.interfaces.IRefreshHeader;
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 
 import java.util.Date;
 
 
-public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader {
+public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
 
     private LinearLayout mContainer;
     private ImageView mArrowImageView;
@@ -186,6 +186,11 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                 reset();
             }
         }, 200);
+    }
+
+    @Override
+    public View getHeaderView() {
+        return this;
     }
 
     public void setVisibleHeight(int height) {
