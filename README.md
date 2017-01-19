@@ -197,9 +197,6 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 
 ![这里写图片描述](http://img.blog.csdn.net/20160701173404897)
 
-###设置加载更多样式
-
-拷贝LRecyclerview_library中的文件文件layout_recyclerview_list_footer_loading.xml到你的工程中，修改后即可。
 
 ###设置下拉刷新Header和Footer文字内容和颜色
 
@@ -211,6 +208,13 @@ mRecyclerView.setFooterViewColor(R.color.colorAccent, R.color.dark ,android.R.co
 //设置底部加载文字提示
 mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
 ```
+
+记得设置ProgressStyle：
+```java
+mRecyclerView.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
+mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
+```
+
 ###开启和禁止下拉刷新功能
 
 ```java
@@ -242,18 +246,19 @@ mLRecyclerViewAdapter.notifyDataSetChanged();
 ```
 
 ###下拉刷新清空数据
-有的时候，需要下拉的时候情况数据并更新UI，可以这么做：
+有的时候，需要下拉的时候清空数据并更新UI，可以这么做：
 
 ```java
 @Override
 public void onRefresh() {
     mDataAdapter.clear();
-    mCurrentCounter = 0;
-    isRefresh = true;
+    mLRecyclerViewAdapter.notifyDataSetChanged();//必须调用此方法
+    mCurrentCounter = 0;
+    isRefresh = true;
     requestData();
 }
 ```
-如果不需要下拉的时候情况数据并更新UI，如下即可：
+如果不需要下拉的时候清空数据并更新UI，如下即可：
 
 ```java
 @Override
