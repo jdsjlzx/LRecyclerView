@@ -157,6 +157,7 @@ public class LoadingFooter extends RelativeLayout {
                 mLoadingView.setVisibility(showView ? VISIBLE : GONE);
 
                 mProgressView.setVisibility(View.VISIBLE);
+                mProgressView.removeAllViews();
                 mProgressView.addView(initIndicatorView(style));
 
                 mLoadingText.setText(TextUtils.isEmpty(loadingHint) ? getResources().getString(R.string.list_footer_loading) : loadingHint);
