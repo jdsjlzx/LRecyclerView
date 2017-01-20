@@ -101,6 +101,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 mCurrentCounter = 0;
+                mDataAdapter.clear();
                 requestData();
             }
         });
@@ -118,7 +119,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
             }
         });
 
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.refresh();
 
     }
 
@@ -148,10 +149,6 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
             switch (msg.what) {
                 case -1:
-                    if(activity.mRecyclerView.isPulldownToRefresh()){
-                        activity.mDataAdapter.clear();
-                        mCurrentCounter = 0;
-                    }
 
                     int currentSize = activity.mDataAdapter.getItemCount();
 
@@ -171,30 +168,22 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
 
                     activity.addItems(newList);
 
-                    if(activity.mRecyclerView.isPulldownToRefresh()){
-                        activity.mRecyclerView.refreshComplete();
-                        activity.notifyDataSetChanged();
-                    }else {
-                        activity.mRecyclerView.loadMoreComplete();
-                    }
+                    activity.mRecyclerView.refreshComplete(10);
+                    activity.notifyDataSetChanged();
 
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    if(activity.mRecyclerView.isPulldownToRefresh()){
-                        activity.mRecyclerView.refreshComplete();
-                        activity.notifyDataSetChanged();
-                    }else {
-                        activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                            @Override
-                            public void reload() {
-                                requestData();
-                            }
-                        });
-                    }
-
+                    activity.mRecyclerView.refreshComplete(10);
+                    activity.notifyDataSetChanged();
+                    activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                        @Override
+                        public void reload() {
+                            requestData();
+                        }
+                    });
                     break;
             }
         }

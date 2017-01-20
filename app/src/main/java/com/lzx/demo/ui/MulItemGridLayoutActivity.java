@@ -93,7 +93,7 @@ public class MulItemGridLayoutActivity extends AppCompatActivity{
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mRecyclerView.refreshComplete();
+                        mRecyclerView.refreshComplete(10);
                     }
                 },1000);
             }

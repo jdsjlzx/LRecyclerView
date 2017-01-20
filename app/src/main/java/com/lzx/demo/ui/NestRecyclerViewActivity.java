@@ -78,13 +78,13 @@ public class NestRecyclerViewActivity extends AppCompatActivity{
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mRecyclerView.refreshComplete();
+                        mRecyclerView.refreshComplete(10);
                     }
                 },2000);
             }
         });
 
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.refresh();
 
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override

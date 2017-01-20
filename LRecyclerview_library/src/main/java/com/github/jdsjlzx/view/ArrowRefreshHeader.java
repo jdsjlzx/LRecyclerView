@@ -60,12 +60,12 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
 
     private void initView() {
         // 初始情况，设置下拉刷新view高度为0
-        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.listview_header, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 0, 0, 0);
         this.setLayoutParams(lp);
         this.setPadding(0, 0, 0, 0);
 
+        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.listview_header, null);
         addView(mContainer, new LayoutParams(LayoutParams.MATCH_PARENT, 0));
         setGravity(Gravity.BOTTOM);
 
@@ -206,14 +206,47 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
     }
 
     @Override
-    public void onMove(float delta) {
-        if(getVisibleHeight() > 0 || delta > 0) {
-            setVisibleHeight((int) delta + getVisibleHeight());
+    public void onReset() {
+        mArrowImageView.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+
+        if (mState == STATE_RELEASE_TO_REFRESH) {
+            mArrowImageView.startAnimation(mRotateDownAnim);
+        }
+        if (mState == STATE_REFRESHING) {
+            mArrowImageView.clearAnimation();
+        }
+        //mStatusTextView.setText(strInfo1);
+        mState = STATE_NORMAL;
+    }
+
+    @Override
+    public void onPrepare() {
+        mArrowImageView.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+
+        if (mState != STATE_RELEASE_TO_REFRESH) {
+            mArrowImageView.clearAnimation();
+            mArrowImageView.startAnimation(mRotateUpAnim);
+        }
+        mState = STATE_RELEASE_TO_REFRESH;
+    }
+
+    @Override
+    public void onRefreshing() {
+        setState(STATE_REFRESHING);
+    }
+
+    @Override
+    public void onMove(float offSet, float sumOffSet) {
+
+        if (getVisibleHeight() > 0 || offSet > 0) {
+            setVisibleHeight((int) offSet + getVisibleHeight());
             if (mState <= STATE_RELEASE_TO_REFRESH) { // 未处于刷新状态，更新箭头
                 if (getVisibleHeight() > mMeasuredHeight) {
-                    setState(STATE_RELEASE_TO_REFRESH);
-                }else {
-                    setState(STATE_NORMAL);
+                    onPrepare();
+                } else {
+                    onReset();
                 }
             }
         }

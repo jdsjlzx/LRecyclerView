@@ -144,7 +144,7 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity{
                 new Handler().postDelayed(new Runnable(){
                     public void run() {
                         mLRecyclerViewAdapter.notifyDataSetChanged();
-                        mRecyclerView.refreshComplete();
+                        mRecyclerView.refreshComplete(10);
                     }
 
                 }, 1000);

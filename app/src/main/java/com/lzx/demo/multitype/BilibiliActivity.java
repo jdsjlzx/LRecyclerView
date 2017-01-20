@@ -68,13 +68,13 @@ public class BilibiliActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mRecyclerView.refreshComplete();
+                        mRecyclerView.refreshComplete(10);
                     }
                 },1000);
             }
         });
 
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.refresh();
         mRecyclerView.setLoadMoreEnabled(false);
         //是否允许嵌套滑动
         mRecyclerView.setNestedScrollingEnabled(false);

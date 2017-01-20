@@ -9,10 +9,22 @@ public interface IRefreshHeader {
 	int STATE_REFRESHING = 2;
 	int STATE_DONE = 3;
 
+	void onReset();
+
+	/**
+	 * 处于可以刷新的状态，已经过了指定距离
+	 */
+	void onPrepare();
+
+	/**
+	 * 正在刷新
+	 */
+	void onRefreshing();
+
 	/**
 	 * 下拉移动
 	 */
-	void onMove(float delta);
+	void onMove(float offSet, float sumOffSet);
 
 	/**
 	 * 下拉松开

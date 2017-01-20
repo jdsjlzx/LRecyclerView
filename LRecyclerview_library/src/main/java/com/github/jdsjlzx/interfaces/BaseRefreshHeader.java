@@ -1,5 +1,6 @@
 package com.github.jdsjlzx.interfaces;
 
+@Deprecated
 public interface BaseRefreshHeader {
 
 	int STATE_NORMAL = 0;

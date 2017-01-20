@@ -127,7 +127,7 @@ public class SwipeDeleteActivity extends AppCompatActivity{
             }
         });
 
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.refresh();
 
         //侧滑删除请不要使用下面接口，SwipeMenuAdapter内部实现item点击事件
         /*mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -192,24 +192,15 @@ public class SwipeDeleteActivity extends AppCompatActivity{
 
                     activity.addItems(newList);
 
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
-                        activity.mRecyclerView.refreshComplete();
-                    }
-
-                    RecyclerViewStateUtils.setFooterViewState(activity.mRecyclerView, LoadingFooter.State.Normal);
+                    activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
                     activity.notifyDataSetChanged();
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    if(activity.isRefresh){
-                        activity.isRefresh = false;
-                        activity.mRecyclerView.refreshComplete();
-                    }
+                    activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
                     activity.notifyDataSetChanged();
-                    RecyclerViewStateUtils.setFooterViewState(activity, activity.mRecyclerView, REQUEST_COUNT, LoadingFooter.State.NetWorkError, activity.mFooterClick);
                     break;
                 default:
                     break;

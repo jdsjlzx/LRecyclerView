@@ -82,7 +82,7 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
             }
         });
 
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.refresh();
 
         //不要在调用下面代码
         /*mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -152,29 +152,22 @@ public class ExpandableRecyclerViewOneActivity extends AppCompatActivity {
 
                     activity.addItems(activity.mDataAdapter.getSampleItems());
 
-                    if(activity.mRecyclerView.isPulldownToRefresh()){
-                        activity.mRecyclerView.refreshComplete();
-                        activity.notifyDataSetChanged();
-                    }else {
-                        activity.mRecyclerView.loadMoreComplete();
-                    }
+                    activity.mRecyclerView.refreshComplete(10);
+                    activity.notifyDataSetChanged();
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
 
-                    if(activity.mRecyclerView.isPulldownToRefresh()){
-                        activity.mRecyclerView.refreshComplete();
-                        activity.notifyDataSetChanged();
-                    }else {
-                        activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                            @Override
-                            public void reload() {
-                                requestData();
-                            }
-                        });
-                    }
+                    activity.mRecyclerView.refreshComplete(10);
+                    activity.notifyDataSetChanged();
+                    activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                        @Override
+                        public void reload() {
+                            requestData();
+                        }
+                    });
                     break;
                 default:
                     break;

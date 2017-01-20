@@ -90,13 +90,13 @@ public class Nest2RecyclerViewActivity extends AppCompatActivity{
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mRecyclerView.refreshComplete();
+                        mRecyclerView.refreshComplete(10);
                     }
                 },1000);
             }
         });
 
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.refresh();
 
         //是否允许嵌套滑动
         mRecyclerView.setNestedScrollingEnabled(false);
