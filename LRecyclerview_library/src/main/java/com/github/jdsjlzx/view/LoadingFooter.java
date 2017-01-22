@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
@@ -54,7 +53,7 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
         inflate(context, R.layout.layout_recyclerview_list_footer, this);
         setOnClickListener(null);
 
-        setState(State.Normal, true);
+        onReset();//初始为隐藏状态
 
         indicatorColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
         style = ProgressStyle.BallPulse;
@@ -171,7 +170,7 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
                 if (mNetworkErrorView != null) {
                     mNetworkErrorView.setVisibility(GONE);
                 }
-                Log.e("lzx","mLoadingView == null  " + (mLoadingView == null));
+
                 if (mLoadingView == null) {
                     ViewStub viewStub = (ViewStub) findViewById(R.id.loading_viewstub);
                     mLoadingView = viewStub.inflate();

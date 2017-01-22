@@ -3,6 +3,7 @@ package com.github.jdsjlzx.recyclerview;
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
 
+import com.github.jdsjlzx.interfaces.ILoadMoreFooter;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.view.LoadingFooter;
@@ -23,16 +25,20 @@ import com.github.jdsjlzx.view.LoadingFooter;
  */
 public class LuRecyclerView extends RecyclerView {
     private boolean mLoadMoreEnabled = true;
+    private boolean mRefreshing = false;//是否正在下拉刷新
+    private boolean mLoadingData = false;//是否正在加载数据
     private boolean flag = false;//标记是否setAdapter
-    private boolean isNoMore = false;
-    private LScrollListener mLScrollListener;
     private OnLoadMoreListener mLoadMoreListener;
+    private LScrollListener mLScrollListener;
+    private ILoadMoreFooter mLoadMoreFooter;
     private View mEmptyView;
     private View mFootView;
-    private final AdapterDataObserver mDataObserver = new DataObserver();
+
+    private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
+    private int mPageSize = 10; //一次网络请求默认数量
 
     private LuRecyclerViewAdapter mWrapAdapter;
-
+    private boolean isNoMore = false;
     //scroll variables begin
     /**
      * 当前RecyclerView类型
@@ -48,6 +54,11 @@ public class LuRecyclerView extends RecyclerView {
      * 最后一个可见的item的位置
      */
     private int lastVisibleItemPosition;
+
+    /**
+     * 当前滑动的状态
+     */
+    private int currentScrollState = 0;
 
     /**
      * 触发在上下滑动监听器的容差距离
@@ -92,9 +103,11 @@ public class LuRecyclerView extends RecyclerView {
     }
 
     private void init() {
-        LoadingFooter footView = new LoadingFooter(getContext().getApplicationContext());
-        mFootView = footView;
-        mFootView.setVisibility(GONE);
+        if (mLoadMoreEnabled) {
+            setLoadMoreFooter(new LoadingFooter(getContext().getApplicationContext()));
+        }
+
+
     }
 
     @Override
@@ -110,21 +123,20 @@ public class LuRecyclerView extends RecyclerView {
 
         mDataObserver.onChanged();
 
-        if(mLoadMoreEnabled) {
+        if (mLoadMoreEnabled) {
             mWrapAdapter.addFooterView(mFootView);
         }
 
     }
 
-    private class DataObserver extends AdapterDataObserver {
+    private class DataObserver extends RecyclerView.AdapterDataObserver {
         @Override
         public void onChanged() {
             Adapter<?> adapter = getAdapter();
-
             if (adapter instanceof LRecyclerViewAdapter) {
-                LRecyclerViewAdapter headerAndFooterAdapter = (LRecyclerViewAdapter) adapter;
-                if (headerAndFooterAdapter.getInnerAdapter() != null && mEmptyView != null) {
-                    int count = headerAndFooterAdapter.getInnerAdapter().getItemCount();
+                LRecyclerViewAdapter lRecyclerViewAdapter = (LRecyclerViewAdapter) adapter;
+                if (lRecyclerViewAdapter.getInnerAdapter() != null && mEmptyView != null) {
+                    int count = lRecyclerViewAdapter.getInnerAdapter().getItemCount();
                     if (count == 0) {
                         mEmptyView.setVisibility(View.VISIBLE);
                         LuRecyclerView.this.setVisibility(View.GONE);
@@ -147,83 +159,50 @@ public class LuRecyclerView extends RecyclerView {
 
             if (mWrapAdapter != null) {
                 mWrapAdapter.notifyDataSetChanged();
+                if(mWrapAdapter.getInnerAdapter().getItemCount() < mPageSize ) {
+                    mFootView.setVisibility(GONE);
+                }
             }
+
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeChanged(positionStart + mWrapAdapter.getHeaderViewsCount(), itemCount);
+            mWrapAdapter.notifyItemRangeChanged(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeInserted(positionStart + mWrapAdapter.getHeaderViewsCount(), itemCount);
+            mWrapAdapter.notifyItemRangeInserted(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeRemoved(positionStart + mWrapAdapter.getHeaderViewsCount(), itemCount);
+            mWrapAdapter.notifyItemRangeRemoved(positionStart + mWrapAdapter.getHeaderViewsCount() + 1, itemCount);
+            if(mWrapAdapter.getInnerAdapter().getItemCount() < mPageSize ) {
+                mFootView.setVisibility(GONE);
+            }
+
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
             int headerViewsCountCount = mWrapAdapter.getHeaderViewsCount();
-            mWrapAdapter.notifyItemRangeChanged(fromPosition + headerViewsCountCount , toPosition + headerViewsCountCount + itemCount);
+            mWrapAdapter.notifyItemRangeChanged(fromPosition + headerViewsCountCount + 1, toPosition + headerViewsCountCount + 1 + itemCount);
         }
 
     }
 
-    public void setNoMore(boolean noMore){
-        isNoMore = noMore;
-        if(isNoMore) {
-            setFooterViewState(LoadingFooter.State.NoMore,true);
-        } else {
-            setFooterViewState(LoadingFooter.State.Normal,true);
-        }
-    }
-
-    public void loadMoreComplete() {
-        setFooterViewState(LoadingFooter.State.Normal,false);
-    }
-
-    private void setFooterViewState(LoadingFooter.State state,boolean isScroolUp) {
-
-        if (mFootView instanceof LoadingFooter) {
-            mFootView.setVisibility(VISIBLE);
-            ((LoadingFooter) mFootView).setState(state);
-        }
-        if(isScroolUp) {
-            scrollToPosition(mWrapAdapter.getItemCount() - 1);
-        }
-
-    }
-
-    public void setOnNetWorkErrorListener(final OnNetWorkErrorListener listener) {
-        final LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
-        loadingFooter.setState(LoadingFooter.State.NetWorkError);
-        loadingFooter.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFooterViewState(LoadingFooter.State.Loading,false);
-                listener.reload();
+    private int findMax(int[] lastPositions) {
+        int max = lastPositions[0];
+        for (int value : lastPositions) {
+            if (value > max) {
+                max = value;
             }
-        });
+        }
+        return max;
     }
 
-    public void setFootViewHint(String loading, String noMore,String noNetWork) {
-        if(mFootView instanceof LoadingFooter){
-            LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
-            loadingFooter.setLoadingHint(loading);
-            loadingFooter.setNoMoreHint(noMore);
-            loadingFooter.setNoNetWorkHint(noNetWork);
-        }
-    }
-
-    public void setLoadingMoreProgressStyle(int style) {
-        if (mFootView instanceof LoadingFooter) {
-            ((LoadingFooter) mFootView).setProgressStyle(style);
-        }
-    }
 
     /**
      * set view when no content item
@@ -232,25 +211,119 @@ public class LuRecyclerView extends RecyclerView {
      */
     public void setEmptyView(View emptyView) {
         this.mEmptyView = emptyView;
+        mDataObserver.onChanged();
     }
 
+    public void setRefreshing(boolean refreshing) {
+        mRefreshing = refreshing;
+    }
+
+    /**
+     *
+     * @param pageSize 一页加载的数量
+     */
+    public void refreshComplete(int pageSize) {
+        this.mPageSize = pageSize;
+        if (mRefreshing) {
+            isNoMore = false;
+            mRefreshing = false;
+            if(mWrapAdapter.getInnerAdapter().getItemCount() < pageSize) {
+                mFootView.setVisibility(GONE);
+            }
+        } else if (mLoadingData) {
+            mLoadingData = false;
+            mLoadMoreFooter.onComplete();
+        }
+
+    }
+
+    /**
+     * 设置是否已加载全部
+     * @param noMore
+     */
+    public void setNoMore(boolean noMore){
+        mLoadingData = false;
+        isNoMore = noMore;
+        if(isNoMore) {
+            mLoadMoreFooter.onNoMore();
+        } else {
+            mLoadMoreFooter.onComplete();
+        }
+    }
+
+    /**
+     * 设置自定义的footerview
+     */
+    public void setLoadMoreFooter(ILoadMoreFooter loadMoreFooter) {
+        this.mLoadMoreFooter = loadMoreFooter;
+        mFootView = loadMoreFooter.getFootView();
+        mFootView.setVisibility(GONE);
+    }
+
+    /**
+     * 到底加载是否可用
+     */
     public void setLoadMoreEnabled(boolean enabled) {
+        if(mWrapAdapter == null){
+            throw new NullPointerException("mWrapAdapter cannot be null, please make sure the variable mWrapAdapter have been initialized.");
+        }
         mLoadMoreEnabled = enabled;
         if (!enabled) {
-            if(mWrapAdapter.getFooterViewsCount() > 0) {
-                mFootView = mWrapAdapter.getFooterView();
-            }
-            if (mFootView instanceof LoadingFooter && null != mWrapAdapter) {
+            if (null != mWrapAdapter) {
                 mWrapAdapter.removeFooterView();
             } else {
-                mFootView.setVisibility(VISIBLE);
+                mLoadMoreFooter.onReset();
             }
         }
+    }
+
+    public void setLoadingMoreProgressStyle(int style) {
+        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+            ((LoadingFooter) mLoadMoreFooter).setProgressStyle(style);
+        }
+
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener listener) {
         mLoadMoreListener = listener;
     }
+
+    public void setOnNetWorkErrorListener(final OnNetWorkErrorListener listener) {
+        final LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
+        loadingFooter.setState(LoadingFooter.State.NetWorkError);
+        loadingFooter.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLoadMoreFooter.onLoading();
+                listener.reload();
+            }
+        });
+    }
+
+    public void setFooterViewHint(String loading, String noMore, String noNetWork) {
+        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+            LoadingFooter loadingFooter = ((LoadingFooter) mLoadMoreFooter);
+            loadingFooter.setLoadingHint(loading);
+            loadingFooter.setNoMoreHint(noMore);
+            loadingFooter.setNoNetWorkHint(noNetWork);
+        }
+    }
+
+    /**
+     * 设置Footer文字颜色
+     * @param indicatorColor
+     * @param hintColor
+     * @param backgroundColor
+     */
+    public void setFooterViewColor(int indicatorColor, int hintColor, int backgroundColor) {
+        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+            LoadingFooter loadingFooter = ((LoadingFooter) mLoadMoreFooter);
+            loadingFooter.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
+            loadingFooter.setHintTextColor(hintColor);
+            loadingFooter.setViewBackgroundColor(backgroundColor);
+        }
+    }
+
 
     public void setLScrollListener(LScrollListener listener) {
         mLScrollListener = listener;
@@ -273,7 +346,7 @@ public class LuRecyclerView extends RecyclerView {
         super.onScrolled(dx, dy);
 
         int firstVisibleItemPosition = 0;
-        LayoutManager layoutManager = getLayoutManager();
+        RecyclerView.LayoutManager layoutManager = getLayoutManager();
 
         if (layoutManagerType == null) {
             if (layoutManager instanceof LinearLayoutManager) {
@@ -330,22 +403,31 @@ public class LuRecyclerView extends RecyclerView {
     @Override
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
-        int currentScrollState = state;
+        currentScrollState = state;
 
         if (mLScrollListener != null) {
             mLScrollListener.onScrollStateChanged(state);
         }
 
         if (mLoadMoreListener != null && mLoadMoreEnabled) {
-
             if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE) {
                 RecyclerView.LayoutManager layoutManager = getLayoutManager();
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
                 if (visibleItemCount > 0
                         && lastVisibleItemPosition >= totalItemCount - 1
-                        && totalItemCount > visibleItemCount ) {
-                    mLoadMoreListener.onLoadMore();
+                        && totalItemCount > visibleItemCount
+                        && !isNoMore
+                        && !mRefreshing) {
+
+                    mFootView.setVisibility(View.VISIBLE);
+                    if (mLoadingData) {
+                        return;
+                    } else {
+                        mLoadingData = true;
+                        mLoadMoreFooter.onLoading();
+                        mLoadMoreListener.onLoadMore();
+                    }
 
                 }
 
@@ -358,7 +440,7 @@ public class LuRecyclerView extends RecyclerView {
      * 计算当前是向上滑动还是向下滑动
      */
     private void calculateScrollUpOrDown(int firstVisibleItemPosition, int dy) {
-        if (mLScrollListener != null) {
+        if (null != mLScrollListener) {
             if (firstVisibleItemPosition == 0) {
                 if (!mIsScrollDown) {
                     mIsScrollDown = true;
@@ -382,16 +464,6 @@ public class LuRecyclerView extends RecyclerView {
         }
     }
 
-    private int findMax(int[] lastPositions) {
-        int max = lastPositions[0];
-        for (int value : lastPositions) {
-            if (value > max) {
-                max = value;
-            }
-        }
-        return max;
-    }
-
     public enum LayoutManagerType {
         LinearLayout,
         StaggeredGridLayout,
@@ -401,6 +473,7 @@ public class LuRecyclerView extends RecyclerView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        //解决LRecyclerView与CollapsingToolbarLayout滑动冲突的问题
         AppBarLayout appBarLayout = null;
         ViewParent p = getParent();
         while (p != null) {
@@ -409,7 +482,7 @@ public class LuRecyclerView extends RecyclerView {
             }
             p = p.getParent();
         }
-        if(p!=null && p instanceof CoordinatorLayout) {
+        if(p instanceof CoordinatorLayout) {
             CoordinatorLayout coordinatorLayout = (CoordinatorLayout)p;
             final int childCount = coordinatorLayout.getChildCount();
             for (int i = childCount - 1; i >= 0; i--) {

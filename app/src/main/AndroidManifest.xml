@@ -47,6 +47,9 @@
         <activity android:name=".multitype.MultiTypeActivity" />
         <activity android:name=".multitype.BilibiliActivity" />
         <activity android:name=".multitype.ExpandableActivity" />
+        <activity android:name=".ui.PulldownRefreshActivity" />
+        <activity android:name=".ui.ScrollViewLayoutActivity" />
+        <activity android:name=".ui.WebViewActivity" />
     </application>
 
 </manifest>

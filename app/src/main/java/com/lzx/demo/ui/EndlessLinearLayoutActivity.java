@@ -214,9 +214,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                     activity.notifyDataSetChanged();
 
                     break;
-                case -2:
-                    activity.notifyDataSetChanged();
-                    break;
                 case -3:
                     activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
                     activity.notifyDataSetChanged();

@@ -31,8 +31,8 @@ import com.github.jdsjlzx.view.LoadingFooter;
 public class LRecyclerView extends RecyclerView {
     private boolean mPullRefreshEnabled = true;
     private boolean mLoadMoreEnabled = true;
-    private boolean isRefreshing;//是否正在下拉刷新
-    private boolean isLoadingData;//是否正在加载数据
+    private boolean mRefreshing = false;//是否正在下拉刷新
+    private boolean mLoadingData = false;//是否正在加载数据
     private boolean flag = false;//标记是否setAdapter
     private OnRefreshListener mRefreshListener;
     private OnLoadMoreListener mLoadMoreListener;
@@ -274,7 +274,7 @@ public class LRecyclerView extends RecyclerView {
                 sumOffSet += deltaY;
                 if (isOnTop() && mPullRefreshEnabled  && (appbarState == AppBarStateChangeListener.State.EXPANDED)) {
                     mRefreshHeader.onMove(deltaY, sumOffSet);
-                    if (mRefreshHeader.getVisibleHeight() > 0 && isRefreshing) {
+                    if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshing) {
                         return false;
                     }
                 }
@@ -283,11 +283,11 @@ public class LRecyclerView extends RecyclerView {
             default:
                 mLastY = -1; // reset
                 if (isOnTop() && mPullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
-                    if (mRefreshHeader.releaseAction()) {
+                    if (mRefreshHeader.onRelease()) {
                         if (mRefreshListener != null) {
                             mFootView.setVisibility(GONE);
                             mRefreshListener.onRefresh();
-                            isRefreshing = true;
+                            mRefreshing = true;
                         }
                     }
                 }
@@ -326,15 +326,15 @@ public class LRecyclerView extends RecyclerView {
      */
     public void refreshComplete(int pageSize) {
         this.mPageSize = pageSize;
-        if (isRefreshing) {
+        if (mRefreshing) {
             isNoMore = false;
             mRefreshHeader.refreshComplete();
-            isRefreshing = false;
+            mRefreshing = false;
             if(mWrapAdapter.getInnerAdapter().getItemCount() < pageSize) {
                 mFootView.setVisibility(GONE);
             }
-        } else if (isLoadingData) {
-            isLoadingData = false;
+        } else if (mLoadingData) {
+            mLoadingData = false;
             mLoadMoreFooter.onComplete();
         }
 
@@ -345,7 +345,7 @@ public class LRecyclerView extends RecyclerView {
      * @param noMore
      */
     public void setNoMore(boolean noMore){
-        isLoadingData = false;
+        mLoadingData = false;
         isNoMore = noMore;
         if(isNoMore) {
             mLoadMoreFooter.onNoMore();
@@ -374,6 +374,9 @@ public class LRecyclerView extends RecyclerView {
         mPullRefreshEnabled = enabled;
     }
 
+    /**
+     * 到底加载是否可用
+     */
     public void setLoadMoreEnabled(boolean enabled) {
         if(mWrapAdapter == null){
             throw new NullPointerException("mWrapAdapter cannot be null, please make sure the variable mWrapAdapter have been initialized.");
@@ -383,7 +386,7 @@ public class LRecyclerView extends RecyclerView {
             if (null != mWrapAdapter) {
                 mWrapAdapter.removeFooterView();
             } else {
-                mFootView.setVisibility(VISIBLE);
+                mLoadMoreFooter.onReset();
             }
         }
     }
@@ -490,13 +493,13 @@ public class LRecyclerView extends RecyclerView {
 
             mFootView.setVisibility(GONE);
             mRefreshListener.onRefresh();
-            isRefreshing = true;
+            mRefreshing = true;
         }
     }
 
     public void forceToRefresh() {
 
-        if (isLoadingData) {
+        if (mLoadingData) {
             return;
         }
 
@@ -581,19 +584,16 @@ public class LRecyclerView extends RecyclerView {
                         && lastVisibleItemPosition >= totalItemCount - 1
                         && totalItemCount > visibleItemCount
                         && !isNoMore
-                        && !isRefreshing) {
-                    if (mFootView instanceof LoadingFooter) {
-                        mFootView.setVisibility(View.VISIBLE);
-                        if(isLoadingData) {
-                            return;
-                        } else {
-                            isLoadingData = true;
-                            mLoadMoreFooter.onLoading();
-                            mLoadMoreListener.onLoadMore();
-                        }
+                        && !mRefreshing) {
 
+                    mFootView.setVisibility(View.VISIBLE);
+                    if (mLoadingData) {
+                        return;
+                    } else {
+                        mLoadingData = true;
+                        mLoadMoreFooter.onLoading();
+                        mLoadMoreListener.onLoadMore();
                     }
-
 
                 }
 

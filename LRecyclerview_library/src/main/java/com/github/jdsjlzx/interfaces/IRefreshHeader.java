@@ -29,7 +29,7 @@ public interface IRefreshHeader {
 	/**
 	 * 下拉松开
 	 */
-	boolean releaseAction();
+	boolean onRelease();
 
 	/**
 	 * 下拉刷新完成

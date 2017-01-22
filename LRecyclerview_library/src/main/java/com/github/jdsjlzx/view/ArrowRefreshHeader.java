@@ -253,7 +253,7 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
     }
 
     @Override
-    public boolean releaseAction() {
+    public boolean onRelease() {
         boolean isOnRefresh = false;
         int height = getVisibleHeight();
         if (height == 0) {// not visible.

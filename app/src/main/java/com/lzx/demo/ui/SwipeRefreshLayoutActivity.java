@@ -33,7 +33,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
- * 带HeaderView的分页加载LinearLayout RecyclerView
+ *结合SwipeRefreshLayout的分页加载LinearLayout RecyclerView
  */
 public class SwipeRefreshLayoutActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = "lzx";
@@ -54,8 +54,6 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
     private PreviewHandler mHandler = new PreviewHandler(this);
     private LuRecyclerViewAdapter mLuRecyclerViewAdapter = null;
-
-    private boolean isRefresh = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,14 +125,19 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
             }
         });
 
+        //设置底部加载颜色
+        mRecyclerView.setFooterViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+        //设置底部加载文字提示
+        mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
+
         onRefresh();
     }
 
     @Override
     public void onRefresh() {
         mCurrentCounter = 0;
-        isRefresh = true;
         mSwipeRefreshLayout.setRefreshing(true);
+        mRecyclerView.setRefreshing(true);//同时调用LuRecyclerView的setRefreshing方法
         requestData();
     }
 
@@ -166,7 +169,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
             switch (msg.what) {
 
                 case -1:
-                    if(activity.isRefresh){
+                    if(activity.mSwipeRefreshLayout.isRefreshing()){
                         activity.mDataAdapter.clear();
                         mCurrentCounter = 0;
                     }
@@ -190,27 +193,22 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
                     activity.addItems(newList);
 
-                    if(activity.isRefresh){
+                    if(mSwipeRefreshLayout.isRefreshing()){
                         activity.mSwipeRefreshLayout.setRefreshing(false);
-                        activity.notifyDataSetChanged();
-                    }else {
-                        activity.mRecyclerView.loadMoreComplete();
                     }
-
-
-                    break;
-                case -2:
-                    activity.mSwipeRefreshLayout.setRefreshing(false);
+                    activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
                     activity.notifyDataSetChanged();
                     break;
                 case -3:
-                    if(activity.isRefresh){
+                    if(mSwipeRefreshLayout.isRefreshing()){
                         activity.mSwipeRefreshLayout.setRefreshing(false);
+                        activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
                         activity.notifyDataSetChanged();
                     }else {
                         activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
                             @Override
-                            public void reload() {
+                            public void reload() {activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
+                                activity.notifyDataSetChanged();
                                 requestData();
                             }
                         });
