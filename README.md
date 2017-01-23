@@ -199,8 +199,9 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 
 
 ###自定义下拉刷新View
-1.自定义view实现IRefreshHeader接口；
-2.调用LRecyclerView提供的setRefreshHeader(IRefreshHeader refreshHeader)即可。
+
+1. 自定义view实现IRefreshHeader接口；
+2. 调用LRecyclerView提供的setRefreshHeader(IRefreshHeader refreshHeader)即可。
 
 ```java
 /**
