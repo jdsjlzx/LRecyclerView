@@ -296,7 +296,7 @@ mRecyclerView.setLoadMoreEnabled(false);;
 默认是开启。如果不需要自动加载更多功能（也就是不需要分页）手动设置为false即可。
 
 ### 加载网络异常处理
---------
+
 加载数据时如果网络异常或者断网，LRecyclerView为你提供了重新加载的机制。
 
 效果图：
