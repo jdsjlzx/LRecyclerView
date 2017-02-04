@@ -13,10 +13,6 @@ import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.view.SwipeMenuView;
 
-/**
- * 参考：https://github.com/mcxtzhang/SwipeDelMenuViewGroup
- */
-
 public class SwipeMenuAdapter extends ListBaseAdapter<ItemModel> {
 
     public SwipeMenuAdapter(Context context) {

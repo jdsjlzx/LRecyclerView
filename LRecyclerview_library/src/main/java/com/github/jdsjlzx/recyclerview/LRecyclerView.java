@@ -355,7 +355,7 @@ public class LRecyclerView extends RecyclerView {
     }
 
     /**
-     * 设置自定义的headerview
+     * 设置自定义的RefreshHeader
      */
     private void setRefreshHeader(IRefreshHeader refreshHeader) {
         this.mRefreshHeader = refreshHeader;
