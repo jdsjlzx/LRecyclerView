@@ -26,6 +26,7 @@ import com.lzx.demo.view.SampleHeader;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * 带HeaderView的分页加载GridLayout RecyclerView
@@ -138,15 +139,17 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
                         ItemModel item = new ItemModel();
                         item.id = currentSize + i;
                         item.title = "item" + (item.id);
+                        item.height = new Random().nextInt(1000);
+                        if(item.height < 100) {
+                            item.height += 400;
+                        }
 
                         newList.add(item);
                     }
 
-
                     activity.addItems(newList);
 
                     activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
-                    activity.notifyDataSetChanged();
                     break;
                 case -2:
                     activity.notifyDataSetChanged();
@@ -195,12 +198,8 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
 
     private class DataAdapter  extends ListBaseAdapter<ItemModel> {
 
-        private int largeCardHeight, smallCardHeight;
-
         public DataAdapter(Context context) {
             super(context);
-            largeCardHeight = (int)context.getResources().getDisplayMetrics().density * 300;
-            smallCardHeight = (int)context.getResources().getDisplayMetrics().density * 200;
         }
 
 
@@ -219,7 +218,7 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
             textView.setText(itemModel.title);
 
             //修改高度，模拟交错效果
-            cardView.getLayoutParams().height = position % 2 != 0 ? largeCardHeight : smallCardHeight;
+            cardView.getLayoutParams().height = itemModel.height;
         }
 
     }

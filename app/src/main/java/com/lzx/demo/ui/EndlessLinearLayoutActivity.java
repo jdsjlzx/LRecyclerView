@@ -211,7 +211,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                     activity.addItems(newList);
 
                     activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
-                    activity.notifyDataSetChanged();
 
                     break;
                 case -3:

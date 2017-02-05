@@ -169,7 +169,6 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
                     activity.addItems(newList);
 
                     activity.mRecyclerView.refreshComplete(10);
-                    activity.notifyDataSetChanged();
 
                     break;
                 case -2:
