@@ -282,7 +282,7 @@ public class LRecyclerView extends RecyclerView {
                 break;
             default:
                 mLastY = -1; // reset
-                if (isOnTop() && mPullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
+                if (isOnTop() && mPullRefreshEnabled /*&& appbarState == AppBarStateChangeListener.State.EXPANDED*/) {
                     if (mRefreshHeader.onRelease()) {
                         if (mRefreshListener != null) {
                             mFootView.setVisibility(GONE);

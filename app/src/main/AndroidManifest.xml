@@ -50,6 +50,7 @@
         <activity android:name=".ui.PulldownRefreshActivity" />
         <activity android:name=".ui.ScrollViewLayoutActivity" />
         <activity android:name=".ui.WebViewActivity" />
+        <activity android:name=".ui.LinearLayoutDelActivity" />
     </application>
 
 </manifest>
