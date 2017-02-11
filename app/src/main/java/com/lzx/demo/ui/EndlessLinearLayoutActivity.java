@@ -144,9 +144,12 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ItemModel item = mDataAdapter.getDataList().get(position);
-                AppToast.showShortText(getApplicationContext(), item.title);
-                mDataAdapter.remove(position);
+                if (mDataAdapter.getDataList().size() > position) {
+                    ItemModel item = mDataAdapter.getDataList().get(position);
+                    AppToast.showShortText(getApplicationContext(), item.title);
+                    mDataAdapter.remove(position);
+                }
+
             }
 
         });

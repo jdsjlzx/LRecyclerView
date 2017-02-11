@@ -261,6 +261,10 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     public long getItemId(int position) {
         if (mInnerAdapter != null && position >= getHeaderViewsCount()) {
             int adjPosition = position - getHeaderViewsCount();
+            //判断是否setHasStableIds(true);
+            if(hasStableIds()) {
+                adjPosition--;
+            }
             int adapterCount = mInnerAdapter.getItemCount();
             if (adjPosition < adapterCount) {
                 return mInnerAdapter.getItemId(adjPosition);
