@@ -92,9 +92,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                 mDataAdapter.clear();
                 mLRecyclerViewAdapter.notifyDataSetChanged();//fix bug:crapped or attached views may not be recycled. isScrap:false isAttached:true
                 mCurrentCounter = 0;
-                //requestData();
+                requestData();
 
-                mRecyclerView.refreshComplete(REQUEST_COUNT);
             }
         });
 
