@@ -286,8 +286,9 @@ public class LRecyclerView extends RecyclerView {
                     if (mRefreshHeader.onRelease()) {
                         if (mRefreshListener != null) {
                             mFootView.setVisibility(GONE);
-                            mRefreshListener.onRefresh();
                             mRefreshing = true;
+                            mRefreshListener.onRefresh();
+
                         }
                     }
                 }
@@ -490,10 +491,11 @@ public class LRecyclerView extends RecyclerView {
             mRefreshHeader.onRefreshing();
             int offSet = mRefreshHeader.getHeaderView().getMeasuredHeight();
             mRefreshHeader.onMove(offSet,offSet);
+            mRefreshing = true;
 
             mFootView.setVisibility(GONE);
             mRefreshListener.onRefresh();
-            mRefreshing = true;
+
         }
     }
 
