@@ -5,12 +5,15 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 
 **它对 RecyclerView 控件进行了拓展，给RecyclerView增加HeaderView、FooterView，并且不需要对你的Adapter做任何修改。**
 
+推荐
+----------
+[RxJava经典视频教程已经上线，戳我就可以看啦......](http://www.stay4it.com/course/27)
 
 ##效果图
 ![这里写图片描述](https://raw.githubusercontent.com/cundong/HeaderAndFooterRecyclerView/master/art/art1.png)
 
 ##Gradle
---
+
 
 Step 1. 在你的根build.gradle文件中增加JitPack仓库依赖。
 
