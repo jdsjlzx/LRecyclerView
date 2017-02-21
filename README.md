@@ -138,7 +138,7 @@ void onScrollStateChanged(int state)；
 
  - onScrollUp()——RecyclerView向上滑动的监听事件；
  - onScrollDown()——RecyclerView向下滑动的监听事件；
- - onScrollDown()——RecyclerView正在滚动的监听事件；
+ - onScrolled()——RecyclerView正在滚动的监听事件；
  - onScrollStateChanged(int state)——RecyclerView正在滚动的监听事件；
  
 使用：
