@@ -92,9 +92,10 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
 
         if (lRecyclerViewAdapter.isRefreshHeader(position) || lRecyclerViewAdapter. isHeader(position) || lRecyclerViewAdapter.isFooter(position)) {
             outRect.bottom = mHeight;
+            outRect.set(0, 0, 0, 0);
+        } else {
+            outRect.set(0, 0, 0, mHeight);
         }
-
-        //outRect.set(0, 0, 0, mHeight);
 
     }
 
