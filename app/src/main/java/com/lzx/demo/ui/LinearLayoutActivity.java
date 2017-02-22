@@ -55,6 +55,9 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mDataAdapter.setDataList(dataList);
 
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
+
+
+
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         DividerDecoration divider = new DividerDecoration.Builder(this)
@@ -73,6 +76,13 @@ public class LinearLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter.addHeaderView(header);
         mLRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
 
+
+        //禁用下拉刷新功能
+        mRecyclerView.setPullRefreshEnabled(false);
+
+        //禁用自动加载更多功能
+        mRecyclerView.setLoadMoreEnabled(false);
+
         SampleFooter sampleFooter = new SampleFooter(this);
         sampleFooter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,15 +97,9 @@ public class LinearLayoutActivity extends AppCompatActivity {
                 mDataAdapter.addAll(dataList);
             }
         });
-
-        //禁用下拉刷新功能
-        mRecyclerView.setPullRefreshEnabled(false);
-
-        //禁用自动加载更多功能
-        //mRecyclerView.setLoadMoreEnabled(false);
-
         //add a FooterView
         mLRecyclerViewAdapter.addFooterView(sampleFooter);
+
 
         //删除item
         mLRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
