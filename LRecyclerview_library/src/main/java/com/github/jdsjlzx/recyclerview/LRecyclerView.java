@@ -370,6 +370,14 @@ public class LRecyclerView extends RecyclerView {
         this.mLoadMoreFooter = loadMoreFooter;
         mFootView = loadMoreFooter.getFootView();
         mFootView.setVisibility(GONE);
+        
+        //wxm:mFootView inflate的时候没有以RecyclerView为parent，所以要设置LayoutParams
+        ViewGroup.LayoutParams vlp = mFootView.getLayoutParams();
+        if (vlp != null) {
+            mFootView.setLayoutParams(new LayoutParams(vlp));
+        } else {
+            mFootView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        }
     }
 
     public void setPullRefreshEnabled(boolean enabled) {
