@@ -163,8 +163,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             }
         });
 
-
-
     }
 
     private void notifyDataSetChanged() {

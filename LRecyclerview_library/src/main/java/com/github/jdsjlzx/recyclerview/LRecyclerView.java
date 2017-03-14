@@ -488,6 +488,9 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void refresh() {
+        if (mRefreshing) {// if RefreshHeader is Refreshing, return 
+            return;
+        }
         if (mPullRefreshEnabled && mRefreshListener != null) {
             mRefreshHeader.onRefreshing();
             int offSet = mRefreshHeader.getHeaderView().getMeasuredHeight();
@@ -501,11 +504,9 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void forceToRefresh() {
-
         if (mLoadingData) {
             return;
         }
-
         refresh();
     }
 
