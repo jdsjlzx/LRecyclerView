@@ -381,7 +381,7 @@ public static abstract class ViewHolder {
 ```java
 mRecyclerView.setEmptyView(view);
 ```
-需要注意的是布局文件,如下所示：
+需要注意的是布局文件，如下所示：
 
 ```groovy
 <android.support.design.widget.CoordinatorLayout
