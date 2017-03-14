@@ -29,13 +29,13 @@ allprojects {
 Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
 
 ```groovy
-compile 'com.github.jdsjlzx:LRecyclerView:1.3.5'
+compile 'com.github.jdsjlzx:LRecyclerView:1.3.7'
 ```
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
 
 ##JavaDoc
-https://jitpack.io/com/github/jdsjlzx/LRecyclerView/1.3.5/javadoc/
+https://jitpack.io/com/github/jdsjlzx/LRecyclerView/1.3.7/javadoc/
 
 ##项目简述
 1. 下拉刷新、滑动到底部自动加载下页数据； 
@@ -271,7 +271,6 @@ public void onRefresh() {
     mDataAdapter.clear();
     mLRecyclerViewAdapter.notifyDataSetChanged();//必须调用此方法
     mCurrentCounter = 0;
-    isRefresh = true;
     requestData();
 }
 ```
@@ -280,7 +279,6 @@ public void onRefresh() {
 ```java
 @Override
 public void onRefresh() {
-    isRefresh = true;
     requestData();
 }
 ```
@@ -298,7 +296,30 @@ mRecyclerView.setLoadMoreEnabled(false);;
 
 默认是开启。如果不需要自动加载更多功能（也就是不需要分页）手动设置为false即可。
 
-### 加载网络异常处理
+### 加载数据完成处理
+
+```java
+mDataAdapter.addAll(list);
+mRecyclerView.refreshComplete(REQUEST_COUNT);// REQUEST_COUNT为每页加载数量
+```
+如果没有更多数据（也就是全部加载完成），判断逻辑如下：
+
+```java
+mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+
+                if (mCurrentPage < totalPage) {
+                    // loading data
+                    requestData();
+                } else {
+                    mRecyclerView.setNoMore(true);
+                }
+            }
+        });
+```
+
+### 加载数据网络异常处理
 
 加载数据时如果网络异常或者断网，LRecyclerView为你提供了重新加载的机制。
 
@@ -309,14 +330,12 @@ mRecyclerView.setLoadMoreEnabled(false);;
 网络异常出错代码处理如下：
 
 ```
-RecyclerViewStateUtils.setFooterViewState(getActivity(), mRecyclerView, getPageSize(), LoadingFooter.State.NetWorkError, mFooterClick);
-
-private View.OnClickListener mFooterClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            requestData();
-        }
-    };
+mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    requestData();
+                }
+            });
 ```
 
 上面的mFooterClick就是我们点击底部的Footer时的逻辑处理事件，很显然我们还是在这里做重新请求数据操作。

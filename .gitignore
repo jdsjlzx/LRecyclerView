@@ -36,7 +36,17 @@ captures/
 
 # Intellij
 *.iml
-.idea/
+.idea/.name
+.idea/encodings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/scopes/scope_settings.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/libraries
+.idea/*
 
 # Keystore files
 *.jks
