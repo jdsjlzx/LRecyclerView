@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -273,9 +274,9 @@ public class LRecyclerView extends RecyclerView {
                 final float deltaY = (ev.getRawY() - mLastY) / DRAG_RATE;
                 mLastY = ev.getRawY();
                 sumOffSet += deltaY;
-                if (isOnTop() && mPullRefreshEnabled  && (appbarState == AppBarStateChangeListener.State.EXPANDED)) {
+                if (isOnTop() && mPullRefreshEnabled && !mRefreshing && (appbarState == AppBarStateChangeListener.State.EXPANDED)) {
                     mRefreshHeader.onMove(deltaY, sumOffSet);
-                    if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshing) {
+                    if (mRefreshHeader.getVisibleHeight() > 0) {
                         return false;
                     }
                 }
@@ -283,11 +284,11 @@ public class LRecyclerView extends RecyclerView {
                 break;
             default:
                 mLastY = -1; // reset
-                if (isOnTop() && mPullRefreshEnabled /*&& appbarState == AppBarStateChangeListener.State.EXPANDED*/) {
+                if (isOnTop() && mPullRefreshEnabled && !mRefreshing/*&& appbarState == AppBarStateChangeListener.State.EXPANDED*/) {
                     if (mRefreshHeader.onRelease()) {
                         if (mRefreshListener != null) {
-                            mFootView.setVisibility(GONE);
                             mRefreshing = true;
+                            mFootView.setVisibility(GONE);
                             mRefreshListener.onRefresh();
 
                         }
@@ -330,8 +331,9 @@ public class LRecyclerView extends RecyclerView {
         this.mPageSize = pageSize;
         if (mRefreshing) {
             isNoMore = false;
-            mRefreshHeader.refreshComplete();
             mRefreshing = false;
+            mRefreshHeader.refreshComplete();
+
             if(mWrapAdapter.getInnerAdapter().getItemCount() < pageSize) {
                 mFootView.setVisibility(GONE);
             }
@@ -488,18 +490,23 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void refresh() {
-        if (mRefreshing) {// if RefreshHeader is Refreshing, return 
+        Log.e("lzx"," refresh = " + mRefreshing);
+        if (mRefreshHeader.getVisibleHeight() > 0 || mRefreshing) {// if RefreshHeader is Refreshing, return
             return;
         }
         if (mPullRefreshEnabled && mRefreshListener != null) {
+            Log.e("lzx"," onMove ");
             mRefreshHeader.onRefreshing();
+            Log.e("lzx"," onMove 1");
             int offSet = mRefreshHeader.getHeaderView().getMeasuredHeight();
+            Log.e("lzx"," onMove 2");
             mRefreshHeader.onMove(offSet,offSet);
+            Log.e("lzx"," onMove 3");
             mRefreshing = true;
 
             mFootView.setVisibility(GONE);
             mRefreshListener.onRefresh();
-
+            Log.e("lzx"," onMove 4");
         }
     }
 

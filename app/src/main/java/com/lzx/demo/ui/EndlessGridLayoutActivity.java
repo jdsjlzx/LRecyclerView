@@ -6,7 +6,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.jdsjlzx.ItemDecoration.GridItemDecoration;
@@ -58,7 +60,7 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
         //setLayoutManager must before setAdapter
-        GridLayoutManager manager = new GridLayoutManager(this, 3);
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(manager);
 
         mDataAdapter = new DataAdapter(this);
@@ -66,7 +68,12 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
         mLRecyclerViewAdapter = new LRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
-        //mRecyclerView.setFootViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+        //设置头部加载颜色
+        mRecyclerView.setHeaderViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+        //设置底部加载颜色
+        mRecyclerView.setFooterViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
+        //设置底部加载文字提示
+        mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
 
         int spacing = getResources().getDimensionPixelSize(R.dimen.dp_4);
         mRecyclerView.addItemDecoration(SpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));
@@ -216,9 +223,22 @@ public class EndlessGridLayoutActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_list_drag, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.menu_grid) {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            mRecyclerView.setAdapter(mLRecyclerViewAdapter);//必须重新setAdapter
+
+        }else if (item.getItemId() == R.id.menu_linear) {
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         }
         return true;
     }
