@@ -490,23 +490,17 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void refresh() {
-        Log.e("lzx"," refresh = " + mRefreshing);
         if (mRefreshHeader.getVisibleHeight() > 0 || mRefreshing) {// if RefreshHeader is Refreshing, return
             return;
         }
         if (mPullRefreshEnabled && mRefreshListener != null) {
-            Log.e("lzx"," onMove ");
             mRefreshHeader.onRefreshing();
-            Log.e("lzx"," onMove 1");
             int offSet = mRefreshHeader.getHeaderView().getMeasuredHeight();
-            Log.e("lzx"," onMove 2");
             mRefreshHeader.onMove(offSet,offSet);
-            Log.e("lzx"," onMove 3");
             mRefreshing = true;
 
             mFootView.setVisibility(GONE);
             mRefreshListener.onRefresh();
-            Log.e("lzx"," onMove 4");
         }
     }
 
