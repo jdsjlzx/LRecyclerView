@@ -3,6 +3,7 @@ package com.github.jdsjlzx.recyclerview;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -248,12 +249,15 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+        Log.e("lzx","onAttachedToRecyclerView ");
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
             final GridLayoutManager gridManager = ((GridLayoutManager) manager);
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
+                    Log.e("lzx","position =  " + position);
+                    Log.e("lzx","isHeader(position) =  " + isHeader(position));
                     if (mSpanSizeLookup == null) {
                         return (isHeader(position) || isFooter(position))
                                 ? gridManager.getSpanCount() : 1;
