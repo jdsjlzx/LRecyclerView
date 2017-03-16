@@ -10,9 +10,11 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 [RxJava经典视频教程已经上线，戳我就可以看啦......](http://www.stay4it.com/course/27)
 
 ##效果图
+
 ![这里写图片描述](https://raw.githubusercontent.com/cundong/HeaderAndFooterRecyclerView/master/art/art1.png)
 
-##Gradle
+
+## Gradle
 
 
 Step 1. 在你的根build.gradle文件中增加JitPack仓库依赖。
@@ -34,7 +36,8 @@ compile 'com.github.jdsjlzx:LRecyclerView:1.3.8'
 
 LRecyclerView requires at minimum Java 7 or Android 4.0.
 
-##JavaDoc
+## JavaDoc
+
 https://jitpack.io/com/github/jdsjlzx/LRecyclerView/1.3.8/javadoc/
 
 ##项目简述
@@ -67,10 +70,10 @@ defaultConfig {
 targetSdkVersion设置为22即可。
 
 
-##Demo下载
+## Demo下载
 [点我下载](https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/app/app-release.apk)
 
-##功能介绍
+## 功能介绍
 
 
 ### 填充数据
@@ -87,7 +90,7 @@ mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 1. DataAdapter是用户自己真正的adapter，用户自己定义；
 2. LRecyclerViewAdapter提供了一些实用的功能，使用者不用关心它的实现，只需构造的时候把自己的mDataAdapter以参数形式传进去即可。
 
-### 添加HeaderView、FooterView
+###添加HeaderView、FooterView
 
 ```java
 //add a HeaderView
@@ -109,7 +112,7 @@ mLRecyclerViewAdapter.addHeaderView(headerView);
 
 上面的方式同样适用于FooterView。
 
-### 移除HeaderView、FooterView
+###移除HeaderView、FooterView
 
 ```java
 //remove a HeaderView
@@ -207,9 +210,6 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 2. 调用LRecyclerView提供的setRefreshHeader(IRefreshHeader refreshHeader)即可。
 
 ```java
-/**
- * 设置自定义的RefreshHeader
- */
 public void setRefreshHeader(IRefreshHeader refreshHeader) {
     this.mRefreshHeader = refreshHeader;
 }
