@@ -9,7 +9,7 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 ----------
 [RxJava经典视频教程已经上线，戳我就可以看啦......](http://www.stay4it.com/course/27)
 
-##效果图
+## 效果图
 
 ![这里写图片描述](https://raw.githubusercontent.com/cundong/HeaderAndFooterRecyclerView/master/art/art1.png)
 
@@ -112,7 +112,7 @@ mLRecyclerViewAdapter.addHeaderView(headerView);
 
 上面的方式同样适用于FooterView。
 
-###移除HeaderView、FooterView
+### 移除HeaderView、FooterView
 
 ```java
 //remove a HeaderView
@@ -171,7 +171,7 @@ mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
  
 ```
 
-###下拉刷新
+### 下拉刷新
 
 ```java
 mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
@@ -181,7 +181,7 @@ mRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             }
         });
 ```
-###加载更多
+### 加载更多
 ```java
 mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
@@ -190,7 +190,7 @@ mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             }
         });
 ```
-###设置下拉刷新样式
+### 设置下拉刷新样式
 
 ```java
 mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader); //设置下拉刷新Progress的样式
@@ -204,18 +204,21 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 ![这里写图片描述](http://img.blog.csdn.net/20160701173404897)
 
 
-###自定义下拉刷新View
+### 自定义下拉刷新View
 
 1. 自定义view实现IRefreshHeader接口；
 2. 调用LRecyclerView提供的setRefreshHeader(IRefreshHeader refreshHeader)即可。
 
 ```java
+/**
+ * 设置自定义的RefreshHeader
+ */
 public void setRefreshHeader(IRefreshHeader refreshHeader) {
     this.mRefreshHeader = refreshHeader;
 }
 ```
 
-###设置下拉刷新Header和Footer文字内容和颜色
+### 设置下拉刷新Header和Footer文字内容和颜色
 
 ```java
 //设置头部加载颜色
@@ -232,7 +235,7 @@ mRecyclerView.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
 mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
 ```
 
-###开启和禁止下拉刷新功能
+### 开启和禁止下拉刷新功能
 
 ```java
 mRecyclerView.setPullRefreshEnabled(true);
@@ -247,7 +250,7 @@ mRecyclerView.setPullRefreshEnabled(false);
 默认是开启。
 
 
-###强制刷新
+### 强制刷新
 
 根据大家的反馈，增加了一个强制刷新的方法，使用如下：
 
@@ -262,7 +265,7 @@ mRecyclerView.refreshComplete();
 mLRecyclerViewAdapter.notifyDataSetChanged();
 ```
 
-###下拉刷新清空数据
+### 下拉刷新清空数据
 有的时候，需要下拉的时候清空数据并更新UI，可以这么做：
 
 ```java
@@ -282,7 +285,7 @@ public void onRefresh() {
     requestData();
 }
 ```
-###开启和禁止自动加载更多功能
+### 开启和禁止自动加载更多功能
 
 ```java
 mRecyclerView.setLoadMoreEnabled(true);
@@ -376,7 +379,7 @@ public static abstract class ViewHolder {
         int mPreLayoutPosition = NO_POSITION;
 ```
 
-###设置空白View（setEmptyView）
+### 设置空白View（setEmptyView）
 
 ```java
 mRecyclerView.setEmptyView(view);
@@ -420,7 +423,7 @@ mRecyclerView.setEmptyView(view);
 </android.support.design.widget.CoordinatorLayout>
 ```
 
-##关于添加分割线
+## 关于添加分割线
 
 经过不断优化，LRecyclerView支持了ItemDecoration，使用如下所示：
 
@@ -451,13 +454,13 @@ GridItemDecoration divider = new GridItemDecoration.Builder(this)
 ```
 根据需要选择使用GridItemDecoration还是SpacesItemDecoration，SpacesItemDecoration（支持多类型布局）
 
-##滑动删除
+## 滑动删除
 
 效果图：
 
 <img src="https://camo.githubusercontent.com/d2257cad7e4b932cd57969e1ce65181b7b7b1f70/687474703a2f2f6e6f74652e796f7564616f2e636f6d2f7977732f7075626c69632f7265736f757263652f62626336396331653035356362333335643031633737326531646164623063312f786d6c6e6f74652f44463646324336353038433234364330393331383037464333313332353737452f3130323635" width=268 height=457 />
 
-##分组
+## 分组
 
 效果图：
 
@@ -468,7 +471,7 @@ GridItemDecoration divider = new GridItemDecoration.Builder(this)
 
 
 
-##代码混淆
+## 代码混淆
 
 ```java
 #LRecyclerview_library
@@ -478,7 +481,7 @@ GridItemDecoration divider = new GridItemDecoration.Builder(this)
 
 如果你想了解更多混淆配置，参考：http://blog.csdn.net/jdsjlzx/article/details/51861460
 
-##注意事项
+## 注意事项
 
 1.如果添加了footerview，不要再使用setLScrollListener方法，如有需要，自定义实现即可。如下面代码不要同时使用：
 
@@ -490,7 +493,7 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突，为了更好的满足广大用户，新增了LuRecyclerView类，可以与SwipeRefreshLayout搭配使用，详细请参考SwipeRefreshLayoutActivity类的实现。
 
-##Thanks
+## Thanks
 
 1.[HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView)
 
@@ -498,7 +501,7 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 
 
-##打赏
+## 打赏
 
 觉得本框架对你有帮助，不妨打赏赞助我一下，让我有动力走的更远。
 
