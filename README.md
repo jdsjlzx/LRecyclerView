@@ -210,7 +210,7 @@ AVLoadingIndicatorView库有多少效果，LRecyclerView就支持多少下拉刷
 /**
  * 设置自定义的RefreshHeader
  */
-private void setRefreshHeader(IRefreshHeader refreshHeader) {
+public void setRefreshHeader(IRefreshHeader refreshHeader) {
     this.mRefreshHeader = refreshHeader;
 }
 ```
