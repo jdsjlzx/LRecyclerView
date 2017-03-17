@@ -112,18 +112,17 @@ public class LuRecyclerView extends RecyclerView {
 
     @Override
     public void setAdapter(Adapter adapter) {
+        if (mWrapAdapter != null && mDataObserver != null) {
+            mWrapAdapter.getInnerAdapter().unregisterAdapterDataObserver(mDataObserver);
+        }
+
         mWrapAdapter = (LuRecyclerViewAdapter) adapter;
         super.setAdapter(mWrapAdapter);
 
-        if(flag) {
-            mWrapAdapter.getInnerAdapter().unregisterAdapterDataObserver(mDataObserver);
-        }
         mWrapAdapter.getInnerAdapter().registerAdapterDataObserver(mDataObserver);
-        flag = true;
-
         mDataObserver.onChanged();
 
-        if (mLoadMoreEnabled) {
+        if (mLoadMoreEnabled && mWrapAdapter.getFooterViewsCount()==0) {
             mWrapAdapter.addFooterView(mFootView);
         }
 
