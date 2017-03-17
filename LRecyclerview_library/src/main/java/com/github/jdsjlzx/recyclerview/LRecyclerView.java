@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -34,7 +33,6 @@ public class LRecyclerView extends RecyclerView {
     private boolean mLoadMoreEnabled = true;
     private boolean mRefreshing = false;//是否正在下拉刷新
     private boolean mLoadingData = false;//是否正在加载数据
-    private boolean flag = false;//标记是否setAdapter
     private OnRefreshListener mRefreshListener;
     private OnLoadMoreListener mLoadMoreListener;
     private LScrollListener mLScrollListener;
@@ -133,15 +131,14 @@ public class LRecyclerView extends RecyclerView {
 
     @Override
     public void setAdapter(Adapter adapter) {
+        if (mWrapAdapter != null && mDataObserver != null) {
+            mWrapAdapter.getInnerAdapter().unregisterAdapterDataObserver(mDataObserver);
+        }
+
         mWrapAdapter = (LRecyclerViewAdapter) adapter;
         super.setAdapter(mWrapAdapter);
 
-        if(flag) {
-            mWrapAdapter.getInnerAdapter().unregisterAdapterDataObserver(mDataObserver);
-        }
         mWrapAdapter.getInnerAdapter().registerAdapterDataObserver(mDataObserver);
-        flag = true;
-
         mDataObserver.onChanged();
 
         mWrapAdapter.setRefreshHeader(mRefreshHeader);

@@ -67,7 +67,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
         mRecyclerView.setAdapter(mLRecyclerViewAdapter);
 
         DividerDecoration divider = new DividerDecoration.Builder(this)
-                .setHeight(R.dimen.dp_36)
+                .setHeight(R.dimen.default_divider_height)
                 .setPadding(R.dimen.default_divider_padding)
                 .setColorResource(R.color.split)
                 .build();
