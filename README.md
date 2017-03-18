@@ -493,6 +493,14 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突，为了更好的满足广大用户，新增了LuRecyclerView类，可以与SwipeRefreshLayout搭配使用，详细请参考SwipeRefreshLayoutActivity类的实现。
 
+## LRecyclerView的应用
+
+效果图：
+
+<img src="https://github.com/jdsjlzx/Community/blob/master/pic/home.png" width=268 height=457 />
+
+代码详见：https://github.com/jdsjlzx/Community
+
 ## Thanks
 
 1.[HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView)
