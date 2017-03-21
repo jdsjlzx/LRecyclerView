@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,7 +42,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
     private static final int TOTAL_COUNTER = 34;
 
     /**每一页展示多少条数据*/
-    private static final int REQUEST_COUNT = 15;
+    private static final int REQUEST_COUNT = 10;
 
     /**已经获取到多少条数据了*/
     private static int mCurrentCounter = 0;
@@ -77,9 +77,9 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
         mDataAdapter = new DataAdapter(this);
 
         //setLayoutManager放在setAdapter之前配置
-        //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //GridLayoutManager manager = new GridLayoutManager(this, 2);
+        //mRecyclerView.setLayoutManager(manager);
 
         mLuRecyclerViewAdapter = new LuRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLuRecyclerViewAdapter);
@@ -183,7 +183,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
                     //模拟组装10个数据
                     ArrayList<ItemModel> newList = new ArrayList<>();
-                    for (int i = 0; i < 15; i++) {
+                    for (int i = 0; i < 4; i++) {
                         if (newList.size() + currentSize >= TOTAL_COUNTER) {
                             break;
                         }
