@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.github.jdsjlzx.interfaces.ILoadMoreFooter;
@@ -371,9 +372,9 @@ public class LRecyclerView extends RecyclerView {
         mFootView.setVisibility(GONE);
         
         //wxm:mFootView inflate的时候没有以RecyclerView为parent，所以要设置LayoutParams
-        ViewGroup.LayoutParams vlp = mFootView.getLayoutParams();
-        if (vlp != null) {
-            mFootView.setLayoutParams(new LayoutParams(vlp));
+        ViewGroup.LayoutParams layoutParams = mFootView.getLayoutParams();
+        if (layoutParams != null) {
+            mFootView.setLayoutParams(new LayoutParams(layoutParams));
         } else {
             mFootView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         }
