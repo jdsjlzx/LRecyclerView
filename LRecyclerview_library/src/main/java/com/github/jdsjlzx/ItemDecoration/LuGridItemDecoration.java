@@ -32,7 +32,6 @@ public class LuGridItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(colour);
     }
 
-
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, State state) {
         drawHorizontal(c, parent);

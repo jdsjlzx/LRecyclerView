@@ -54,6 +54,7 @@ public class LRecyclerView extends RecyclerView {
     private int mTouchSlop;
     private float startY;
     private float startX;
+    private boolean isRegisterDataObserver;
     //scroll variables begin
     /**
      * 当前RecyclerView类型
@@ -132,7 +133,7 @@ public class LRecyclerView extends RecyclerView {
 
     @Override
     public void setAdapter(Adapter adapter) {
-        if (mWrapAdapter != null && mDataObserver != null) {
+        if (mWrapAdapter != null && mDataObserver != null && isRegisterDataObserver) {
             mWrapAdapter.getInnerAdapter().unregisterAdapterDataObserver(mDataObserver);
         }
 
@@ -141,6 +142,7 @@ public class LRecyclerView extends RecyclerView {
 
         mWrapAdapter.getInnerAdapter().registerAdapterDataObserver(mDataObserver);
         mDataObserver.onChanged();
+        isRegisterDataObserver = true;
 
         mWrapAdapter.setRefreshHeader(mRefreshHeader);
 
@@ -149,6 +151,18 @@ public class LRecyclerView extends RecyclerView {
             mWrapAdapter.addFooterView(mFootView);
         }
 
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        /*注销监听者*/
+        Adapter<?> adapter = getAdapter();
+        if (adapter != null && isRegisterDataObserver) {
+            adapter.unregisterAdapterDataObserver(mDataObserver);
+            isRegisterDataObserver = false;
+        }
     }
 
     private class DataObserver extends RecyclerView.AdapterDataObserver {
@@ -358,8 +372,12 @@ public class LRecyclerView extends RecyclerView {
 
     /**
      * 设置自定义的RefreshHeader
+     * 注意：setRefreshHeader方法必须在setAdapter方法之前调用才能生效
      */
     public void setRefreshHeader(IRefreshHeader refreshHeader) {
+        if(isRegisterDataObserver){
+            throw new RuntimeException("setRefreshHeader must been invoked before setting the adapter.");
+        }
         this.mRefreshHeader = refreshHeader;
     }
 
@@ -389,7 +407,7 @@ public class LRecyclerView extends RecyclerView {
      */
     public void setLoadMoreEnabled(boolean enabled) {
         if(mWrapAdapter == null){
-            throw new NullPointerException("mWrapAdapter cannot be null, please make sure the variable mWrapAdapter have been initialized.");
+            throw new NullPointerException("LRecyclerViewAdapter cannot be null, please make sure the variable mWrapAdapter have been initialized.");
         }
         mLoadMoreEnabled = enabled;
         if (!enabled) {
