@@ -157,12 +157,11 @@ public class LRecyclerView extends RecyclerView {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        /*注销监听者*/
-        Adapter<?> adapter = getAdapter();
-        if (adapter != null && isRegisterDataObserver) {
-            adapter.unregisterAdapterDataObserver(mDataObserver);
+        if (mWrapAdapter != null && mDataObserver != null && isRegisterDataObserver) {
+            mWrapAdapter.getInnerAdapter().unregisterAdapterDataObserver(mDataObserver);
             isRegisterDataObserver = false;
         }
+
     }
 
     private class DataObserver extends RecyclerView.AdapterDataObserver {
