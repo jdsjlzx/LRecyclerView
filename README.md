@@ -493,6 +493,10 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 2.不要SwipeRefreshLayout与LRecyclerView一起使用，会有冲突，为了更好的满足广大用户，新增了LuRecyclerView类，可以与SwipeRefreshLayout搭配使用，详细请参考SwipeRefreshLayoutActivity类的实现。
 
+3.关于RecyclerView自动滑动的问题
+
+这个自动滑动归根结底是焦点问题，子item有焦点，导致RecyclerView自动滑动到了子item，在根布局上加了android:descendantFocusability="blocksDescendants"，根view来处理焦点，不传给子view就能解决问题。
+
 ## LRecyclerView的应用
 
 效果图：
