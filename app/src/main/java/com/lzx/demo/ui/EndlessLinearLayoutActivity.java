@@ -250,7 +250,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                 }
 
                 //模拟一下网络请求失败的情况
-                if(NetworkUtils.isNetAvailable(EndlessLinearLayoutActivity.this)) {
+                if(NetworkUtils.isNetAvailable(getApplicationContext())) {
                     mHandler.sendEmptyMessage(-1);
                 } else {
                     mHandler.sendEmptyMessage(-3);
