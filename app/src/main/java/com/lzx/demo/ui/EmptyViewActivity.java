@@ -41,7 +41,7 @@ public class EmptyViewActivity extends AppCompatActivity {
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
         mEmptyView = findViewById(R.id.empty_view);
-        mRecyclerView.setEmptyView(mEmptyView);
+        mRecyclerView.setEmptyView(mEmptyView);//设置在setAdapter之前才能生效
 
         ArrayList<ItemModel> dataList = new ArrayList<>();
         mDataAdapter = new DataAdapter(this);
