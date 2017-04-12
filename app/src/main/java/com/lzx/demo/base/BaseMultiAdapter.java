@@ -55,7 +55,6 @@ public abstract class BaseMultiAdapter<T extends MultiItemEntity> extends Recycl
         onBindItemHolder(holder, position);
     }
 
-    private void dd(List<? extends Person> list){}
     //局部刷新关键：带payload的这个onBindViewHolder方法必须实现
     @Override
     public void onBindViewHolder(SuperViewHolder holder, int position, List<Object> payloads) {
