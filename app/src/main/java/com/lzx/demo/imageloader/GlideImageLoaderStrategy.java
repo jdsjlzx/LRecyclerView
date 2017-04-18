@@ -18,6 +18,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
         //if currently not under wifi
         if(!ImageLoaderUtil.wifiFlag) {
             loadNormal(context,imageLoader);
+            return;
         }
 
         int strategy = imageLoader.getWifiStrategy();
