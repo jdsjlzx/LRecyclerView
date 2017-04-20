@@ -80,7 +80,7 @@ public class SwipeDeleteActivity extends AppCompatActivity{
                 mDataAdapter.getDataList().remove(pos);
                 mDataAdapter.notifyItemRemoved(pos);//推荐用这个
 
-                if(pos != (mDataAdapter.getDataList().size())){ // 如果移除的是最后一个，忽略
+                if(pos != (mDataAdapter.getDataList().size())){ // 如果移除的是最后一个，忽略 注意：这里的mDataAdapter.getDataList()不需要-1，因为上面已经-1了
                     mDataAdapter.notifyItemRangeChanged(pos, mDataAdapter.getDataList().size() - pos);
                 }
                 //且如果想让侧滑菜单同时关闭，需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();

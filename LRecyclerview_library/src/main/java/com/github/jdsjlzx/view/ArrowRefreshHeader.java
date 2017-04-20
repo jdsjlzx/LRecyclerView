@@ -207,29 +207,12 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
 
     @Override
     public void onReset() {
-        mArrowImageView.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.INVISIBLE);
-
-        if (mState == STATE_RELEASE_TO_REFRESH) {
-            mArrowImageView.startAnimation(mRotateDownAnim);
-        }
-        if (mState == STATE_REFRESHING) {
-            mArrowImageView.clearAnimation();
-        }
-        //mStatusTextView.setText(strInfo1);
-        mState = STATE_NORMAL;
+        setState(STATE_NORMAL);
     }
 
     @Override
     public void onPrepare() {
-        mArrowImageView.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.INVISIBLE);
-
-        if (mState != STATE_RELEASE_TO_REFRESH) {
-            mArrowImageView.clearAnimation();
-            mArrowImageView.startAnimation(mRotateUpAnim);
-        }
-        mState = STATE_RELEASE_TO_REFRESH;
+        setState(STATE_RELEASE_TO_REFRESH);
     }
 
     @Override
