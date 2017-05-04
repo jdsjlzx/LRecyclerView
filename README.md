@@ -511,7 +511,8 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 2.[SwipeDelMenuViewGroup](https://github.com/mcxtzhang/SwipeDelMenuViewGroup)
 
-
+## 问题反馈
+QQ交流群：183899857
 
 ## 打赏
 
