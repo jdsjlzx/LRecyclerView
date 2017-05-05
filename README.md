@@ -322,6 +322,17 @@ mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
         });
 ```
 
+### 去除底部的加载更多的view
+
+如果你的逻辑是一次性加载所有的数据,那么可以如下设置:
+
+```java
+mRecyclerView.setLoadMoreEnabled(false);;
+```
+
+mRecyclerView.setOnLoadMoreListener就不需要设置了.
+
+
 ### 加载数据网络异常处理
 
 加载数据时如果网络异常或者断网，LRecyclerView为你提供了重新加载的机制。
