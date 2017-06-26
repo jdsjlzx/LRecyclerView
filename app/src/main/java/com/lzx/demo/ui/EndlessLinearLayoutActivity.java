@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnItemLongClickListener;
-import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -97,7 +96,10 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             }
         });
 
-        mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
+        //禁用自动加载更多功能
+        mRecyclerView.setLoadMoreEnabled(false);
+
+        /*mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
 
@@ -109,7 +111,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
                     mRecyclerView.setNoMore(true);
                 }
             }
-        });
+        });*/
 
         mRecyclerView.setLScrollListener(new LRecyclerView.LScrollListener() {
 
