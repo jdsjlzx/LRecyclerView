@@ -261,7 +261,7 @@ mRecyclerView.forceToRefresh();
 **无论是下拉刷新还是强制刷新，刷新完成后调用下面代码：**
 
 ```java
-mRecyclerView.refreshComplete();
+mRecyclerView.refreshComplete(pageSize);
 mLRecyclerViewAdapter.notifyDataSetChanged();
 ```
 
@@ -464,6 +464,8 @@ GridItemDecoration divider = new GridItemDecoration.Builder(this)
 //mRecyclerView.addItemDecoration(divider);
 ```
 根据需要选择使用GridItemDecoration还是SpacesItemDecoration，SpacesItemDecoration（支持多类型布局）
+
+同样的,LuRecyclerView也支持了ItemDecoration,只是命名稍微不同(类名以Lu开头，如LuGridItemDecoration、LuSpacesItemDecoration)
 
 ## 滑动删除
 

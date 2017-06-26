@@ -78,8 +78,9 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
         //setLayoutManager放在setAdapter之前配置
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //GridLayoutManager manager = new GridLayoutManager(this, 2);
-        //mRecyclerView.setLayoutManager(manager);
+
+        /*GridLayoutManager manager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(manager);*/
 
         mLuRecyclerViewAdapter = new LuRecyclerViewAdapter(mDataAdapter);
         mRecyclerView.setAdapter(mLuRecyclerViewAdapter);
@@ -93,6 +94,9 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(divider);
 
+        //使用GridLayoutManager时,根据需要选择使用LuGridItemDecoration还是LuSpacesItemDecoration
+        /*int spacing = getResources().getDimensionPixelSize(R.dimen.dp_4);
+        mRecyclerView.addItemDecoration(LuSpacesItemDecoration.newInstance(spacing, spacing, manager.getSpanCount(), Color.GRAY));*/
 
 
         mLuRecyclerViewAdapter.addHeaderView(new SampleHeader(this));
@@ -183,7 +187,7 @@ public class SwipeRefreshLayoutActivity extends AppCompatActivity implements Swi
 
                     //模拟组装10个数据
                     ArrayList<ItemModel> newList = new ArrayList<>();
-                    for (int i = 0; i < 4; i++) {
+                    for (int i = 0; i < 10; i++) {
                         if (newList.size() + currentSize >= TOTAL_COUNTER) {
                             break;
                         }
