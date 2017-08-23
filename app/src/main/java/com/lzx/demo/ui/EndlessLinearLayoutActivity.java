@@ -97,8 +97,8 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
             }
         });
 
-        //禁用自动加载更多功能
-        mRecyclerView.setLoadMoreEnabled(false);
+        //是否禁用自动加载更多功能,false为禁用, 默认开启自动加载更多功能
+        mRecyclerView.setLoadMoreEnabled(true);
 
         mRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
