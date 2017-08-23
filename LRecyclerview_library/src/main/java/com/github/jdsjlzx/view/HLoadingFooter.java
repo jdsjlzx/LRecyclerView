@@ -16,7 +16,7 @@ import com.github.jdsjlzx.interfaces.ILoadMoreFooter;
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 
-public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
+public class HLoadingFooter extends RelativeLayout implements ILoadMoreFooter{
 
     protected State mState = State.Normal;
     private View mLoadingView;
@@ -33,24 +33,24 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
     private int indicatorColor ;
     private int hintColor = R.color.colorAccent;
 
-    public LoadingFooter(Context context) {
+    public HLoadingFooter(Context context) {
         super(context);
         init(context);
     }
 
-    public LoadingFooter(Context context, AttributeSet attrs) {
+    public HLoadingFooter(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public LoadingFooter(Context context, AttributeSet attrs, int defStyleAttr) {
+    public HLoadingFooter(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     public void init(Context context) {
 
-        inflate(context, R.layout.layout_recyclerview_footer, this);
+        inflate(context, R.layout.layout_horizontal_recyclerview_footer, this);
         setOnClickListener(null);
 
         onReset();//初始为隐藏状态

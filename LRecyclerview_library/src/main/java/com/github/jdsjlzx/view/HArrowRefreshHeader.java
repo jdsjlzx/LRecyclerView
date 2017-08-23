@@ -24,8 +24,10 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 
 import java.util.Date;
 
-
-public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
+/**
+ * 横向滑动的刷新头部
+ */
+public class HArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
 
     private LinearLayout mContainer;
     private ImageView mArrowImageView;
@@ -40,11 +42,11 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
 
     private static final int ROTATE_ANIM_DURATION = 180;
 
-    public int mMeasuredHeight;
+    public int mMeasuredWidth;
 
     private int hintColor;
 
-    public ArrowRefreshHeader(Context context) {
+    public HArrowRefreshHeader(Context context) {
         super(context);
         initView();
     }
@@ -53,21 +55,21 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
      * @param context
      * @param attrs
      */
-    public ArrowRefreshHeader(Context context, AttributeSet attrs) {
+    public HArrowRefreshHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
     private void initView() {
         // 初始情况，设置下拉刷新view高度为0
-        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         lp.setMargins(0, 0, 0, 0);
         this.setLayoutParams(lp);
         this.setPadding(0, 0, 0, 0);
 
-        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.layout_recyclerview_refresh_header, null);
-        addView(mContainer, new LayoutParams(LayoutParams.MATCH_PARENT, 0));
-        setGravity(Gravity.BOTTOM);
+        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.layout_horizontal_recyclerview_refresh_header, null);
+        addView(mContainer, new LayoutParams(0, LayoutParams.MATCH_PARENT));
+        setGravity(Gravity.RIGHT);
 
         mArrowImageView = (ImageView)findViewById(R.id.listview_header_arrow);
         mStatusTextView = (TextView)findViewById(R.id.refresh_status_textview);
@@ -87,7 +89,7 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
 
         mHeaderTimeView = (TextView)findViewById(R.id.last_refresh_time);
         measure(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        mMeasuredHeight = getMeasuredHeight();
+        mMeasuredWidth = getMeasuredWidth();
         hintColor = android.R.color.darker_gray;
     }
 
@@ -133,7 +135,7 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
             mArrowImageView.clearAnimation();
             mArrowImageView.setVisibility(View.INVISIBLE);
             mProgressBar.setVisibility(View.VISIBLE);
-            smoothScrollTo(mMeasuredHeight);
+            smoothScrollTo(mMeasuredWidth);
         } else if(state == STATE_DONE) {
             mArrowImageView.setVisibility(View.INVISIBLE);
             mProgressBar.setVisibility(View.INVISIBLE);
@@ -193,22 +195,23 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
         return this;
     }
 
-    public void setVisibleHeight(int height) {
-        if (height < 0) height = 0;
-        LayoutParams lp = (LayoutParams) mContainer .getLayoutParams();
-        lp.height = height;
+    //横向滑动时该方法不实现
+    @Override
+    public int getVisibleHeight() {
+        return 0;
+    }
+
+
+    public void setVisibleWidth(int width) {
+        if (width < 0) width = 0;
+        LayoutParams lp = (LayoutParams) mContainer.getLayoutParams();
+        lp.width = width;
         mContainer.setLayoutParams(lp);
     }
 
-    public int getVisibleHeight() {
-        LayoutParams lp = (LayoutParams) mContainer.getLayoutParams();
-        return lp.height;
-    }
-
-    //垂直滑动时该方法不实现
-    @Override
     public int getVisibleWidth() {
-        return 0;
+        LayoutParams lp = (LayoutParams) mContainer.getLayoutParams();
+        return lp.width;
     }
 
     @Override
@@ -229,10 +232,10 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
     @Override
     public void onMove(float offSet, float sumOffSet) {
 
-        if (getVisibleHeight() > 0 || offSet > 0) {
-            setVisibleHeight((int) offSet + getVisibleHeight());
+        if (getVisibleWidth() > 0 || offSet > 0) {
+            setVisibleWidth((int) offSet + getVisibleWidth());
             if (mState <= STATE_RELEASE_TO_REFRESH) { // 未处于刷新状态，更新箭头
-                if (getVisibleHeight() > mMeasuredHeight) {
+                if (getVisibleWidth() > mMeasuredWidth) {
                     onPrepare();
                 } else {
                     onReset();
@@ -244,26 +247,26 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
     @Override
     public boolean onRelease() {
         boolean isOnRefresh = false;
-        int height = getVisibleHeight();
+        int height = getVisibleWidth();
         if (height == 0) {// not visible.
             isOnRefresh = false;
         }
 
-        if(getVisibleHeight() > mMeasuredHeight &&  mState < STATE_REFRESHING){
+        if(getVisibleWidth() > mMeasuredWidth &&  mState < STATE_REFRESHING){
             setState(STATE_REFRESHING);
             isOnRefresh = true;
         }
         // refreshing and header isn't shown fully. do nothing.
-        if (mState == STATE_REFRESHING && height > mMeasuredHeight) {
-            smoothScrollTo(mMeasuredHeight);
+        if (mState == STATE_REFRESHING && height > mMeasuredWidth) {
+            smoothScrollTo(mMeasuredWidth);
         }
         if (mState != STATE_REFRESHING) {
             smoothScrollTo(0);
         }
 
         if (mState == STATE_REFRESHING) {
-            int destHeight = mMeasuredHeight;
-            smoothScrollTo(destHeight);
+            int destWidth = mMeasuredWidth;
+            smoothScrollTo(destWidth);
         }
 
         return isOnRefresh;
@@ -278,14 +281,14 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
         }, 500);
     }
 
-    private void smoothScrollTo(int destHeight) {
-        ValueAnimator animator = ValueAnimator.ofInt(getVisibleHeight(), destHeight);
+    private void smoothScrollTo(int destWidth) {
+        ValueAnimator animator = ValueAnimator.ofInt(getVisibleWidth(), destWidth);
         animator.setDuration(300).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation)
             {
-                setVisibleHeight((int) animation.getAnimatedValue());
+                setVisibleWidth((int) animation.getAnimatedValue());
             }
         });
         animator.start();

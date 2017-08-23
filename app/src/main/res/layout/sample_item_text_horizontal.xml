@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="@dimen/dp_72"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/cardview_light_background">
+
+    <TextView
+        android:id="@+id/info_text"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:textColor="@color/color_00"
+        android:textSize="@dimen/dp_14"/>
+
+    <View android:layout_width="1dp"
+          android:layout_height="match_parent"
+          android:background="@color/split"
+    />
+</LinearLayout>

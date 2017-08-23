@@ -45,4 +45,9 @@ public interface IRefreshHeader {
 	 * 获取Header的显示高度
 	 */
 	int getVisibleHeight();
+
+	/**
+	 * 获取Header的显示宽度,横向滑动时使用
+	 */
+	int getVisibleWidth();
 }
