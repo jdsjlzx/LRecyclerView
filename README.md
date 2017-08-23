@@ -487,9 +487,9 @@ GridItemDecoration divider = new GridItemDecoration.Builder(this)
 ## 代码混淆
 
 ```java
-#LRecyclerview_library
+#LRecyclerview
 -dontwarn com.github.jdsjlzx.**
--keep class com.github.jdsjlzx.**{*;}
+-keep class com.github.jdsjlzx.progressindicator.indicators.** { *; }
 ```
 
 如果你想了解更多混淆配置，参考：http://blog.csdn.net/jdsjlzx/article/details/51861460
