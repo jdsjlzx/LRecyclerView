@@ -42,7 +42,9 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
      * load image with Glide
      */
     private void loadNormal(Context context, ImageLoader imageLoader) {
-        Glide.with(context).load(imageLoader.getUrl()).placeholder(imageLoader.getPlaceHolder()).into(imageLoader.getImgView());
+        Glide.with(context)
+                .load(imageLoader.getUrl())
+                .into(imageLoader.getImgView());
     }
 
     /**
@@ -55,6 +57,6 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
         //none:不作任何磁盘缓存
         //source:缓存源资源
         //result：缓存转换后的资源
-        Glide.with(context).load(imageLoader.getUrl()).placeholder(imageLoader.getPlaceHolder()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageLoader.getImgView());
+        Glide.with(context).load(imageLoader.getUrl()).into(imageLoader.getImgView());
     }
 }
