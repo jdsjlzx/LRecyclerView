@@ -510,6 +510,10 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 这个自动滑动归根结底是焦点问题，子item有焦点，导致RecyclerView自动滑动到了子item，在根布局上加了android:descendantFocusability="blocksDescendants"，根view来处理焦点，不传给子view就能解决问题。
 
+4.关于LRecyclerView嵌套RecyclerView滑动卡顿的问题
+
+可以参考：https://github.com/jdsjlzx/LRecyclerView/issues/165
+
 ## LRecyclerView的应用
 
 效果图：

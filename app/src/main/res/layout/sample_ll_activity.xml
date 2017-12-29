@@ -25,6 +25,7 @@
 		android:id="@+id/list"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
+		android:descendantFocusability="blocksDescendants"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

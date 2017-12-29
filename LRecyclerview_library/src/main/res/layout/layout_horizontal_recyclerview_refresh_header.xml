@@ -54,7 +54,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="10dp"
-            android:layout_above="@id/listview_header_text"
+            android:layout_above="@+id/listview_header_text"
             android:src="@drawable/ic_pulltorefresh_arrow" />
 
         <com.github.jdsjlzx.view.SimpleViewSwitcher
