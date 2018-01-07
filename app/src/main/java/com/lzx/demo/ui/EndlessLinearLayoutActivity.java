@@ -27,6 +27,7 @@ import com.lzx.demo.adapter.DataAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.NetworkUtils;
+import com.lzx.demo.util.WeakHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -50,8 +51,55 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
 
     private DataAdapter mDataAdapter = null;
 
-    private PreviewHandler mHandler = new PreviewHandler(this);
+
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
+
+    //WeakHandler必须是Activity的一个实例变量.原因详见：http://dk-exp.com/2015/11/11/weak-handler/
+    private WeakHandler mHandler = new WeakHandler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+
+                case -1:
+
+                    int currentSize = mDataAdapter.getItemCount();
+
+                    //模拟组装10个数据
+                    ArrayList<ItemModel> newList = new ArrayList<>();
+                    for (int i = 0; i < 10; i++) {
+                        if (newList.size() + currentSize >= TOTAL_COUNTER) {
+                            break;
+                        }
+
+                        ItemModel item = new ItemModel();
+                        item.id = currentSize + i;
+                        item.title = "item" + (item.id);
+
+                        newList.add(item);
+                    }
+
+                    addItems(newList);
+
+                    mRecyclerView.refreshComplete(REQUEST_COUNT);
+
+                    break;
+                case -3:
+                    mRecyclerView.refreshComplete(REQUEST_COUNT);
+                    notifyDataSetChanged();
+                    mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                        @Override
+                        public void reload() {
+                            requestData();
+                        }
+                    });
+
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +107,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         mRecyclerView = (LRecyclerView) findViewById(R.id.list);
 
@@ -179,62 +228,6 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
 
     }
 
-    private class PreviewHandler extends Handler {
-
-        private WeakReference<EndlessLinearLayoutActivity> ref;
-
-        PreviewHandler(EndlessLinearLayoutActivity activity) {
-            ref = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            final EndlessLinearLayoutActivity activity = ref.get();
-            if (activity == null || activity.isFinishing()) {
-                return;
-            }
-            switch (msg.what) {
-
-                case -1:
-
-                    int currentSize = activity.mDataAdapter.getItemCount();
-
-                    //模拟组装10个数据
-                    ArrayList<ItemModel> newList = new ArrayList<>();
-                    for (int i = 0; i < 10; i++) {
-                        if (newList.size() + currentSize >= TOTAL_COUNTER) {
-                            break;
-                        }
-
-                        ItemModel item = new ItemModel();
-                        item.id = currentSize + i;
-                        item.title = "item" + (item.id);
-
-                        newList.add(item);
-                    }
-
-                    activity.addItems(newList);
-
-                    activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
-
-                    break;
-                case -3:
-                    activity.mRecyclerView.refreshComplete(REQUEST_COUNT);
-                    activity.notifyDataSetChanged();
-                    activity.mRecyclerView.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                        @Override
-                        public void reload() {
-                            requestData();
-                        }
-                    });
-
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
     /**
      * 模拟请求网络
      */
@@ -277,4 +270,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
         }
         return true;
     }
+
+
+
 }

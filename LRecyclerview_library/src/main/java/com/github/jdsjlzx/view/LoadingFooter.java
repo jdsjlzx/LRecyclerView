@@ -16,7 +16,7 @@ import com.github.jdsjlzx.interfaces.ILoadMoreFooter;
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 
-public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
+public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter {
 
     protected State mState = State.Normal;
     private View mLoadingView;
@@ -30,7 +30,7 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
     private String noMoreHint;
     private String noNetWorkHint;
     private int style;
-    private int indicatorColor ;
+    private int indicatorColor;
     private int hintColor = R.color.colorAccent;
 
     public LoadingFooter(Context context) {
@@ -91,12 +91,12 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
         return mState;
     }
 
-    public void setState(State status ) {
+    public void setState(State status) {
         setState(status, true);
     }
 
     private View initIndicatorView(int style) {
-        if(style == ProgressStyle.SysProgress) {
+        if (style == ProgressStyle.SysProgress) {
             return new ProgressBar(getContext(), null, android.R.attr.progressBarStyle);
         } else {
             AVLoadingIndicatorView progressView = (AVLoadingIndicatorView) LayoutInflater.from(getContext()).inflate(R.layout.layout_indicator_view, null);
@@ -145,7 +145,6 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
         mState = status;
 
         switch (status) {
-
             case Normal:
                 setOnClickListener(null);
                 if (mLoadingView != null) {
@@ -213,7 +212,6 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
                 mNoMoreText.setTextColor(ContextCompat.getColor(getContext(), hintColor));
                 break;
             case NetWorkError:
-
                 if (mLoadingView != null) {
                     mLoadingView.setVisibility(GONE);
                 }
@@ -241,6 +239,9 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter{
 
 
     public enum State {
-        Normal/**正常*/, NoMore/**加载到最底了*/, Loading/**加载中..*/, NetWorkError/**网络异常*/
+        Normal/**正常*/
+        , NoMore/**加载到最底了*/
+        , Loading/**加载中..*/
+        , NetWorkError/**网络异常*/
     }
 }
