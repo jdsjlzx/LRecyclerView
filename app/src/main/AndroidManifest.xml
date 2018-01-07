@@ -51,7 +51,6 @@
         <activity android:name=".ui.ScrollViewLayoutActivity" />
         <activity android:name=".ui.WebViewActivity" />
         <activity android:name=".ui.LinearLayoutDelActivity" />
-        <activity android:name=".ui.HorizontalLinearLayoutActivity" />
     </application>
 
 </manifest>

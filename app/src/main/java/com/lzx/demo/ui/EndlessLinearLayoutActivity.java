@@ -1,7 +1,6 @@
 package com.lzx.demo.ui;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,14 +21,13 @@ import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
+import com.github.jdsjlzx.util.WeakHandler;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.DataAdapter;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.util.AppToast;
 import com.lzx.demo.util.NetworkUtils;
-import com.lzx.demo.util.WeakHandler;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**

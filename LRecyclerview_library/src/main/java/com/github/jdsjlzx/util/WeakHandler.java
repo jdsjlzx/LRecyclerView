@@ -22,7 +22,7 @@
  * shared by Android Open Source Project and used according to terms described in the
  * Apache License, Version 2.0
  */
-package com.lzx.demo.util;
+package com.github.jdsjlzx.util;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -46,7 +46,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * and GC could collect them once WeakHandler instance is not referenced any more
  * <p/>
  *
- * @see android.os.Handler
+ * @see Handler
  *
  * Created by Dmytro Voronkevych on 17/06/2014.
  * Optimized by Septenary on 8/15/2015
@@ -257,7 +257,7 @@ public class WeakHandler {
     /**
      * Sends a Message containing only the what value, to be delivered
      * after the specified amount of time elapses.
-     * @see #sendMessageDelayed(android.os.Message, long)
+     * @see #sendMessageDelayed(Message, long)
      *
      * @return Returns true if the message was successfully placed in to the
      *         message queue.  Returns false on failure, usually because the
@@ -270,7 +270,7 @@ public class WeakHandler {
     /**
      * Sends a Message containing only the what value, to be delivered
      * at a specific time.
-     * @see #sendMessageAtTime(android.os.Message, long)
+     * @see #sendMessageAtTime(Message, long)
      *
      * @return Returns true if the message was successfully placed in to the
      *         message queue.  Returns false on failure, usually because the
@@ -377,7 +377,7 @@ public class WeakHandler {
     }
 
     /**
-     * Returns a new {@link android.os.Message Message} from the global message pool. More efficient than
+     * Returns a new {@link Message Message} from the global message pool. More efficient than
      * creating and allocating new instances. The retrieved message has its handler set to this instance (Message.target == this).
      *  If you don't want that facility, just call Message.obtain() instead.
      */

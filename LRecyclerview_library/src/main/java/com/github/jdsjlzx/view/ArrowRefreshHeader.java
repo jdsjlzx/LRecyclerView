@@ -3,7 +3,6 @@ package com.github.jdsjlzx.view;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -21,6 +20,7 @@ import com.github.jdsjlzx.R;
 import com.github.jdsjlzx.interfaces.IRefreshHeader;
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
+import com.github.jdsjlzx.util.WeakHandler;
 
 import java.util.Date;
 
@@ -31,8 +31,6 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
     private ImageView mArrowImageView;
     private SimpleViewSwitcher mProgressBar;
     private TextView mStatusTextView;
-    private int mState = STATE_NORMAL;
-
     private TextView mHeaderTimeView;
 
     private Animation mRotateUpAnim;
@@ -41,8 +39,10 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
     private static final int ROTATE_ANIM_DURATION = 180;
 
     public int mMeasuredHeight;
-
     private int hintColor;
+    private int mState = STATE_NORMAL;
+
+    private WeakHandler mHandler = new WeakHandler();
 
     public ArrowRefreshHeader(Context context) {
         super(context);
@@ -181,7 +181,7 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
     public void refreshComplete(){
         mHeaderTimeView.setText(friendlyTime(new Date()));
         setState(STATE_DONE);
-        new Handler().postDelayed(new Runnable(){
+        mHandler.postDelayed(new Runnable(){
             public void run() {
                 reset();
             }
@@ -271,7 +271,7 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
 
     public void reset() {
         smoothScrollTo(0);
-        new Handler().postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             public void run() {
                 setState(STATE_NORMAL);
             }
