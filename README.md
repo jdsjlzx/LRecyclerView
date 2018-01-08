@@ -20,9 +20,7 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 
 github地址： https://github.com/jdsjlzx/Community
 
-![这里写图片描述](https://github.com/jdsjlzx/Community/blob/master/pic/home.png)
-
-
+<img src="https://github.com/jdsjlzx/Community/blob/master/pic/home.png" width=268 height=457 />
 
 ## Gradle
 
@@ -534,9 +532,7 @@ mLRecyclerViewAdapter.addFooterView(new SampleFooter(this));
 
 ## Thanks
 
-1.[HeaderAndFooterRecyclerView](https://github.com/cundong/HeaderAndFooterRecyclerView)
-
-2.[SwipeDelMenuViewGroup](https://github.com/mcxtzhang/SwipeDelMenuViewGroup)
+1.[SwipeDelMenuViewGroup](https://github.com/mcxtzhang/SwipeDelMenuViewGroup)
 
 ## 问题反馈
 QQ交流群1：183899857    
