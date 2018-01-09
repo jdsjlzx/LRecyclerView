@@ -9,7 +9,7 @@
         android:layout_width="@dimen/dp_22"
         android:layout_height="@dimen/dp_22"
         android:layout_marginRight="@dimen/dp_4"
-        android:src="@drawable/sample_footer_error" />
+        android:src="@mipmap/sample_footer_error" />
 
     <TextView
         android:id="@+id/loading_text"

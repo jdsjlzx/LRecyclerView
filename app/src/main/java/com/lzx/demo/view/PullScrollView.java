@@ -23,6 +23,7 @@ import com.github.jdsjlzx.view.ArrowRefreshHeader;
  */
 public class PullScrollView extends ScrollView {
     private RefreshListener mRefreshListener;
+    private OnScrollChangeListener scrollViewListener = null;
 
     private IRefreshHeader mRefreshHeader;
     private boolean isRefreshEnabled = true;    //设置下拉刷新是否可用
@@ -222,6 +223,9 @@ public class PullScrollView extends ScrollView {
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         topY = t;
+        if (scrollViewListener != null) {
+            scrollViewListener.onScrollChange(this, l, t, oldl, oldt);
+        }
     }
 
     /**
@@ -268,7 +272,26 @@ public class PullScrollView extends ScrollView {
         setLayout();
     }
 
+
+    public void setScrollViewListener(OnScrollChangeListener scrollViewListener) {
+        this.scrollViewListener = scrollViewListener;
+    }
+
+
     public interface RefreshListener {
         void onRefresh();
+    }
+
+    public interface OnScrollChangeListener {
+        /**
+         * Called when the scroll position of a view changes.
+         *
+         * @param v The view whose scroll position has changed.
+         * @param scrollX Current horizontal scroll origin.
+         * @param scrollY Current vertical scroll origin.
+         * @param oldScrollX Previous horizontal scroll origin.
+         * @param oldScrollY Previous vertical scroll origin.
+         */
+        void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY);
     }
 }

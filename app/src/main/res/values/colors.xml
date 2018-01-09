@@ -34,4 +34,7 @@
     <color name="des_color">#404346</color>
     <color name="color_ff4a57">#ff4a57</color>
     <color name="color_light_blue">#14acae</color>
+
+    <color name="blue_dark">#1983d1</color>
+    <color name="blue_black">#1673b8</color>
 </resources>

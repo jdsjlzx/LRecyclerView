@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.lzx.demo">
+    package="com.lzx.demo">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -16,12 +16,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity" />
         <activity android:name=".ui.CommonActivity" />
         <activity android:name=".ui.LinearLayoutActivity" />
@@ -33,6 +32,7 @@
         <activity android:name=".ui.SectionLayoutActivity" />
         <activity android:name=".ui.SectionAnimalActivity" />
         <activity android:name=".ui.CollapsingToolbarLayoutActivity" />
+        <activity android:name=".ui.CollapsingToolbarLayoutActivity2" />
         <activity android:name=".ui.SwipeRefreshLayoutActivity" />
         <activity android:name=".ui.ExpandableRecyclerViewOneActivity" />
         <activity android:name=".ui.MulItemLinearLayoutActivity" />
@@ -51,6 +51,8 @@
         <activity android:name=".ui.ScrollViewLayoutActivity" />
         <activity android:name=".ui.WebViewActivity" />
         <activity android:name=".ui.LinearLayoutDelActivity" />
+        <activity android:name=".ui.CoordinatorLayoutActivity" />
+        <activity android:name=".ui.AlipayHomeActivity"></activity>
     </application>
 
 </manifest>

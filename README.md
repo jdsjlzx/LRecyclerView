@@ -489,6 +489,7 @@ GridItemDecoration divider = new GridItemDecoration.Builder(this)
 
 功能还在完善中....
 
+## PullScrollView、PullWebView也有实现，为了解耦，这两个类都放在了demo中，有需要的可以自己修改使用！
 
 
 

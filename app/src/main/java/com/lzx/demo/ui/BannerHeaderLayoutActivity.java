@@ -12,22 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.github.why168.LoopViewPagerLayout;
-import com.github.why168.listener.OnLoadImageViewListener;
-import com.github.why168.modle.BannerInfo;
-import com.github.why168.modle.LoopStyle;
 import com.lzx.demo.R;
 import com.lzx.demo.adapter.DataAdapter;
+import com.lzx.demo.bean.BannerInfo;
 import com.lzx.demo.bean.ItemModel;
 import com.lzx.demo.imageloader.ImageLoader;
 import com.lzx.demo.imageloader.ImageLoaderUtil;
 import com.lzx.demo.view.SampleFooter;
+import com.stay4it.banner.Banner;
+import com.stay4it.banner.BannerConfig;
+import com.stay4it.banner.Transformer;
+import com.stay4it.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -41,7 +44,7 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity{
 
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
 
-    private LoopViewPagerLayout mLoopViewPagerLayout;
+    private Banner banner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,39 +82,16 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity{
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //add a HeaderView
-        //LoopViewPagerLayout使用方法详见github：https://github.com/why168/LoopViewPagerLayout
-        mLoopViewPagerLayout = (LoopViewPagerLayout) LayoutInflater.from(this).inflate(R.layout.layout_banner_header,(ViewGroup)findViewById(android.R.id.content), false);
-        mLoopViewPagerLayout.setLoop_ms(2000);//轮播的速度(毫秒)
-        mLoopViewPagerLayout.setLoop_duration(800);//滑动的速率(毫秒)
-        mLoopViewPagerLayout.setLoop_style(LoopStyle.Empty);//轮播的样式-默认empty
-        mLoopViewPagerLayout.initializeData(this);//初始化数据
+        banner = (Banner) LayoutInflater.from(this).inflate(R.layout.layout_banner_header,(ViewGroup)findViewById(android.R.id.content), false);
+
         ArrayList<BannerInfo> data = new ArrayList<>();
-        data.add(new BannerInfo<Integer>(R.mipmap.slient, "第一张图片"));
-        data.add(new BannerInfo<Integer>(R.mipmap.arrow_down, "第三张图片"));
-        data.add(new BannerInfo<Integer>(R.mipmap.ic_action_add, "第四张图片"));
-        data.add(new BannerInfo<Integer>(R.mipmap.smile, "第五张图片"));
-        mLoopViewPagerLayout.setOnLoadImageViewListener(new OnLoadImageViewListener() {
-            @Override
-            public void onLoadImageView(ImageView imageView, Object parameter) {
-                ImageLoaderUtil imageLoaderUtil = new ImageLoaderUtil();
-                ImageLoader imageLoader = new ImageLoader.Builder()
-                        .imgView(imageView)
-                        .url(parameter)
-                        .build();
+        data.add(new BannerInfo("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg", "第一张图片"));
+        data.add(new BannerInfo("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg", "第三张图片"));
+        data.add(new BannerInfo("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg", "第四张图片"));
 
-                imageLoaderUtil.loadImage(BannerHeaderLayoutActivity.this, imageLoader);
-            }
+        initBanner(data);
 
-            @Override
-            public ImageView createImageView(Context context) {
-                ImageView imageView = new ImageView(context);
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                return imageView;
-            }
-        });
-        mLoopViewPagerLayout.setLoopData(data);
-
-        mLRecyclerViewAdapter.addHeaderView(mLoopViewPagerLayout);
+        mLRecyclerViewAdapter.addHeaderView(banner);
 
         SampleFooter sampleFooter = new SampleFooter(this);
         sampleFooter.setOnClickListener(new View.OnClickListener() {
@@ -153,16 +133,19 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity{
 
     }
 
+    //如果你需要考虑更好的体验，可以这么操作
     @Override
     protected void onStart() {
         super.onStart();
-        mLoopViewPagerLayout.startLoop();
+        //开始轮播
+        banner.startAutoPlay();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mLoopViewPagerLayout.stopLoop();
+        //结束轮播
+        banner.stopAutoPlay();
     }
 
     @Override
@@ -172,5 +155,49 @@ public class BannerHeaderLayoutActivity extends AppCompatActivity{
         }
         return true;
     }
+
+    /**
+     * 初始化
+     */
+    private void initBanner(final List<BannerInfo> list) {
+        banner.setDelayTime(2000)
+                .setBannerAnimation(Transformer.DepthPage)
+                .setImages(list)
+                .setBannerTitles(getBannerTitleList(list))
+                .setBannerStyle(BannerConfig.ONLY_TITLE)
+                .setImageLoader(new com.stay4it.banner.loader.ImageLoader() {
+                    @Override
+                    public void displayImage(Context context, Object path, ImageView imageView) {
+                        BannerInfo bannerInfo = (BannerInfo) path;
+
+                        ImageLoaderUtil imageLoaderUtil = new ImageLoaderUtil();
+                        ImageLoader imageLoader = new ImageLoader.Builder()
+                                .imgView(imageView)
+                                .url(bannerInfo.imgUrl)
+                                .build();
+
+                        imageLoaderUtil.loadImage(BannerHeaderLayoutActivity.this, imageLoader);
+
+                    }
+                }).start();
+
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                BannerInfo bannerInfo = list.get(position);
+                //todo
+            }
+        });
+    }
+
+    private List<String> getBannerTitleList(List<BannerInfo> list) {
+        List<String> titles = new ArrayList<>();
+        for (BannerInfo banner: list) {
+            titles.add(banner.title);
+        }
+        return titles;
+    }
+
+
 
 }

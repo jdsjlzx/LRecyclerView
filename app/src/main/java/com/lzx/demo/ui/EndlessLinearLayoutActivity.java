@@ -32,6 +32,8 @@ import java.util.ArrayList;
 
 /**
  * 带HeaderView的分页加载LinearLayout RecyclerView
+ * 如果在项目中使用，还可以参考下面项目中BaseListFragment的封装
+ * https://github.com/jdsjlzx/Community
  */
 public class EndlessLinearLayoutActivity extends AppCompatActivity{
     private static final String TAG = "lzx";

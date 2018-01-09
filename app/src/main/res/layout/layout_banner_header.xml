@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.why168.LoopViewPagerLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/mLoopViewPagerLayout"
-	android:layout_width="match_parent"
-	android:layout_height="160dp" />
+<com.stay4it.banner.Banner
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/banner"
+android:layout_width="match_parent"
+android:layout_height="160dp"
+app:indicator_width="6dp"
+app:indicator_height="6dp"
+app:indicator_drawable_selected="@drawable/circle_green"/>
