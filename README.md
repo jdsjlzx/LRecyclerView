@@ -13,15 +13,13 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art1.png"  width=268 height=457 /> 
-<p><img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art2.png" width=268 height=457 /> 
+<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art2.png" width=268 height=457 /> 
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art3.png" width=268 height=457 />  
-</div>
-<div align="center">
+
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art4.png" width=268 height=457 />  
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art5.png" width=268 height=457 />
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art7.png" width=268 height=457 />
-</div>
-<div align="center">    
+ 
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art8.png" width=268 height=457 />
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art9.png" width=268 height=457 />
 </div>
