@@ -10,16 +10,21 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 [RxJava经典视频教程已经上线，戳我就可以看啦......](http://www.stay4it.com/course/27)
 
 ## 效果图
+<div align="center">
 
-<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art1.png" width=268 height=457 />
-<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art2.png" width=268 height=457 />
-<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art3.png" width=268 height=457 />
-<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art4.png" width=268 height=457 />
+<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art1.png"  width=268 height=457 /> 
+<p><img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art2.png" width=268 height=457 /> 
+<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art3.png" width=268 height=457 />  
+</div>
+<div align="center">
+<img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art4.png" width=268 height=457 />  
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art5.png" width=268 height=457 />
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art7.png" width=268 height=457 />
+</div>
+<div align="center">    
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art8.png" width=268 height=457 />
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art9.png" width=268 height=457 />
-
+</div>
 ## 实战项目
 
 为了方便大家快速上手使用LRecyclerView，这里写了个项目demo，有需要可以了解下！
