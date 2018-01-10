@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
@@ -22,6 +21,9 @@ import com.lzx.demo.view.SampleFooter;
 
 import java.util.ArrayList;
 
+/**
+ * 仿支付宝首页
+ */
 public class AlipayHomeActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener{
 
     private AppBarLayout abl_bar;
