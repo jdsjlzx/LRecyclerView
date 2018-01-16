@@ -23,9 +23,10 @@ LRecyclerView是支持addHeaderView、 addFooterView、下拉刷新、分页加�
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art8.png" width=268 height=457 />
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/art9.png" width=268 height=457 />
 </div>
+
 ## 实战项目
 
-为了方便大家快速上手使用LRecyclerView，这里写了个项目demo，有需要可以了解下！
+为了方便大家更好的在项目中使用LRecyclerView，这里提供一个项目demo，有需要可以参考下！
 
 github地址： https://github.com/jdsjlzx/Community
 
