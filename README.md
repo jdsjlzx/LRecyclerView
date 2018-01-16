@@ -46,7 +46,7 @@ allprojects {
 }
 ```	
 
-Step 2. 在你的model的build.gradle文件中增加LRecyclerView依赖。
+Step 2. 在你的module的build.gradle文件中增加LRecyclerView依赖。
 
 ```groovy
 compile 'com.github.jdsjlzx:LRecyclerView:1.4.3'
