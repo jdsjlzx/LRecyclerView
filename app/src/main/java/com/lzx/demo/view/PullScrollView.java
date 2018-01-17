@@ -4,17 +4,22 @@ import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.github.jdsjlzx.interfaces.IRefreshHeader;
 import com.github.jdsjlzx.recyclerview.AppBarStateChangeListener;
 import com.github.jdsjlzx.view.ArrowRefreshHeader;
+import com.lzx.demo.R;
 
 
 /**
@@ -54,6 +59,13 @@ public class PullScrollView extends ScrollView {
         if (isRefreshEnabled) {
             mRefreshHeader = new ArrowRefreshHeader(getContext());
         }
+
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                setLayout();
+            }
+        });
     }
 
     private void setLayout() {
@@ -66,6 +78,7 @@ public class PullScrollView extends ScrollView {
             int index = group.indexOfChild(this);
             group.removeView(this);
             group.addView(container, index, getLayoutParams());
+
             container.addView(mRefreshHeader.getHeaderView(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             container.addView(this, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
@@ -269,8 +282,8 @@ public class PullScrollView extends ScrollView {
                 });
             }
         }
-        setLayout();
     }
+
 
 
     public void setScrollViewListener(OnScrollChangeListener scrollViewListener) {
