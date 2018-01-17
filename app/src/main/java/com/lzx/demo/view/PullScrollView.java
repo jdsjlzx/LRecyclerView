@@ -63,25 +63,58 @@ public class PullScrollView extends ScrollView {
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                setLayout();
+                if (!isAdded) {
+                    isAdded = true;
+
+                    //解决和AppBarLayout冲突的问题
+                    ViewParent p = getParent();
+                    while (p != null) {
+                        if (p instanceof CoordinatorLayout) {
+                            break;
+                        }
+                        p = p.getParent();
+                    }
+
+                    if (p != null) {
+                        AppBarLayout appBarLayout = null;
+                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) p;
+                        final int childCount = coordinatorLayout.getChildCount();
+                        for (int i = childCount - 1; i >= 0; i--) {
+                            final View child = coordinatorLayout.getChildAt(i);
+                            if (child instanceof AppBarLayout) {
+                                appBarLayout = (AppBarLayout) child;
+                                break;
+                            }
+                        }
+
+                        if (appBarLayout != null) {
+                            appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+                                @Override
+                                public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                                    appbarState = state;
+                                }
+                            });
+                        }
+                    }
+
+                    setLayout();
+                }
+
+
             }
         });
     }
 
     private void setLayout() {
-        if (!isAdded) {
-            isAdded = true;
+        ViewGroup group = (ViewGroup) getParent();
+        LinearLayout container = new LinearLayout(getContext());
+        container.setOrientation(LinearLayout.VERTICAL);
+        int index = group.indexOfChild(this);
+        group.removeView(this);
+        group.addView(container, index, getLayoutParams());
 
-            ViewGroup group = (ViewGroup) getParent();
-            LinearLayout container = new LinearLayout(getContext());
-            container.setOrientation(LinearLayout.VERTICAL);
-            int index = group.indexOfChild(this);
-            group.removeView(this);
-            group.addView(container, index, getLayoutParams());
-
-            container.addView(mRefreshHeader.getHeaderView(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            container.addView(this, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        }
+        container.addView(mRefreshHeader.getHeaderView(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        container.addView(this, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     public View getRefreshHeaderView() {
@@ -247,44 +280,6 @@ public class PullScrollView extends ScrollView {
     private boolean isOnTop() {
         return topY == 0;
     }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        //解决和AppBarLayout冲突的问题
-        ViewParent p = getParent();
-        while (p != null) {
-            if (p instanceof CoordinatorLayout) {
-                break;
-            }
-            p = p.getParent();
-        }
-
-        if (p != null) {
-            AppBarLayout appBarLayout = null;
-            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) p;
-            final int childCount = coordinatorLayout.getChildCount();
-            for (int i = childCount - 1; i >= 0; i--) {
-                final View child = coordinatorLayout.getChildAt(i);
-                if (child instanceof AppBarLayout) {
-                    appBarLayout = (AppBarLayout) child;
-                    break;
-                }
-            }
-
-            if (appBarLayout != null) {
-                appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-                    @Override
-                    public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                        appbarState = state;
-                    }
-                });
-            }
-        }
-    }
-
-
 
     public void setScrollViewListener(OnScrollChangeListener scrollViewListener) {
         this.scrollViewListener = scrollViewListener;

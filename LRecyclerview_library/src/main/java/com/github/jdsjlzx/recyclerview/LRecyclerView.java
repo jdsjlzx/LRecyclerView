@@ -676,7 +676,7 @@ public class LRecyclerView extends RecyclerView {
             }
             p = p.getParent();
         }
-        if(p instanceof CoordinatorLayout) {
+        if(null != p && p instanceof CoordinatorLayout) {
             CoordinatorLayout coordinatorLayout = (CoordinatorLayout)p;
             final int childCount = coordinatorLayout.getChildCount();
             for (int i = childCount - 1; i >= 0; i--) {
