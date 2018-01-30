@@ -17,4 +17,13 @@
         android:textColor="@color/color_00"
         android:text="22222"
         android:textSize="@dimen/dp_14"/>
+    <EditText
+        android:id="@+id/info_edtor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="@dimen/dp_10"
+        android:textColor="@color/color_00"
+        android:text="22222"
+        android:textSize="@dimen/dp_14"/>
 </LinearLayout>

@@ -320,10 +320,10 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         mInnerAdapter.onViewDetachedFromWindow(holder);
     }
 
-    @Override
+    /*@Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         mInnerAdapter.onViewRecycled(holder);
-    }
+    }*/
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

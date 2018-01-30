@@ -52,7 +52,8 @@
         <activity android:name=".ui.WebViewActivity" />
         <activity android:name=".ui.LinearLayoutDelActivity" />
         <activity android:name=".ui.CoordinatorLayoutActivity" />
-        <activity android:name=".ui.AlipayHomeActivity"></activity>
+        <activity android:name=".ui.AlipayHomeActivity" />
+        <activity android:name=".ui.AlphaChangeActivity" />
     </application>
 
 </manifest>

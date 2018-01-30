@@ -35,22 +35,22 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter {
 
     public LoadingFooter(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public LoadingFooter(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
     public LoadingFooter(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init();
     }
 
-    public void init(Context context) {
+    public void init() {
 
-        inflate(context, R.layout.layout_recyclerview_footer, this);
+        inflate(getContext(), R.layout.layout_recyclerview_footer, this);
         setOnClickListener(null);
 
         onReset();//初始为隐藏状态

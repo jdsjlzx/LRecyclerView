@@ -592,6 +592,25 @@ public class LRecyclerView extends RecyclerView {
             mLScrollListener.onScrolled(mScrolledXDistance, mScrolledYDistance);
         }
 
+        if (mLoadMoreListener != null && mLoadMoreEnabled) {
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            if (visibleItemCount > 0
+                    && lastVisibleItemPosition >= totalItemCount - 1
+                    && totalItemCount > visibleItemCount
+                    && !isNoMore
+                    && !mRefreshing) {
+
+                mFootView.setVisibility(View.VISIBLE);
+                if (!mLoadingData) {
+                    mLoadingData = true;
+                    mLoadMoreFooter.onLoading();
+                }
+
+            }
+
+        }
+
     }
 
     @Override
@@ -603,30 +622,7 @@ public class LRecyclerView extends RecyclerView {
             mLScrollListener.onScrollStateChanged(state);
         }
 
-        if (mLoadMoreListener != null && mLoadMoreEnabled) {
-            if (currentScrollState == RecyclerView.SCROLL_STATE_IDLE) {
-                RecyclerView.LayoutManager layoutManager = getLayoutManager();
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                if (visibleItemCount > 0
-                        && lastVisibleItemPosition >= totalItemCount - 1
-                        && totalItemCount > visibleItemCount
-                        && !isNoMore
-                        && !mRefreshing) {
 
-                    mFootView.setVisibility(View.VISIBLE);
-                    if (mLoadingData) {
-                        return;
-                    } else {
-                        mLoadingData = true;
-                        mLoadMoreFooter.onLoading();
-                        mLoadMoreListener.onLoadMore();
-                    }
-
-                }
-
-            }
-        }
 
     }
 

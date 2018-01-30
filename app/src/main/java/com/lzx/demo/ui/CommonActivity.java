@@ -17,6 +17,7 @@ public class CommonActivity extends BaseMainActivity {
             PartialRefreshActivity.class,
             NestRecyclerViewActivity.class,
             Nest2RecyclerViewActivity.class,
+            AlphaChangeActivity.class,
             BannerHeaderLayoutActivity.class};
 
     private static final String[] TITLE = {
@@ -31,6 +32,7 @@ public class CommonActivity extends BaseMainActivity {
             "(局部刷新)PartialRefreshActivity",
             "(Recylcerview嵌套)NestRecyclerViewActivity",
             "Nest2RecyclerViewActivity",
+            "AlphaChangeActivity",
             "BannerHeaderLayoutActivity"};
 
     public Class<?>[] getActivitys() {

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class EndlessGridLayoutActivity extends AppCompatActivity {
 
     /**服务器端一共多少条数据*/
-    private static final int TOTAL_COUNTER = 24;
+    private static final int TOTAL_COUNTER = 54;
 
     /**每一页展示多少条数据*/
     private static final int REQUEST_COUNT = 10;

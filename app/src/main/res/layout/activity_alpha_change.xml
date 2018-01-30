@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/alpha_title"
+        style="@style/title_bar_style"
+        android:fitsSystemWindows="true" >
+
+        <TextView
+            android:id="@+id/current_city_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:drawablePadding="2dp"
+            android:drawableTop="@mipmap/ic_location"
+            android:text="北京"
+            android:textColor="#fff"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/image_right"
+            android:layout_toRightOf="@+id/current_city_text"
+            android:layout_weight="10"
+            android:background="@drawable/shape_edit_corners_bg"
+            android:drawableLeft="@mipmap/ic_search"
+            android:drawableRight="@mipmap/bg_btn_voice"
+            android:gravity="center_vertical"
+            android:hint="请输入商品名称"
+            android:imeOptions="actionSearch"
+            android:maxLength="10"
+            android:paddingLeft="5dp"
+            android:paddingRight="3dp"
+            android:singleLine="true"
+            android:textColor="#999999"
+            android:textColorHint="#ffb6b6b6"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/image_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:drawablePadding="2dp"
+            android:drawableTop="@mipmap/ic_notice"
+            android:text="消息"
+            android:textColor="#fff"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
