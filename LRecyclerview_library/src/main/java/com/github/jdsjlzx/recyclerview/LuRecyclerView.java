@@ -410,6 +410,7 @@ public class LuRecyclerView extends RecyclerView {
                 if (!mLoadingData) {
                     mLoadingData = true;
                     mLoadMoreFooter.onLoading();
+                    mLoadMoreListener.onLoadMore();
                 }
 
             }

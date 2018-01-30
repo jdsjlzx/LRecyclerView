@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.lzx.demo.ItemDecoration.DividerDecoration;
@@ -59,6 +60,7 @@ public abstract class BaseMainActivity extends AppCompatActivity {
                 .setColorResource(R.color.divider)
                 .build();
         mRecyclerView.addItemDecoration(divider);
+
 
     }
 

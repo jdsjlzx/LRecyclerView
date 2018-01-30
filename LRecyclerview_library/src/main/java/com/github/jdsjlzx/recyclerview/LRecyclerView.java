@@ -605,6 +605,7 @@ public class LRecyclerView extends RecyclerView {
                 if (!mLoadingData) {
                     mLoadingData = true;
                     mLoadMoreFooter.onLoading();
+                    mLoadMoreListener.onLoadMore();
                 }
 
             }

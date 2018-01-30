@@ -190,7 +190,7 @@ public class EndlessLinearLayoutActivity extends AppCompatActivity{
         //设置底部加载颜色
         mRecyclerView.setFooterViewColor(R.color.colorAccent, R.color.dark ,android.R.color.white);
         //设置底部加载文字提示
-        mRecyclerView.setFooterViewHint("拼命加载中","已经全部为你呈现了","网络不给力啊，点击再试一次吧");
+        mRecyclerView.setFooterViewHint("拼命加载中","我是有底线的","网络不给力啊，点击再试一次吧");
 
         mRecyclerView.refresh();
 
