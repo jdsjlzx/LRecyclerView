@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+  <ImageView android:id="@+id/iv_header" android:layout_width="match_parent" android:layout_height="180dp" android:layout_marginBottom="40dp"
+      android:scaleType="centerCrop" android:src="@drawable/img_header"/>
+
+  <ImageView android:id="@+id/iv_refresh" android:layout_width="30dp" android:layout_height="30dp" android:layout_marginStart="30dp"
+      android:src="@drawable/refresh" android:layout_marginLeft="30dp"/>
+
+  <ImageView android:id="@+id/iv_icon" android:layout_width="80dp" android:layout_height="80dp" android:layout_gravity="end|bottom"
+      android:layout_marginEnd="20dp" android:src="@drawable/img_avatar" android:layout_marginRight="20dp"/>
+
+</FrameLayout>

@@ -43,6 +43,7 @@ public class LRecyclerView extends RecyclerView {
     private View mFootView;
 
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
+    private int mActivePointerId;
     private float mLastY = -1;
     private float sumOffSet;
     private static final float DRAG_RATE = 2.0f;
@@ -274,40 +275,64 @@ public class LRecyclerView extends RecyclerView {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (mLastY == -1) {
-            mLastY = ev.getRawY();
+            mLastY = ev.getY();
+            mActivePointerId = ev.getPointerId(0);
+            sumOffSet = 0;
         }
-        switch (ev.getAction()) {
+        switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                mLastY = ev.getRawY();
+                mLastY = ev.getY();
+                mActivePointerId = ev.getPointerId(0);
                 sumOffSet = 0;
                 break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                final int index = ev.getActionIndex();
+                mActivePointerId = ev.getPointerId(index);
+                mLastY = (int) ev.getY(index);
+                break;
             case MotionEvent.ACTION_MOVE:
-                final float deltaY = (ev.getRawY() - mLastY) / DRAG_RATE;
-                mLastY = ev.getRawY();
+                int pointerIndex = ev.findPointerIndex(mActivePointerId);
+                if (pointerIndex == -1) {
+                    pointerIndex = 0;
+                    mActivePointerId = ev.getPointerId(pointerIndex);
+                }
+                final int moveY = (int) ev.getY(pointerIndex);
+                final float deltaY = (moveY - mLastY) / DRAG_RATE;
+                mLastY = moveY;
                 sumOffSet += deltaY;
                 if (isOnTop() && mPullRefreshEnabled && !mRefreshing && (appbarState == AppBarStateChangeListener.State.EXPANDED)) {
-                    mRefreshHeader.onMove(deltaY, sumOffSet);
-                    if (mRefreshHeader.getVisibleHeight() > 0) {
-                        return false;
+                    if(mRefreshHeader.getType() == IRefreshHeader.TYPE_HEADER_NORMAL) {
+                        mRefreshHeader.onMove(deltaY, sumOffSet);
+                    }else if (mRefreshHeader.getType() == IRefreshHeader.TYPE_HEADER_MATERIAL) {
+                         if(deltaY > 0 && !canScrollVertically(-1) || deltaY < 0 && !canScrollVertically(1)) { //判断无法下拉和无法上拉（item过少的情况）
+                          overScrollBy(0, (int) -deltaY, 0, 0, 0, 0, 0, (int) sumOffSet, true);
+                        }
                     }
                 }
-
                 break;
-            default:
+            case MotionEvent.ACTION_UP:
                 mLastY = -1; // reset
+                mActivePointerId = -1;
                 if (isOnTop() && mPullRefreshEnabled && !mRefreshing/*&& appbarState == AppBarStateChangeListener.State.EXPANDED*/) {
                     if (mRefreshHeader != null && mRefreshHeader.onRelease()) {
                         if (mRefreshListener != null) {
                             mRefreshing = true;
                             mFootView.setVisibility(GONE);
                             mRefreshListener.onRefresh();
-
                         }
                     }
                 }
                 break;
         }
         return super.onTouchEvent(ev);
+    }
+
+    @Override protected boolean overScrollBy(int deltaX, int deltaY, int scrollX, int scrollY, int scrollRangeX, int scrollRangeY, int maxOverScrollX,
+        int maxOverScrollY, boolean isTouchEvent) {
+        if (deltaY != 0 && isTouchEvent) {
+            mRefreshHeader.onMove(deltaY, sumOffSet);
+        }
+        return super.overScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX, scrollRangeY, maxOverScrollX, maxOverScrollY, isTouchEvent);
     }
 
     private int findMax(int[] lastPositions) {
@@ -387,7 +412,7 @@ public class LRecyclerView extends RecyclerView {
         this.mLoadMoreFooter = loadMoreFooter;
         mFootView = loadMoreFooter.getFootView();
         mFootView.setVisibility(GONE);
-        
+
         //wxm:mFootView inflate的时候没有以RecyclerView为parent，所以要设置LayoutParams
         ViewGroup.LayoutParams layoutParams = mFootView.getLayoutParams();
         if (layoutParams != null) {
@@ -611,7 +636,10 @@ public class LRecyclerView extends RecyclerView {
             }
 
         }
-
+        if (isOnTop() && dy > 0 && mRefreshHeader.getType() == IRefreshHeader.TYPE_HEADER_MATERIAL && !mRefreshing && (appbarState
+            == AppBarStateChangeListener.State.EXPANDED)) {
+            mRefreshHeader.onMove(dy, mScrolledYDistance);
+        }
     }
 
     @Override
