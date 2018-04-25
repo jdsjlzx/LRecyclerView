@@ -18,7 +18,9 @@ public class CommonActivity extends BaseMainActivity {
             NestRecyclerViewActivity.class,
             Nest2RecyclerViewActivity.class,
             AlphaChangeActivity.class,
-            BannerHeaderLayoutActivity.class};
+            BannerHeaderLayoutActivity.class,
+            QzoneHeaderActivity.class,
+            MomentsHeaderActivity.class};
 
     private static final String[] TITLE = {
             "LinearLayoutSample",
@@ -33,7 +35,9 @@ public class CommonActivity extends BaseMainActivity {
             "(Recylcerview嵌套)NestRecyclerViewActivity",
             "Nest2RecyclerViewActivity",
             "AlphaChangeActivity",
-            "BannerHeaderLayoutActivity"};
+            "BannerHeaderLayoutActivity",
+            "QzoneHeaderActivity",
+            "MomentsHeaderActivity"};
 
     public Class<?>[] getActivitys() {
         return ACTIVITY;

@@ -54,6 +54,8 @@
         <activity android:name=".ui.CoordinatorLayoutActivity" />
         <activity android:name=".ui.AlipayHomeActivity" />
         <activity android:name=".ui.AlphaChangeActivity" />
+        <activity android:name=".ui.QzoneHeaderActivity"/>
+        <activity android:name=".ui.MomentsHeaderActivity"/>
     </application>
 
 </manifest>

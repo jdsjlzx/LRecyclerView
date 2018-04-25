@@ -211,6 +211,10 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
         return 0;
     }
 
+    @Override public int getType() {
+        return TYPE_HEADER_NORMAL;
+    }
+
     @Override
     public void onReset() {
         setState(STATE_NORMAL);
@@ -228,15 +232,18 @@ public class ArrowRefreshHeader extends LinearLayout implements IRefreshHeader {
 
     @Override
     public void onMove(float offSet, float sumOffSet) {
-
-        if (getVisibleHeight() > 0 || offSet > 0) {
+        int top = getTop();
+        if (offSet > 0 && top == 0 ){
             setVisibleHeight((int) offSet + getVisibleHeight());
-            if (mState <= STATE_RELEASE_TO_REFRESH) { // 未处于刷新状态，更新箭头
-                if (getVisibleHeight() > mMeasuredHeight) {
-                    onPrepare();
-                } else {
-                    onReset();
-                }
+        }else if (offSet < 0 && getVisibleHeight() > 0){
+            layout(getLeft(), 0, getRight(), getHeight()); //重新布局让header显示在顶端
+            setVisibleHeight((int) offSet + getVisibleHeight());
+        }
+        if (mState <= STATE_RELEASE_TO_REFRESH) { // 未处于刷新状态，更新箭头
+            if (getVisibleHeight() > mMeasuredHeight) {
+                onPrepare();
+            } else {
+                onReset();
             }
         }
     }

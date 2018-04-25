@@ -9,6 +9,9 @@ public interface IRefreshHeader {
 	int STATE_REFRESHING = 2;
 	int STATE_DONE = 3;
 
+	int TYPE_HEADER_NORMAL = 0;
+	int TYPE_HEADER_MATERIAL = 1;
+
 	void onReset();
 
 	/**
@@ -50,4 +53,9 @@ public interface IRefreshHeader {
 	 * 获取Header的显示宽度,横向滑动时使用
 	 */
 	int getVisibleWidth();
+
+	/**
+	 * 获取Header的类型
+	 */
+	int getType();
 }
