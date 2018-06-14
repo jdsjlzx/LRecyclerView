@@ -553,4 +553,6 @@ QQ交流群2：250468947
 觉得本框架对你有帮助，不妨打赏赞助我一下，让我有动力走的更远。
 
 <img src="http://img.blog.csdn.net/20160812223409875" width=280 height=280 />
+
+支付宝<br><br>
 <img src="https://raw.githubusercontent.com/jdsjlzx/LRecyclerView/master/art/alipay.jpg" width=280 height=329 />
