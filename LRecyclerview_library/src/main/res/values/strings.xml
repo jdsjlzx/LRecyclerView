@@ -1,24 +1,24 @@
 <resources>
     <string name="app_name">LRecyclerview</string>
 
-    <string name="listview_header_hint_normal">下拉刷新</string>
-    <string name="listview_header_hint_release">释放立即刷新</string>
-    <string name="listview_loading">正在加载...</string>
-    <string name="nomore_loading">没有了</string>
-    <string name="refreshing">正在刷新...</string>
-    <string name="refresh_done">刷新完成</string>
-    <string name="listview_header_last_time">上次更新时间：</string>
+    <string name="listview_header_hint_normal">Pull to refresh</string>
+    <string name="listview_header_hint_release">Refresh when release</string>
+    <string name="listview_loading">Loading...</string>
+    <string name="nomore_loading">No more</string>
+    <string name="refreshing">Refreshing...</string>
+    <string name="refresh_done">Refresh done</string>
+    <string name="listview_header_last_time">Last update time：</string>
 
     <!--footer-->
-    <string name="list_footer_loading">正在加载中…</string>
-    <string name="list_footer_network_error">点击重新加载</string>
-    <string name="list_footer_end">已全部加载完</string>
+    <string name="list_footer_loading">Loading...</string>
+    <string name="list_footer_network_error">Click to refresh now</string>
+    <string name="list_footer_end">Loading done</string>
 
-    <string name="text_just">刚刚</string>
-    <string name="text_seconds_ago">秒前</string>
-    <string name="text_minute_ago">分钟前</string>
-    <string name="text_hour_ago">小时前</string>
-    <string name="text_day_ago">天前</string>
-    <string name="text_month_ago">月前</string>
-    <string name="text_year_ago">年前</string>
+    <string name="text_just">Just</string>
+    <string name="text_seconds_ago">seconds ago</string>
+    <string name="text_minute_ago">minutes ago</string>
+    <string name="text_hour_ago">hours ago</string>
+    <string name="text_day_ago">days ago</string>
+    <string name="text_month_ago">mouths ago</string>
+    <string name="text_year_ago">years ago</string>
 </resources>
