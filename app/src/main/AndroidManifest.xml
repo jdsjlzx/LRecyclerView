@@ -56,6 +56,7 @@
         <activity android:name=".ui.AlphaChangeActivity" />
         <activity android:name=".ui.QzoneHeaderActivity"/>
         <activity android:name=".ui.MomentsHeaderActivity"/>
+        <activity android:name=".ui.CustomLoadingFootActivity"/>
     </application>
 
 </manifest>

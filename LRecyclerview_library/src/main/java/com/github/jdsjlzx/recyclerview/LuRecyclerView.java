@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.github.jdsjlzx.interfaces.ILoadMoreFooter;
@@ -104,10 +105,8 @@ public class LuRecyclerView extends RecyclerView {
 
     private void init() {
         if (mLoadMoreEnabled) {
-            setLoadMoreFooter(new LoadingFooter(getContext().getApplicationContext()));
+            setLoadMoreFooter(new LoadingFooter(getContext().getApplicationContext()),false);
         }
-
-
     }
 
     @Override
@@ -252,11 +251,33 @@ public class LuRecyclerView extends RecyclerView {
 
     /**
      * 设置自定义的footerview
+     * @param loadMoreFooter
+     * @param isCustom 是否自定义footview
      */
-    public void setLoadMoreFooter(ILoadMoreFooter loadMoreFooter) {
+    public void setLoadMoreFooter(ILoadMoreFooter loadMoreFooter, boolean isCustom) {
         this.mLoadMoreFooter = loadMoreFooter;
+        if (isCustom) {
+            if (null != mWrapAdapter && mWrapAdapter.getFooterViewsCount() >0) {
+                mWrapAdapter.removeFooterView();
+            }
+        }
         mFootView = loadMoreFooter.getFootView();
-        mFootView.setVisibility(GONE);
+        mFootView.setVisibility(VISIBLE);
+
+        //wxm:mFootView inflate的时候没有以RecyclerView为parent，所以要设置LayoutParams
+        ViewGroup.LayoutParams layoutParams = mFootView.getLayoutParams();
+        if (layoutParams != null) {
+            mFootView.setLayoutParams(new LayoutParams(layoutParams));
+        } else {
+            mFootView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        }
+
+        if (isCustom) {
+            if (mLoadMoreEnabled && mWrapAdapter.getFooterViewsCount()==0) {
+                mWrapAdapter.addFooterView(mFootView);
+            }
+        }
+
     }
 
     /**

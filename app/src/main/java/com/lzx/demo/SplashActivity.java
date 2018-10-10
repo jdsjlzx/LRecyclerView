@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
 
+import com.lzx.demo.ui.CustomLoadingFootActivity;
+
 import static com.lzx.demo.R.id.textView;
 
 public class SplashActivity extends AppCompatActivity implements Runnable {
