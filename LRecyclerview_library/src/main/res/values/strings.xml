@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">LRecyclerview</string>
-
     <string name="listview_header_hint_normal">Pull to refresh</string>
     <string name="listview_header_hint_release">Refresh when release</string>
     <string name="listview_loading">Loading...</string>

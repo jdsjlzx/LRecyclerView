@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LRecyclerview</string>
-
     <string name="listview_header_hint_normal">下拉刷新</string>
     <string name="listview_header_hint_release">释放立即刷新</string>
     <string name="listview_loading">正在加载...</string>
