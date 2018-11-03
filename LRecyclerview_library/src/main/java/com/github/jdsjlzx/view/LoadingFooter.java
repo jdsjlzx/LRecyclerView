@@ -1,6 +1,7 @@
 package com.github.jdsjlzx.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -31,7 +32,7 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter {
     private String noNetWorkHint;
     private int style;
     private int indicatorColor;
-    private int hintColor = R.color.colorAccent;
+    private int hintColor = Color.parseColor("#FFB5B5B5");
 
     public LoadingFooter(Context context) {
         super(context);
@@ -55,7 +56,7 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter {
 
         onReset();//初始为隐藏状态
 
-        indicatorColor = ContextCompat.getColor(getContext(), R.color.colorAccent);
+        indicatorColor = Color.parseColor("#FFB5B5B5");
         style = ProgressStyle.BallPulse;
     }
 

@@ -13,7 +13,6 @@ public class MainActivity extends BaseMainActivity {
     private static final Class<?>[] ACTIVITY = {CommonActivity.class, CoordinatorLayoutActivity.class, MultiTypeActivity.class, SectionCollectionActivity.class, SwipeMenuActivity.class,PulldownRefreshActivity.class};
     private static final String[] TITLE = {"CommonActivity","CoordinatorLayoutActivity","MultiTypeActivity", "SectionCollectionActivity","SwipeMenuActivity","PulldownRefreshActivity"};
 
-
     @Override
     public Class<?>[] getActivitys() {
         return ACTIVITY;

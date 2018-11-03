@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -130,7 +131,7 @@ public class AVLoadingIndicatorView extends View {
         mMinHeight = a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_minHeight, mMinHeight);
         mMaxHeight = a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_maxHeight, mMaxHeight);
         String indicatorName = a.getString(R.styleable.AVLoadingIndicatorView_indicatorName);
-        mIndicatorColor = a.getColor(R.styleable.AVLoadingIndicatorView_indicatorColor, getResources().getColor(R.color.colorAccent));
+        mIndicatorColor = a.getColor(R.styleable.AVLoadingIndicatorView_indicatorColor, Color.parseColor("#FFB5B5B5"));
         a.recycle();
 
         setIndicator(indicatorName);

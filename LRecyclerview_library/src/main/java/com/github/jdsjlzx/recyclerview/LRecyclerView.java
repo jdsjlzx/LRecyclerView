@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -372,6 +373,41 @@ public class LRecyclerView extends RecyclerView {
 
             if(mWrapAdapter.getInnerAdapter().getItemCount() < pageSize) {
                 mFootView.setVisibility(GONE);
+                mWrapAdapter.removeFooterView();
+            } else {
+                if (mWrapAdapter.getFooterViewsCount() == 0) {
+                    mWrapAdapter.addFooterView(mFootView);
+                }
+            }
+        } else if (mLoadingData) {
+            mLoadingData = false;
+            mLoadMoreFooter.onComplete();
+        }
+
+    }
+
+    /**
+     *
+     * @param pageSize 一页加载的数量
+     * @param isShowFootView 是否需要显示footview（前提条件是：getItemCount() < pageSize）
+     */
+    public void refreshComplete(int pageSize, boolean isShowFootView) {
+        this.mPageSize = pageSize;
+        if (mRefreshing) {
+            isNoMore = false;
+            mRefreshing = false;
+            mRefreshHeader.refreshComplete();
+            if (isShowFootView) {
+                mFootView.setVisibility(VISIBLE);
+            } else {
+                if(mWrapAdapter.getInnerAdapter().getItemCount() < pageSize) {
+                    mFootView.setVisibility(GONE);
+                    mWrapAdapter.removeFooterView();
+                } else {
+                    if (mWrapAdapter.getFooterViewsCount() == 0) {
+                        mWrapAdapter.addFooterView(mFootView);
+                    }
+                }
             }
         } else if (mLoadingData) {
             mLoadingData = false;
@@ -497,7 +533,7 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void setFooterViewHint(String loading, String noMore, String noNetWork) {
-        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+        if (mLoadMoreFooter instanceof LoadingFooter) {
             LoadingFooter loadingFooter = ((LoadingFooter) mLoadMoreFooter);
             loadingFooter.setLoadingHint(loading);
             loadingFooter.setNoMoreHint(noMore);
@@ -512,7 +548,7 @@ public class LRecyclerView extends RecyclerView {
      * @param backgroundColor
      */
     public void setFooterViewColor(int indicatorColor, int hintColor, int backgroundColor) {
-        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+        if (mLoadMoreFooter instanceof LoadingFooter) {
             LoadingFooter loadingFooter = ((LoadingFooter) mLoadMoreFooter);
             loadingFooter.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
             loadingFooter.setHintTextColor(hintColor);
@@ -527,7 +563,7 @@ public class LRecyclerView extends RecyclerView {
      * @param backgroundColor
      */
     public void setHeaderViewColor(int indicatorColor, int hintColor, int backgroundColor) {
-        if (mRefreshHeader != null && mRefreshHeader instanceof ArrowRefreshHeader) {
+        if (mRefreshHeader instanceof ArrowRefreshHeader) {
             ArrowRefreshHeader arrowRefreshHeader = ((ArrowRefreshHeader) mRefreshHeader);
             arrowRefreshHeader.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
             arrowRefreshHeader.setHintTextColor(hintColor);
@@ -639,6 +675,8 @@ public class LRecyclerView extends RecyclerView {
                     && totalItemCount > visibleItemCount
                     && !isNoMore
                     && !mRefreshing) {
+                Log.e("lzx","mFootView==null ? " + (mFootView==null));
+                Log.e("lzx","getFooterViewsCount  " +mWrapAdapter.getFooterViewsCount());
 
                 mFootView.setVisibility(View.VISIBLE);
                 if (!mLoadingData) {

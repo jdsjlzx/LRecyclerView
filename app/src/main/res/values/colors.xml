@@ -25,7 +25,7 @@
     <color name="disable">#f5f5f5</color>
     <color name="background">#c9cbcd</color>
     <color name="background_detail">#d2c3c7</color>
-    <color name="split">#cccccc</color>
+    <color name="split">#eeeeee</color>
     <color name="feed_text_color">#4a5158</color>
     <color name="button_login_color">#3a7eec</color>
     <color name="button_signup_color">#93b3d7</color>

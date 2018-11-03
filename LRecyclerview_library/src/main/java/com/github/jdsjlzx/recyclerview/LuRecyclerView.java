@@ -236,6 +236,35 @@ public class LuRecyclerView extends RecyclerView {
     }
 
     /**
+     *
+     * @param pageSize 一页加载的数量
+     * @param isShowFootView 是否需要显示footview（前提条件是：getItemCount() < pageSize）
+     */
+    public void refreshComplete(int pageSize, boolean isShowFootView) {
+        this.mPageSize = pageSize;
+        if (mRefreshing) {
+            isNoMore = false;
+            mRefreshing = false;
+            if (isShowFootView) {
+                mFootView.setVisibility(VISIBLE);
+            } else {
+                if(mWrapAdapter.getInnerAdapter().getItemCount() < pageSize) {
+                    mFootView.setVisibility(GONE);
+                    mWrapAdapter.removeFooterView();
+                } else {
+                    if (mWrapAdapter.getFooterViewsCount() == 0) {
+                        mWrapAdapter.addFooterView(mFootView);
+                    }
+                }
+            }
+        } else if (mLoadingData) {
+            mLoadingData = false;
+            mLoadMoreFooter.onComplete();
+        }
+
+    }
+
+    /**
      * 设置是否已加载全部
      * @param noMore
      */

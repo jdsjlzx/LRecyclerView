@@ -6,6 +6,7 @@ public class CommonActivity extends BaseMainActivity {
 
     private static final Class<?>[] ACTIVITY = {
             LinearLayoutActivity.class,
+            SpecialLinearLayoutActivity.class,
             EndlessLinearLayoutActivity.class,
             EndlessGridLayoutActivity.class,
             EndlessStaggeredGridLayoutActivity.class,
@@ -25,6 +26,7 @@ public class CommonActivity extends BaseMainActivity {
 
     private static final String[] TITLE = {
             "LinearLayoutSample",
+            "SpecialLinearLayoutActivity",
             "EndlessLinearLayoutActivity",
             "EndlessGridLayoutActivity",
             "EndlessStaggeredGridLayoutActivity",
