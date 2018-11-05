@@ -145,11 +145,9 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         if (isHeaderType(viewType)) {
             ViewHolder viewHolder = new ViewHolder(getHeaderViewByType(viewType));
-            viewHolder.setIsRecyclable(false);
             return viewHolder;
         } else if (viewType == TYPE_FOOTER_VIEW) {
             ViewHolder viewHolder = new ViewHolder(mFooterViews.get(0));
-            viewHolder.setIsRecyclable(false);
             return viewHolder;
         }
         return mInnerAdapter.onCreateViewHolder(parent, viewType);
