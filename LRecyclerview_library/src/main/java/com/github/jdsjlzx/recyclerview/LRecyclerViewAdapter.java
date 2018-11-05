@@ -157,11 +157,17 @@ public class LRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_REFRESH_HEADER) {
-            return new ViewHolder(mRefreshHeader.getHeaderView());
+            ViewHolder viewHolder = new ViewHolder(mRefreshHeader.getHeaderView());
+            viewHolder.setIsRecyclable(false);
+            return viewHolder;
         } else if (isHeaderType(viewType)) {
-            return new ViewHolder(getHeaderViewByType(viewType));
+            ViewHolder viewHolder = new ViewHolder(getHeaderViewByType(viewType));
+            viewHolder.setIsRecyclable(false);
+            return viewHolder;
         } else if (viewType == TYPE_FOOTER_VIEW) {
-            return new ViewHolder(mFooterViews.get(0));
+            ViewHolder viewHolder = new ViewHolder(mFooterViews.get(0));
+            viewHolder.setIsRecyclable(false);
+            return viewHolder;
         }
         return mInnerAdapter.onCreateViewHolder(parent, viewType);
     }

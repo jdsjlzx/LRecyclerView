@@ -32,7 +32,7 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter {
     private String noNetWorkHint;
     private int style;
     private int indicatorColor;
-    private int hintColor = Color.parseColor("#FFB5B5B5");
+    private int hintColor = R.color.color_hint;
 
     public LoadingFooter(Context context) {
         super(context);

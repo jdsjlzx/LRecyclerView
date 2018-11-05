@@ -36,6 +36,8 @@ import java.util.ArrayList;
  * 本Activity主要是refreshComplete(int pageSize, boolean isShowFootView)方法的举例
  * 用来控制数据不满一屏幕是否显示FootView，结合setNoMore(true)一起使用
  *
+ * 如果用于搜索等情况，在调用refreshComplete(int pageSize)方法之前，为了能够正常分页加载，最好显示调用setNoMore(false)，防止出现不能自动加载
+ *
  *
  * 如果在项目中使用，还可以参考下面项目中BaseListFragment的封装
  * https://github.com/jdsjlzx/Community
@@ -96,11 +98,13 @@ public class SpecialLinearLayoutActivity extends AppCompatActivity{
 
                     if (isOnePage) {
                         //服务器只返回了8条数据（小于PageSize,通常认为不满一屏幕），isShowFootView为true显示footview，false不显示
+
                         if (mDataAdapter.getItemCount() >= 8) {
                             mRecyclerView.refreshComplete(REQUEST_COUNT,true);
                             mRecyclerView.setNoMore(true);
                         }
                     } else {
+                        //注意这里，如果mRecyclerView.setNoMore
                         mRecyclerView.refreshComplete(REQUEST_COUNT);
                     }
 

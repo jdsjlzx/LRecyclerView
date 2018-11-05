@@ -364,6 +364,7 @@ public class LRecyclerView extends RecyclerView {
      *
      * @param pageSize 一页加载的数量
      */
+    @Deprecated
     public void refreshComplete(int pageSize) {
         this.mPageSize = pageSize;
         if (mRefreshing) {
@@ -387,14 +388,43 @@ public class LRecyclerView extends RecyclerView {
     }
 
     /**
-     *
      * @param pageSize 一页加载的数量
-     * @param isShowFootView 是否需要显示footview（前提条件是：getItemCount() < pageSize）
+     * @param total 总数
      */
-    public void refreshComplete(int pageSize, boolean isShowFootView) {
+    public void refreshComplete(int pageSize, int total) {
         this.mPageSize = pageSize;
         if (mRefreshing) {
+            mRefreshing = false;
+            mRefreshHeader.refreshComplete();
+
+            if(mWrapAdapter.getInnerAdapter().getItemCount() < pageSize) {
+                mFootView.setVisibility(GONE);
+                mWrapAdapter.removeFooterView();
+            } else {
+                if (mWrapAdapter.getFooterViewsCount() == 0) {
+                    mWrapAdapter.addFooterView(mFootView);
+                }
+            }
+        } else if (mLoadingData) {
+            mLoadingData = false;
+            mLoadMoreFooter.onComplete();
+        }
+        if (pageSize < total) {
             isNoMore = false;
+        }
+    }
+
+
+    /**
+     * 此方法主要是为了满足数据不满一屏幕或者数据小于pageSize的情况下，是否显示footview
+     * 在分页情况下使用refreshComplete(int pageSize, int total, boolean false)就相当于refreshComplete(int pageSize, int total)
+     * @param pageSize 一页加载的数量
+     * @param total 总数
+     * @param isShowFootView 是否需要显示footview（前提条件是：getItemCount() < pageSize）
+     */
+    public void refreshComplete(int pageSize, int total, boolean isShowFootView) {
+        this.mPageSize = pageSize;
+        if (mRefreshing) {
             mRefreshing = false;
             mRefreshHeader.refreshComplete();
             if (isShowFootView) {
@@ -413,6 +443,9 @@ public class LRecyclerView extends RecyclerView {
             mLoadingData = false;
             mLoadMoreFooter.onComplete();
         }
+        if (pageSize < total) {
+            isNoMore = false;
+        }
 
     }
 
@@ -425,6 +458,7 @@ public class LRecyclerView extends RecyclerView {
         isNoMore = noMore;
         if(isNoMore) {
             mLoadMoreFooter.onNoMore();
+            mFootView.setVisibility(VISIBLE);
         } else {
             mLoadMoreFooter.onComplete();
         }
@@ -485,28 +519,24 @@ public class LRecyclerView extends RecyclerView {
         }
         mLoadMoreEnabled = enabled;
         if (!enabled) {
-            if (null != mWrapAdapter) {
-                mWrapAdapter.removeFooterView();
-            } else {
-                mLoadMoreFooter.onReset();
-            }
+            mWrapAdapter.removeFooterView();
         }
     }
 
     public void setRefreshProgressStyle(int style) {
-        if (mRefreshHeader != null && mRefreshHeader instanceof ArrowRefreshHeader) {
+        if (mRefreshHeader instanceof ArrowRefreshHeader) {
             ((ArrowRefreshHeader) mRefreshHeader).setProgressStyle(style);
         }
     }
 
     public void setArrowImageView(int resId) {
-        if (mRefreshHeader != null && mRefreshHeader instanceof ArrowRefreshHeader) {
+        if (mRefreshHeader instanceof ArrowRefreshHeader) {
             ((ArrowRefreshHeader) mRefreshHeader).setArrowImageView(resId);
         }
     }
 
     public void setLoadingMoreProgressStyle(int style) {
-        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+        if (mLoadMoreFooter instanceof LoadingFooter) {
             ((LoadingFooter) mLoadMoreFooter).setProgressStyle(style);
         }
 
@@ -649,6 +679,8 @@ public class LRecyclerView extends RecyclerView {
                 staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions(lastPositions);
                 firstVisibleItemPosition = findMax(lastPositions);
                 break;
+            default:
+                break;
         }
 
         // 根据类型来计算出第一个可见的item的位置，由此判断是否触发到底部的监听器
@@ -675,8 +707,6 @@ public class LRecyclerView extends RecyclerView {
                     && totalItemCount > visibleItemCount
                     && !isNoMore
                     && !mRefreshing) {
-                Log.e("lzx","mFootView==null ? " + (mFootView==null));
-                Log.e("lzx","getFooterViewsCount  " +mWrapAdapter.getFooterViewsCount());
 
                 mFootView.setVisibility(View.VISIBLE);
                 if (!mLoadingData) {
@@ -753,7 +783,7 @@ public class LRecyclerView extends RecyclerView {
             }
             p = p.getParent();
         }
-        if(null != p && p instanceof CoordinatorLayout) {
+        if(p instanceof CoordinatorLayout) {
             CoordinatorLayout coordinatorLayout = (CoordinatorLayout)p;
             final int childCount = coordinatorLayout.getChildCount();
             for (int i = childCount - 1; i >= 0; i--) {

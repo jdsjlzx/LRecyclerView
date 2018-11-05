@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="fill_parent"
-    android:layout_height="70dp"
+    android:layout_height="65dp"
     android:layout_gravity="center"
     android:background="@color/cardview_light_background">
 

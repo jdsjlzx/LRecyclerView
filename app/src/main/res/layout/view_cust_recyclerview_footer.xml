@@ -3,7 +3,7 @@
     android:id="@+id/loading_view"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_40"
-    android:background="@color/green_normal"
+    android:background="@color/color_light_blue"
     android:gravity="center"
     android:orientation="vertical">
 

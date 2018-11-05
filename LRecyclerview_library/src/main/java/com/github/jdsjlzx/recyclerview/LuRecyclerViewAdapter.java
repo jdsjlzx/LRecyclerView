@@ -1,5 +1,7 @@
 package com.github.jdsjlzx.recyclerview;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -142,9 +144,13 @@ public class LuRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (isHeaderType(viewType)) {
-            return new ViewHolder(getHeaderViewByType(viewType));
+            ViewHolder viewHolder = new ViewHolder(getHeaderViewByType(viewType));
+            viewHolder.setIsRecyclable(false);
+            return viewHolder;
         } else if (viewType == TYPE_FOOTER_VIEW) {
-            return new ViewHolder(mFooterViews.get(0));
+            ViewHolder viewHolder = new ViewHolder(mFooterViews.get(0));
+            viewHolder.setIsRecyclable(false);
+            return viewHolder;
         }
         return mInnerAdapter.onCreateViewHolder(parent, viewType);
     }

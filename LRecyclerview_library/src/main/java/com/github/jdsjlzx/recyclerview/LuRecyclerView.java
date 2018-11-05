@@ -217,9 +217,9 @@ public class LuRecyclerView extends RecyclerView {
     }
 
     /**
-     *
      * @param pageSize 一页加载的数量
      */
+    @Deprecated
     public void refreshComplete(int pageSize) {
         this.mPageSize = pageSize;
         if (mRefreshing) {
@@ -236,11 +236,34 @@ public class LuRecyclerView extends RecyclerView {
     }
 
     /**
-     *
      * @param pageSize 一页加载的数量
+     * @param total 总数
+     */
+    public void refreshComplete(int pageSize, int total) {
+        this.mPageSize = pageSize;
+        if (mRefreshing) {
+            isNoMore = false;
+            mRefreshing = false;
+            if(mWrapAdapter.getInnerAdapter().getItemCount() < pageSize) {
+                mFootView.setVisibility(GONE);
+            }
+        } else if (mLoadingData) {
+            mLoadingData = false;
+            mLoadMoreFooter.onComplete();
+        }
+        if (pageSize < total) {
+            isNoMore = false;
+        }
+    }
+
+    /**
+     * 此方法主要是为了满足数据不满一屏幕或者数据小于pageSize的情况下，是否显示footview
+     * 在分页情况下使用refreshComplete(int pageSize, int total, boolean false)就相当于refreshComplete(int pageSize, int total)
+     * @param pageSize 一页加载的数量
+     * @param total 总数
      * @param isShowFootView 是否需要显示footview（前提条件是：getItemCount() < pageSize）
      */
-    public void refreshComplete(int pageSize, boolean isShowFootView) {
+    public void refreshComplete(int pageSize, int total, boolean isShowFootView) {
         this.mPageSize = pageSize;
         if (mRefreshing) {
             isNoMore = false;
@@ -261,7 +284,9 @@ public class LuRecyclerView extends RecyclerView {
             mLoadingData = false;
             mLoadMoreFooter.onComplete();
         }
-
+        if (pageSize < total) {
+            isNoMore = false;
+        }
     }
 
     /**
@@ -273,6 +298,7 @@ public class LuRecyclerView extends RecyclerView {
         isNoMore = noMore;
         if(isNoMore) {
             mLoadMoreFooter.onNoMore();
+            mFootView.setVisibility(VISIBLE);
         } else {
             mLoadMoreFooter.onComplete();
         }
@@ -318,16 +344,12 @@ public class LuRecyclerView extends RecyclerView {
         }
         mLoadMoreEnabled = enabled;
         if (!enabled) {
-            if (null != mWrapAdapter) {
-                mWrapAdapter.removeFooterView();
-            } else {
-                mLoadMoreFooter.onReset();
-            }
+            mWrapAdapter.removeFooterView();
         }
     }
 
     public void setLoadingMoreProgressStyle(int style) {
-        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+        if (mLoadMoreFooter instanceof LoadingFooter) {
             ((LoadingFooter) mLoadMoreFooter).setProgressStyle(style);
         }
 
@@ -350,7 +372,7 @@ public class LuRecyclerView extends RecyclerView {
     }
 
     public void setFooterViewHint(String loading, String noMore, String noNetWork) {
-        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+        if (mLoadMoreFooter instanceof LoadingFooter) {
             LoadingFooter loadingFooter = ((LoadingFooter) mLoadMoreFooter);
             loadingFooter.setLoadingHint(loading);
             loadingFooter.setNoMoreHint(noMore);
@@ -365,7 +387,7 @@ public class LuRecyclerView extends RecyclerView {
      * @param backgroundColor
      */
     public void setFooterViewColor(int indicatorColor, int hintColor, int backgroundColor) {
-        if (mLoadMoreFooter != null && mLoadMoreFooter instanceof LoadingFooter) {
+        if (mLoadMoreFooter instanceof LoadingFooter) {
             LoadingFooter loadingFooter = ((LoadingFooter) mLoadMoreFooter);
             loadingFooter.setIndicatorColor(ContextCompat.getColor(getContext(),indicatorColor));
             loadingFooter.setHintTextColor(hintColor);
@@ -428,6 +450,8 @@ public class LuRecyclerView extends RecyclerView {
                 lastVisibleItemPosition = findMax(lastPositions);
                 staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions(lastPositions);
                 firstVisibleItemPosition = findMax(lastPositions);
+                break;
+            default:
                 break;
         }
 
