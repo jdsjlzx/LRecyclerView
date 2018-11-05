@@ -100,7 +100,7 @@ public class SpecialLinearLayoutActivity extends AppCompatActivity{
                         //服务器只返回了8条数据（小于PageSize,通常认为不满一屏幕），isShowFootView为true显示footview，false不显示
 
                         if (mDataAdapter.getItemCount() >= 8) {
-                            mRecyclerView.refreshComplete(REQUEST_COUNT,true);
+                            mRecyclerView.refreshComplete(REQUEST_COUNT,TOTAL_COUNTER,true);
                             mRecyclerView.setNoMore(true);
                         }
                     } else {

@@ -364,7 +364,6 @@ public class LRecyclerView extends RecyclerView {
      *
      * @param pageSize 一页加载的数量
      */
-    @Deprecated
     public void refreshComplete(int pageSize) {
         this.mPageSize = pageSize;
         if (mRefreshing) {
@@ -414,13 +413,12 @@ public class LRecyclerView extends RecyclerView {
         }
     }
 
-
     /**
      * 此方法主要是为了满足数据不满一屏幕或者数据小于pageSize的情况下，是否显示footview
      * 在分页情况下使用refreshComplete(int pageSize, int total, boolean false)就相当于refreshComplete(int pageSize, int total)
      * @param pageSize 一页加载的数量
      * @param total 总数
-     * @param isShowFootView 是否需要显示footview（前提条件是：getItemCount() < pageSize）
+     * @param isShowFootView  是否需要显示footview（前提条件是：getItemCount() < pageSize）
      */
     public void refreshComplete(int pageSize, int total, boolean isShowFootView) {
         this.mPageSize = pageSize;

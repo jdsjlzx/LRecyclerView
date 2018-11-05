@@ -219,7 +219,6 @@ public class LuRecyclerView extends RecyclerView {
     /**
      * @param pageSize 一页加载的数量
      */
-    @Deprecated
     public void refreshComplete(int pageSize) {
         this.mPageSize = pageSize;
         if (mRefreshing) {

@@ -11,6 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_4"
         android:text="@string/list_footer_end"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/color_hint"
         android:textSize="@dimen/sp_14" />
 </LinearLayout>

@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         android:text="@string/list_footer_loading"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/color_hint"
         android:textSize="@dimen/sp_14" />
 </LinearLayout>
