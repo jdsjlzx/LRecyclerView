@@ -40,6 +40,7 @@ public class LuRecyclerView extends RecyclerView {
 
     private LuRecyclerViewAdapter mWrapAdapter;
     private boolean isNoMore = false;
+    private boolean isCritical = false;
     //scroll variables begin
     /**
      * 当前RecyclerView类型
@@ -253,6 +254,12 @@ public class LuRecyclerView extends RecyclerView {
         if (pageSize < total) {
             isNoMore = false;
         }
+        //处理特殊情况 最后一行显示出来了加载更多的view的一部分
+        if (mWrapAdapter.getInnerAdapter().getItemCount() == mPageSize) {
+            isCritical = true;
+        } else {
+            isCritical = false;
+        }
     }
 
     /**
@@ -285,6 +292,12 @@ public class LuRecyclerView extends RecyclerView {
         }
         if (pageSize < total) {
             isNoMore = false;
+        }
+        //处理特殊情况 最后一行显示出来了加载更多的view的一部分
+        if (mWrapAdapter.getInnerAdapter().getItemCount() == mPageSize) {
+            isCritical = true;
+        } else {
+            isCritical = false;
         }
     }
 
@@ -475,7 +488,7 @@ public class LuRecyclerView extends RecyclerView {
             int totalItemCount = layoutManager.getItemCount();
             if (visibleItemCount > 0
                     && lastVisibleItemPosition >= totalItemCount - 1
-                    && totalItemCount > visibleItemCount
+                    && (isCritical ? totalItemCount >= visibleItemCount : totalItemCount > visibleItemCount)
                     && !isNoMore
                     && !mRefreshing) {
 

@@ -53,6 +53,7 @@ public class LRecyclerView extends RecyclerView {
 
     private LRecyclerViewAdapter mWrapAdapter;
     private boolean isNoMore = false;
+    private boolean isCritical = false;
     private boolean mIsVpDragger;
     private int mTouchSlop;
     private float startY;
@@ -383,7 +384,13 @@ public class LRecyclerView extends RecyclerView {
             mLoadingData = false;
             mLoadMoreFooter.onComplete();
         }
-
+        //visibleItemCount 10 lastVisibleItemPosition 9 totalItemCount 11 isNoMore false mRefreshing false
+        //处理特殊情况 最后一行显示出来了加载更多的view的一部分
+        if (mWrapAdapter.getInnerAdapter().getItemCount() == mPageSize) {
+            isCritical = true;
+        } else {
+            isCritical = false;
+        }
     }
 
     /**
@@ -410,6 +417,12 @@ public class LRecyclerView extends RecyclerView {
         }
         if (pageSize < total) {
             isNoMore = false;
+        }
+        //处理特殊情况 最后一行显示出来了加载更多的view的一部分
+        if (mWrapAdapter.getInnerAdapter().getItemCount() == mPageSize) {
+            isCritical = true;
+        } else {
+            isCritical = false;
         }
     }
 
@@ -444,7 +457,12 @@ public class LRecyclerView extends RecyclerView {
         if (pageSize < total) {
             isNoMore = false;
         }
-
+        //处理特殊情况 最后一行显示出来了加载更多的view的一部分
+        if (mWrapAdapter.getInnerAdapter().getItemCount() == mPageSize) {
+            isCritical = true;
+        } else {
+            isCritical = false;
+        }
     }
 
     /**
@@ -702,7 +720,7 @@ public class LRecyclerView extends RecyclerView {
             int totalItemCount = layoutManager.getItemCount();
             if (visibleItemCount > 0
                     && lastVisibleItemPosition >= totalItemCount - 1
-                    && totalItemCount > visibleItemCount
+                    && (isCritical ? totalItemCount >= visibleItemCount : totalItemCount > visibleItemCount)
                     && !isNoMore
                     && !mRefreshing) {
 
