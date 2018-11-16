@@ -232,7 +232,12 @@ public class LuRecyclerView extends RecyclerView {
             mLoadingData = false;
             mLoadMoreFooter.onComplete();
         }
-
+        //处理特殊情况 最后一行显示出来了加载更多的view的一部分
+        if (mWrapAdapter.getInnerAdapter().getItemCount() == mPageSize) {
+            isCritical = true;
+        } else {
+            isCritical = false;
+        }
     }
 
     /**
