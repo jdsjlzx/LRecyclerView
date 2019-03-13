@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.github.jdsjlzx.R;
 import com.github.jdsjlzx.interfaces.ILoadMoreFooter;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 
@@ -133,6 +135,29 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter {
         return this;
     }
 
+    @Override
+    public void setNetworkErrorViewClickListener(final OnNetWorkErrorListener listener) {
+        setState(State.NetWorkError);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setState(State.Loading);
+                listener.reload();
+            }
+        });
+    }
+
+    @Override
+    public void setOnClickLoadMoreListener(final OnLoadMoreListener listener) {
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setState(State.Loading);
+                listener.onLoadMore();
+            }
+        });
+    }
+
     /**
      * 设置状态
      *
@@ -239,10 +264,5 @@ public class LoadingFooter extends RelativeLayout implements ILoadMoreFooter {
     }
 
 
-    public enum State {
-        Normal/**正常*/
-        , NoMore/**加载到最底了*/
-        , Loading/**加载中..*/
-        , NetWorkError/**网络异常*/
-    }
+
 }

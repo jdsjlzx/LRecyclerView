@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lzx.demo.bean.MultiItemEntity;
-import com.lzx.demo.bean.Person;
 import com.lzx.demo.interfaces.IExpandable;
 
 import java.util.ArrayList;

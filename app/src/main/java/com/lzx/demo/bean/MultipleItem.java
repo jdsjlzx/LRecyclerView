@@ -4,10 +4,16 @@ public class MultipleItem implements MultiItemEntity {
     public static final int TEXT = 1;
     public static final int IMG = 2;
     public static final int LIST = 3;
+    public static final int FOOT = 4;
     public static final int TEXT_SPAN_SIZE = 1;
     public static final int IMG_SPAN_SIZE = 3;
     private int itemType;
     private int spanSize;
+
+    public static final int FOOT_MY_GROUP = 100;
+    public static final int FOOT_PUBLIC_GROUP= 101;
+
+
 
     public MultipleItem(int itemType) {
         this.itemType = itemType;
@@ -32,6 +38,7 @@ public class MultipleItem implements MultiItemEntity {
     }
 
     private String title;
+    private int footCategory;
 
     public String getTitle() {
         return title;
@@ -40,4 +47,13 @@ public class MultipleItem implements MultiItemEntity {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getFootCategory() {
+        return footCategory;
+    }
+
+    public void setFootCategory(int footCategory) {
+        this.footCategory = footCategory;
+    }
+
 }

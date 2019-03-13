@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
@@ -19,12 +20,16 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.github.jdsjlzx.view.SimpleViewSwitcher;
 import com.lzx.demo.R;
 
-public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter {
+/**
+ * 手动点击加载更多
+ */
+public class ClickLoadingFooter extends RelativeLayout implements ILoadMoreFooter {
 
     protected State mState = State.Normal;
     private View mLoadingView;
     private View mNetworkErrorView;
     private View mTheEndView;
+    private View mManualView;
     private SimpleViewSwitcher mProgressView;
     private TextView mLoadingText;
     private TextView mNoMoreText;
@@ -36,24 +41,24 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
     private int indicatorColor;
     private int hintColor = R.color.colorAccent;
 
-    public CustLoadingFooter(Context context) {
+    public ClickLoadingFooter(Context context) {
         super(context);
         init();
     }
 
-    public CustLoadingFooter(Context context, AttributeSet attrs) {
+    public ClickLoadingFooter(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public CustLoadingFooter(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ClickLoadingFooter(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     public void init() {
 
-        inflate(getContext(), R.layout.view_cust_recyclerview_footer, this);
+        inflate(getContext(), R.layout.view_manual_recyclerview_footer, this);
         setOnClickListener(null);
 
         onReset();//初始为隐藏状态
@@ -122,12 +127,15 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
 
     @Override
     public void onComplete() {
-        setState(State.Normal);
+        Log.e("lzx","onComplete  111");
+        setState(State.ManualLoadMore);
     }
 
     @Override
     public void onNoMore() {
-        setState(State.NoMore);
+        //setState(State.NoMore);
+        setState(State.Normal);
+        setVisibility(GONE);
     }
 
     @Override
@@ -137,11 +145,11 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
 
     @Override
     public void setNetworkErrorViewClickListener(final OnNetWorkErrorListener listener) {
-        setState(ILoadMoreFooter.State.NetWorkError);
+        setState(State.NetWorkError);
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setState(ILoadMoreFooter.State.Loading);
+                setState(State.Loading);
                 listener.reload();
             }
         });
@@ -149,6 +157,8 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
 
     @Override
     public void setOnClickLoadMoreListener(final OnLoadMoreListener listener) {
+        setVisibility(VISIBLE);
+        setState(State.ManualLoadMore);
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,6 +195,10 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
                     mNetworkErrorView.setVisibility(GONE);
                 }
 
+                if (mManualView != null) {
+                    mManualView.setVisibility(GONE);
+                }
+
                 break;
             case Loading:
                 setOnClickListener(null);
@@ -194,6 +208,10 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
 
                 if (mNetworkErrorView != null) {
                     mNetworkErrorView.setVisibility(GONE);
+                }
+
+                if (mManualView != null) {
+                    mManualView.setVisibility(GONE);
                 }
 
                 if (mLoadingView == null) {
@@ -224,18 +242,10 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
                     mNetworkErrorView.setVisibility(GONE);
                 }
 
-                if (mTheEndView == null) {
-                    ViewStub viewStub = (ViewStub) findViewById(R.id.end_viewstub);
-                    mTheEndView = viewStub.inflate();
-
-                    mNoMoreText = (TextView) mTheEndView.findViewById(R.id.loading_end_text);
-                } else {
-                    mTheEndView.setVisibility(VISIBLE);
+                if (mManualView != null) {
+                    mManualView.setVisibility(GONE);
                 }
 
-                mTheEndView.setVisibility(showView ? VISIBLE : GONE);
-                mNoMoreText.setText(TextUtils.isEmpty(noMoreHint) ? getResources().getString(R.string.list_footer_end) : noMoreHint);
-                mNoMoreText.setTextColor(ContextCompat.getColor(getContext(), hintColor));
                 break;
             case NetWorkError:
                 if (mLoadingView != null) {
@@ -244,6 +254,10 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
 
                 if (mTheEndView != null) {
                     mTheEndView.setVisibility(GONE);
+                }
+
+                if (mManualView != null) {
+                    mManualView.setVisibility(GONE);
                 }
 
                 if (mNetworkErrorView == null) {
@@ -257,6 +271,27 @@ public class CustLoadingFooter extends RelativeLayout implements ILoadMoreFooter
                 mNetworkErrorView.setVisibility(showView ? VISIBLE : GONE);
                 mNoNetWorkText.setText(TextUtils.isEmpty(noNetWorkHint) ? getResources().getString(R.string.list_footer_network_error) : noNetWorkHint);
                 mNoNetWorkText.setTextColor(ContextCompat.getColor(getContext(), hintColor));
+                break;
+            case ManualLoadMore:
+                if (mLoadingView != null) {
+                    mLoadingView.setVisibility(GONE);
+                }
+
+                if (mTheEndView != null) {
+                    mTheEndView.setVisibility(GONE);
+                }
+
+                if (mNetworkErrorView != null) {
+                    mNetworkErrorView.setVisibility(GONE);
+                }
+
+                if (mManualView == null) {
+                    ViewStub viewStub = (ViewStub) findViewById(R.id.manual_load_viewstub);
+                    mManualView = viewStub.inflate();
+                } else {
+                    mManualView.setVisibility(VISIBLE);
+                }
+
                 break;
             default:
                 break;

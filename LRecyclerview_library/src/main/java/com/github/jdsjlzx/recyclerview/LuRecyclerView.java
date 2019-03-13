@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -26,6 +27,8 @@ import com.github.jdsjlzx.view.LoadingFooter;
  */
 public class LuRecyclerView extends RecyclerView {
     private boolean mLoadMoreEnabled = true;
+    /** 是否手动点击加载更多 */
+    private boolean mIsManualLoadMore = false;
     private boolean mRefreshing = false;//是否正在下拉刷新
     private boolean mLoadingData = false;//是否正在加载数据
     private boolean flag = false;//标记是否setAdapter
@@ -221,6 +224,7 @@ public class LuRecyclerView extends RecyclerView {
      * @param pageSize 一页加载的数量
      */
     public void refreshComplete(int pageSize) {
+        Log.e("lzx","refreshComplete  pageSize " + pageSize );
         this.mPageSize = pageSize;
         if (mRefreshing) {
             isNoMore = false;
@@ -314,8 +318,31 @@ public class LuRecyclerView extends RecyclerView {
         mLoadingData = false;
         isNoMore = noMore;
         if(isNoMore) {
-            mLoadMoreFooter.onNoMore();
             mFootView.setVisibility(VISIBLE);
+            mLoadMoreFooter.onNoMore();
+            Log.e("lzx","setNoMore true ");
+        } else {
+            mLoadMoreFooter.onComplete();
+        }
+    }
+
+    /**
+     * 设置是否已加载全部
+     * @param noMore
+     * @param isShowFootView
+     */
+    public void setNoMore(boolean noMore, boolean isShowFootView){
+        mLoadingData = false;
+        isNoMore = noMore;
+        if(isNoMore) {
+            if (isShowFootView) {
+                mFootView.setVisibility(VISIBLE);
+            } else {
+                mFootView.setVisibility(GONE);
+                mWrapAdapter.removeFooterView();
+            }
+            mLoadMoreFooter.onNoMore();
+            Log.e("lzx","setNoMore true ");
         } else {
             mLoadMoreFooter.onComplete();
         }
@@ -365,6 +392,17 @@ public class LuRecyclerView extends RecyclerView {
         }
     }
 
+    /**
+     * 滑动到底手动点击加载
+     */
+    public void setManualLoadMore(boolean enabled) {
+        if(mWrapAdapter == null){
+            throw new NullPointerException("mWrapAdapter cannot be null, please make sure the variable mWrapAdapter have been initialized.");
+        }
+        mIsManualLoadMore = enabled;
+
+    }
+
     public void setLoadingMoreProgressStyle(int style) {
         if (mLoadMoreFooter instanceof LoadingFooter) {
             ((LoadingFooter) mLoadMoreFooter).setProgressStyle(style);
@@ -377,15 +415,7 @@ public class LuRecyclerView extends RecyclerView {
     }
 
     public void setOnNetWorkErrorListener(final OnNetWorkErrorListener listener) {
-        final LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
-        loadingFooter.setState(LoadingFooter.State.NetWorkError);
-        loadingFooter.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLoadMoreFooter.onLoading();
-                listener.reload();
-            }
-        });
+        mLoadMoreFooter.setNetworkErrorViewClickListener(listener);
     }
 
     public void setFooterViewHint(String loading, String noMore, String noNetWork) {
@@ -488,25 +518,36 @@ public class LuRecyclerView extends RecyclerView {
             mLScrollListener.onScrolled(mScrolledXDistance, mScrolledYDistance);
         }
 
-        if (mLoadMoreListener != null && mLoadMoreEnabled) {
-            int visibleItemCount = layoutManager.getChildCount();
-            int totalItemCount = layoutManager.getItemCount();
-            if (visibleItemCount > 0
-                    && lastVisibleItemPosition >= totalItemCount - 1
-                    && (isCritical ? totalItemCount >= visibleItemCount : totalItemCount > visibleItemCount)
-                    && !isNoMore
-                    && !mRefreshing) {
+        //如果想要滑动到底部自动加载更多，mIsManualLoadMore必须为false
+        if (mIsManualLoadMore) {
+            if (!isNoMore) {
+                Log.e("lzx","onScrooo set visible");
+                mLoadingData = true;
+                mLoadMoreFooter.setOnClickLoadMoreListener(mLoadMoreListener);
+            }
 
-                mFootView.setVisibility(View.VISIBLE);
-                if (!mLoadingData) {
-                    mLoadingData = true;
-                    mLoadMoreFooter.onLoading();
-                    mLoadMoreListener.onLoadMore();
+        } else {
+            if (mLoadMoreListener != null && mLoadMoreEnabled) {
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                if (visibleItemCount > 0
+                        && lastVisibleItemPosition >= totalItemCount - 1
+                        && (isCritical ? totalItemCount >= visibleItemCount : totalItemCount > visibleItemCount)
+                        && !isNoMore
+                        && !mRefreshing) {
+
+                    mFootView.setVisibility(View.VISIBLE);
+                    if (!mLoadingData) {
+                        mLoadingData = true;
+                        mLoadMoreFooter.onLoading();
+                        mLoadMoreListener.onLoadMore();
+                    }
+
                 }
 
             }
-
         }
+
     }
 
     @Override

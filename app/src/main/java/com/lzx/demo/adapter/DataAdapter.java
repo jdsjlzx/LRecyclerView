@@ -34,9 +34,4 @@ public class DataAdapter extends ListBaseAdapter<ItemModel> {
         titleText.setText(item.title);
     }
 
-    @Override
-    public void onViewRecycled(SuperViewHolder holder) {
-        super.onViewRecycled(holder);
-    }
-
 }

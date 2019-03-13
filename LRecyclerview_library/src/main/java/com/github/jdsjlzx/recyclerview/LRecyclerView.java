@@ -567,17 +567,16 @@ public class LRecyclerView extends RecyclerView {
     }
 
     public void setOnNetWorkErrorListener(final OnNetWorkErrorListener listener) {
-        final LoadingFooter loadingFooter = ((LoadingFooter) mFootView);
-        loadingFooter.setState(LoadingFooter.State.NetWorkError);
-        loadingFooter.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLoadMoreFooter.onLoading();
-                listener.reload();
-            }
-        });
+        mLoadMoreFooter.setNetworkErrorViewClickListener(listener);
     }
 
+    /**
+     * 请使用自定义LoadingFooter的方式实现
+     * @param loading
+     * @param noMore
+     * @param noNetWork
+     */
+    @Deprecated
     public void setFooterViewHint(String loading, String noMore, String noNetWork) {
         if (mLoadMoreFooter instanceof LoadingFooter) {
             LoadingFooter loadingFooter = ((LoadingFooter) mLoadMoreFooter);
@@ -588,11 +587,13 @@ public class LRecyclerView extends RecyclerView {
     }
 
     /**
+     * 本方法不再推荐使用，请使用自定义LoadingFooter的方式实现
      * 设置Footer文字颜色
      * @param indicatorColor
      * @param hintColor
      * @param backgroundColor
      */
+    @Deprecated
     public void setFooterViewColor(int indicatorColor, int hintColor, int backgroundColor) {
         if (mLoadMoreFooter instanceof LoadingFooter) {
             LoadingFooter loadingFooter = ((LoadingFooter) mLoadMoreFooter);

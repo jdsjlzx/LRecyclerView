@@ -22,7 +22,8 @@ public class CommonActivity extends BaseMainActivity {
             BannerHeaderLayoutActivity.class,
             QzoneHeaderActivity.class,
             MomentsHeaderActivity.class,
-            CustomLoadingFootActivity.class};
+            CustomLoadingFootActivity.class,
+            ClickLoadingFootActivity.class};
 
     private static final String[] TITLE = {
             "LinearLayoutSample",
@@ -41,7 +42,8 @@ public class CommonActivity extends BaseMainActivity {
             "BannerHeaderLayoutActivity",
             "QzoneHeaderActivity",
             "MomentsHeaderActivity",
-            "CustomLoadingFootActivity"};
+            "CustomLoadingFootActivity",
+            "ClickLoadingFootActivity"};
 
     public Class<?>[] getActivitys() {
         return ACTIVITY;
