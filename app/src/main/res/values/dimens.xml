@@ -37,4 +37,8 @@
     <dimen name="app_bar_height">200dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_100">100dp</dimen>
+    <dimen name="dp_0">0dp</dimen>
 </resources>

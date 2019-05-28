@@ -35,6 +35,11 @@
     <color name="color_ff4a57">#ff4a57</color>
     <color name="color_light_blue">#14acae</color>
 
+    <color name="color_FFC0CB">#FFC0CB</color>
+    <color name="color_87CEEB">#87CEEB</color>
+    <color name="color_6495ED">#6495ED</color>
+    <color name="color_d8d8d8">#d8d8d8</color>
+
     <color name="blue_dark">#1983d1</color>
     <color name="blue_black">#1673b8</color>
 </resources>

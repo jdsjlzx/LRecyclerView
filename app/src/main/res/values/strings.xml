@@ -17,4 +17,9 @@
 
     <string name="expanded">expanded</string>
     <string name="collapsed">collapsed</string>
+
+    <string name="oriented_test_one">Item1</string>
+    <string name="oriented_test_two">item2</string>
+    <string name="oriented_test_three">item3</string>
+    <string name="oriented_test_new_type">新类型</string>
 </resources>

@@ -59,6 +59,8 @@
         <activity android:name=".ui.CustomLoadingFootActivity"/>
         <activity android:name=".ui.SpecialLinearLayoutActivity"/>
         <activity android:name=".ui.ClickLoadingFootActivity"/>
+        <activity android:name="com.lzx.demo.ui.OrientedHolderTestActivity"/>
+
     </application>
 
 </manifest>
